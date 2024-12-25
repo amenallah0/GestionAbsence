@@ -1,0 +1,700 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\services\\gradeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\services\\gradeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\controllers\\enseignantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\controllers\\enseignantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\services\\enseignantservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\services\\enseignantservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\controllers\\departementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\controllers\\departementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\models\\departement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\models\\departement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\controllers\\etudiantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\controllers\\etudiantcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\controllers\\matierecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\controllers\\matierecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\services\\imatiereservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\services\\imatiereservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\viewmodels\\matiereviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\viewmodels\\matiereviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\viewmodels\\classeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\viewmodels\\classeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\controllers\\class.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\controllers\\class.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\services\\iclasseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\services\\iclasseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\viewmodels\\departementviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\viewmodels\\departementviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\controllers\\gradecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\controllers\\gradecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\services\\igradeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\services\\igradeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\views\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\views\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\views\\index3.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\views\\index3.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\viewmodels\\gradeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\viewmodels\\gradeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\models\\grade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\models\\grade.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\models\\enseignant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\models\\enseignant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\controllers\\absencecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\controllers\\absencecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\services\\absenceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\services\\absenceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\services\\ienseignantservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\services\\ienseignantservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\views\\index2.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\views\\index2.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\views\\index1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\views\\index1.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\viewmodels\\enseignantviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\viewmodels\\enseignantviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\models\\groupe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\models\\groupe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\models\\ligneficheabsence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\models\\ligneficheabsence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\views\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\views\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\services\\iabsenceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\services\\iabsenceservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\viewmodels\\absencelistviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\viewmodels\\absencelistviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\viewmodels\\etudiantviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\viewmodels\\etudiantviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\models\\seance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\models\\seance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\models\\classe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\models\\classe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\viewmodels\\marquerabsenceviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\viewmodels\\marquerabsenceviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\models\\ficheabsence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\models\\ficheabsence.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\models\\etudiant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\models\\etudiant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|c:\\users\\amenallah\\source\\repos\\gestionabscence\\gestionabscence\\views\\absence\\marquerabsence.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C908A8F1-BBAF-485A-B9B1-830CA9DDADFE}|GestionAbscence\\GestionAbscence.csproj|solutionrelative:gestionabscence\\views\\absence\\marquerabsence.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "EnseignantService.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\EnseignantService.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Services\\EnseignantService.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\EnseignantService.cs",
+              "RelativeToolTip": "GestionAbscence\\Services\\EnseignantService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:26:43.652Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "EnseignantController.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\EnseignantController.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Controllers\\EnseignantController.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\EnseignantController.cs",
+              "RelativeToolTip": "GestionAbscence\\Controllers\\EnseignantController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:24:20.353Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "GestionAbscence\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T18:06:01.61Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GradeService.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\GradeService.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Services\\GradeService.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\GradeService.cs",
+              "RelativeToolTip": "GestionAbscence\\Services\\GradeService.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAQwGYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:34:34.171Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Program.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Program.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Program.cs",
+              "RelativeToolTip": "GestionAbscence\\Program.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAASwCsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T18:06:26.226Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DepartementController.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\DepartementController.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Controllers\\DepartementController.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\DepartementController.cs",
+              "RelativeToolTip": "GestionAbscence\\Controllers\\DepartementController.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAzwCoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:24:37.826Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Departement.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Departement.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Models\\Departement.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Departement.cs",
+              "RelativeToolTip": "GestionAbscence\\Models\\Departement.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:23:31.76Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "EtudiantController.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\EtudiantController.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Controllers\\EtudiantController.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\EtudiantController.cs",
+              "RelativeToolTip": "GestionAbscence\\Controllers\\EtudiantController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:17:52.128Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "MatiereController.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\MatiereController.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Controllers\\MatiereController.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\MatiereController.cs",
+              "RelativeToolTip": "GestionAbscence\\Controllers\\MatiereController.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAQwFgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:40:32.201Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "IMatiereService.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\IMatiereService.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Services\\IMatiereService.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\IMatiereService.cs",
+              "RelativeToolTip": "GestionAbscence\\Services\\IMatiereService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:40:16.688Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "MatiereViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\MatiereViewModel.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\ViewModels\\MatiereViewModel.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\MatiereViewModel.cs",
+              "RelativeToolTip": "GestionAbscence\\ViewModels\\MatiereViewModel.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAQwBoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:39:41.843Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Class.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\Class.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Controllers\\Class.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\Class.cs",
+              "RelativeToolTip": "GestionAbscence\\Controllers\\Class.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAQwEkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:39:05.104Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "IClasseService.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\IClasseService.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Services\\IClasseService.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\IClasseService.cs",
+              "RelativeToolTip": "GestionAbscence\\Services\\IClasseService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:38:47.299Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ClasseViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\ClasseViewModel.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\ViewModels\\ClasseViewModel.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\ClasseViewModel.cs",
+              "RelativeToolTip": "GestionAbscence\\ViewModels\\ClasseViewModel.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAIA+wAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:38:04.414Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Views\\Create.cshtml",
+              "RelativeDocumentMoniker": "GestionAbscence\\Views\\Create.cshtml",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Views\\Create.cshtml",
+              "RelativeToolTip": "GestionAbscence\\Views\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-25T19:35:16.016Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Index3.cshtml",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Views\\Index3.cshtml",
+              "RelativeDocumentMoniker": "GestionAbscence\\Views\\Index3.cshtml",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Views\\Index3.cshtml",
+              "RelativeToolTip": "GestionAbscence\\Views\\Index3.cshtml",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAQwCgAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-25T19:34:57.962Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "IGradeService.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\IGradeService.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Services\\IGradeService.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\IGradeService.cs",
+              "RelativeToolTip": "GestionAbscence\\Services\\IGradeService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:34:16.523Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "GradeController.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\GradeController.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Controllers\\GradeController.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\GradeController.cs",
+              "RelativeToolTip": "GestionAbscence\\Controllers\\GradeController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:33:59.56Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "DepartementViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\DepartementViewModel.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\ViewModels\\DepartementViewModel.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\DepartementViewModel.cs",
+              "RelativeToolTip": "GestionAbscence\\ViewModels\\DepartementViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:24:00.01Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "GradeViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\GradeViewModel.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\ViewModels\\GradeViewModel.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\GradeViewModel.cs",
+              "RelativeToolTip": "GestionAbscence\\ViewModels\\GradeViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:33:43.449Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Grade.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Grade.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Models\\Grade.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Grade.cs",
+              "RelativeToolTip": "GestionAbscence\\Models\\Grade.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:33:18.668Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "AbsenceService.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\AbsenceService.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Services\\AbsenceService.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\AbsenceService.cs",
+              "RelativeToolTip": "GestionAbscence\\Services\\AbsenceService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:17:33.789Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "AbsenceController.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\AbsenceController.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Controllers\\AbsenceController.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Controllers\\AbsenceController.cs",
+              "RelativeToolTip": "GestionAbscence\\Controllers\\AbsenceController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T18:06:58.638Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Enseignant.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Enseignant.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Models\\Enseignant.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Enseignant.cs",
+              "RelativeToolTip": "GestionAbscence\\Models\\Enseignant.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAIA6wBIAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:22:43.617Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "IEnseignantService.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\IEnseignantService.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Services\\IEnseignantService.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\IEnseignantService.cs",
+              "RelativeToolTip": "GestionAbscence\\Services\\IEnseignantService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:26:26.077Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "Index2.cshtml",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Views\\Index2.cshtml",
+              "RelativeDocumentMoniker": "GestionAbscence\\Views\\Index2.cshtml",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Views\\Index2.cshtml",
+              "RelativeToolTip": "GestionAbscence\\Views\\Index2.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-25T19:26:02.814Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "Index1.cshtml",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Views\\Index1.cshtml",
+              "RelativeDocumentMoniker": "GestionAbscence\\Views\\Index1.cshtml",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Views\\Index1.cshtml",
+              "RelativeToolTip": "GestionAbscence\\Views\\Index1.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-25T19:25:42.153Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "EnseignantViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\EnseignantViewModel.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\ViewModels\\EnseignantViewModel.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\EnseignantViewModel.cs",
+              "RelativeToolTip": "GestionAbscence\\ViewModels\\EnseignantViewModel.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:23:46.879Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "Groupe.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Groupe.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Models\\Groupe.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Groupe.cs",
+              "RelativeToolTip": "GestionAbscence\\Models\\Groupe.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:23:19.607Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "LigneFicheAbsence.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\LigneFicheAbsence.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Models\\LigneFicheAbsence.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\LigneFicheAbsence.cs",
+              "RelativeToolTip": "GestionAbscence\\Models\\LigneFicheAbsence.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:23:03.055Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Views\\Index.cshtml",
+              "RelativeDocumentMoniker": "GestionAbscence\\Views\\Index.cshtml",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Views\\Index.cshtml",
+              "RelativeToolTip": "GestionAbscence\\Views\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-25T19:18:13.973Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "IAbsenceService.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\IAbsenceService.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Services\\IAbsenceService.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Services\\IAbsenceService.cs",
+              "RelativeToolTip": "GestionAbscence\\Services\\IAbsenceService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:17:13.57Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "AbsenceListViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\AbsenceListViewModel.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\ViewModels\\AbsenceListViewModel.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\AbsenceListViewModel.cs",
+              "RelativeToolTip": "GestionAbscence\\ViewModels\\AbsenceListViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:16:43.899Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "EtudiantViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\EtudiantViewModel.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\ViewModels\\EtudiantViewModel.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\EtudiantViewModel.cs",
+              "RelativeToolTip": "GestionAbscence\\ViewModels\\EtudiantViewModel.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAA9wA4AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:16:18.495Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "Seance.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Seance.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Models\\Seance.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Seance.cs",
+              "RelativeToolTip": "GestionAbscence\\Models\\Seance.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:15:41.828Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "Classe.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Classe.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Models\\Classe.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Classe.cs",
+              "RelativeToolTip": "GestionAbscence\\Models\\Classe.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:15:10.4Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "Etudiant.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Etudiant.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Models\\Etudiant.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\Etudiant.cs",
+              "RelativeToolTip": "GestionAbscence\\Models\\Etudiant.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T19:08:10.793Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "FicheAbsence.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\FicheAbsence.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\Models\\FicheAbsence.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Models\\FicheAbsence.cs",
+              "RelativeToolTip": "GestionAbscence\\Models\\FicheAbsence.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T18:05:25.014Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "MarquerAbsenceViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\MarquerAbsenceViewModel.cs",
+              "RelativeDocumentMoniker": "GestionAbscence\\ViewModels\\MarquerAbsenceViewModel.cs",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\ViewModels\\MarquerAbsenceViewModel.cs",
+              "RelativeToolTip": "GestionAbscence\\ViewModels\\MarquerAbsenceViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-25T18:12:13.982Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "MarquerAbsence.cshtml",
+              "DocumentMoniker": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Views\\Absence\\MarquerAbsence.cshtml",
+              "RelativeDocumentMoniker": "GestionAbscence\\Views\\Absence\\MarquerAbsence.cshtml",
+              "ToolTip": "C:\\Users\\AmenAllah\\source\\repos\\GestionAbscence\\GestionAbscence\\Views\\Absence\\MarquerAbsence.cshtml",
+              "RelativeToolTip": "GestionAbscence\\Views\\Absence\\MarquerAbsence.cshtml",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAYwHAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-25T18:17:20.098Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
