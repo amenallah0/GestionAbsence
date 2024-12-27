@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAbsence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241227215700_InitialCreate")]
+    [Migration("20241227220200_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

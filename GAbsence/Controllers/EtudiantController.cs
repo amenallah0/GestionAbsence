@@ -1,16 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GAbsence.Controllers
 {
     public class EtudiantController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<EtudiantController> _logger;
 
-        public EtudiantController(ApplicationDbContext context)
+        public EtudiantController(ApplicationDbContext context, ILogger<EtudiantController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Etudiant
@@ -25,7 +28,7 @@ namespace GAbsence.Controllers
         // GET: Etudiant/Create
         public IActionResult Create()
         {
-            ViewBag.Classes = _context.Classes.ToList();
+            ViewBag.Classes = new SelectList(_context.Classes, "CodeClasse", "NomClasse");
             return View();
         }
 
@@ -34,37 +37,42 @@ namespace GAbsence.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CodeEtudiant,Nom,Prenom,DateNaissance,Adresse,Mail,Tel,CodeClasse")] Etudiant etudiant)
         {
-            if (ModelState.IsValid)
+            _logger.LogInformation("Tentative de création d'un étudiant");
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("ModelState invalide");
+                foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    _logger.LogWarning($"Erreur: {modelError.ErrorMessage}");
+                }
+                ViewBag.Classes = new SelectList(_context.Classes, "CodeClasse", "NomClasse", etudiant.CodeClasse);
+                return View(etudiant);
+            }
+
+            try
             {
                 // Vérifier si le code étudiant existe déjà
                 if (await _context.Etudiants.AnyAsync(e => e.CodeEtudiant == etudiant.CodeEtudiant))
                 {
+                    _logger.LogWarning($"Le code étudiant {etudiant.CodeEtudiant} existe déjà");
                     ModelState.AddModelError("CodeEtudiant", "Ce code étudiant existe déjà");
+                    ViewBag.Classes = new SelectList(_context.Classes, "CodeClasse", "NomClasse", etudiant.CodeClasse);
                     return View(etudiant);
                 }
 
-                // Vérifier si la classe existe
-                if (!await _context.Classes.AnyAsync(c => c.CodeClasse == etudiant.CodeClasse))
-                {
-                    ModelState.AddModelError("CodeClasse", "Cette classe n'existe pas");
-                    ViewBag.Classes = await _context.Classes.ToListAsync();
-                    return View(etudiant);
-                }
-
-                try
-                {
-                    _context.Add(etudiant);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError("", "Une erreur s'est produite lors de la création de l'étudiant");
-                }
+                _context.Add(etudiant);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Étudiant créé avec succès: {etudiant.CodeEtudiant}");
+                return RedirectToAction(nameof(Index));
             }
-
-            ViewBag.Classes = await _context.Classes.ToListAsync();
-            return View(etudiant);
+            catch (Exception ex)
+            {
+                _logger.LogError($"Erreur lors de la création de l'étudiant: {ex.Message}");
+                ModelState.AddModelError("", "Une erreur s'est produite lors de la création de l'étudiant");
+                ViewBag.Classes = new SelectList(_context.Classes, "CodeClasse", "NomClasse", etudiant.CodeClasse);
+                return View(etudiant);
+            }
         }
 
         // GET: Etudiant/Edit/5
