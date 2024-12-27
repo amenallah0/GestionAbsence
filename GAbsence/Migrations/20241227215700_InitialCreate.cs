@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace GAbsence.Migrations
 {
     /// <inheritdoc />
@@ -216,20 +218,20 @@ namespace GAbsence.Migrations
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Prenom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateNaissance = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CodeClasse = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Adresse = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Tel = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClasseCodeClasse = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    CodeClasse = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Etudiants", x => x.CodeEtudiant);
                     table.ForeignKey(
-                        name: "FK_Etudiants_Classes_ClasseCodeClasse",
-                        column: x => x.ClasseCodeClasse,
+                        name: "FK_Etudiants_Classes_CodeClasse",
+                        column: x => x.CodeClasse,
                         principalTable: "Classes",
-                        principalColumn: "CodeClasse");
+                        principalColumn: "CodeClasse",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -371,6 +373,15 @@ namespace GAbsence.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Classes",
+                columns: new[] { "CodeClasse", "NomClasse" },
+                values: new object[,]
+                {
+                    { "DSI31", "DSI 3.1" },
+                    { "DSI32", "DSI 3.2" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Departements",
                 columns: new[] { "CodeDepartement", "NomDepartement" },
                 values: new object[] { "qcscsq", "Département Test" });
@@ -430,9 +441,9 @@ namespace GAbsence.Migrations
                 column: "CodeGrade");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Etudiants_ClasseCodeClasse",
+                name: "IX_Etudiants_CodeClasse",
                 table: "Etudiants",
-                column: "ClasseCodeClasse");
+                column: "CodeClasse");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FicheAbsences_EnseignantCodeEnseignant",

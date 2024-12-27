@@ -81,6 +81,23 @@ namespace GAbsence.Data
             modelBuilder.Entity<Grade>().HasData(
                 new Grade { CodeGrade = "cqs", NomGrade = "Grade Test" }
             );
+
+            // Configuration des relations
+            modelBuilder.Entity<Etudiant>(entity =>
+            {
+                entity.HasKey(e => e.CodeEtudiant);
+                
+                entity.HasOne(d => d.Classe)
+                    .WithMany(p => p.Etudiants)
+                    .HasForeignKey(d => d.CodeClasse)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Données initiales pour les classes
+            modelBuilder.Entity<Classe>().HasData(
+                new Classe { CodeClasse = "DSI31", NomClasse = "DSI 3.1" },
+                new Classe { CodeClasse = "DSI32", NomClasse = "DSI 3.2" }
+            );
         }
     }
 } 

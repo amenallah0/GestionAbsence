@@ -25,7 +25,7 @@ namespace GAbsence.Controllers
         // GET: Etudiant/Create
         public IActionResult Create()
         {
-            ViewData["CodeClasse"] = new SelectList(_context.Classes, "CodeClasse", "NomClasse");
+            ViewBag.Classes = _context.Classes.ToList();
             return View();
         }
 
@@ -34,42 +34,36 @@ namespace GAbsence.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CodeEtudiant,Nom,Prenom,DateNaissance,Adresse,Mail,Tel,CodeClasse")] Etudiant etudiant)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                // Vérifier si le code étudiant existe déjà
+                if (await _context.Etudiants.AnyAsync(e => e.CodeEtudiant == etudiant.CodeEtudiant))
                 {
-                    // Vérifier si le code étudiant existe déjà
-                    var existingEtudiant = await _context.Etudiants
-                        .FirstOrDefaultAsync(e => e.CodeEtudiant == etudiant.CodeEtudiant);
+                    ModelState.AddModelError("CodeEtudiant", "Ce code étudiant existe déjà");
+                    return View(etudiant);
+                }
 
-                    if (existingEtudiant != null)
-                    {
-                        ModelState.AddModelError("CodeEtudiant", "Ce code étudiant existe déjà. Veuillez en choisir un autre.");
-                        goto PrepareView;
-                    }
+                // Vérifier si la classe existe
+                if (!await _context.Classes.AnyAsync(c => c.CodeClasse == etudiant.CodeClasse))
+                {
+                    ModelState.AddModelError("CodeClasse", "Cette classe n'existe pas");
+                    ViewBag.Classes = await _context.Classes.ToListAsync();
+                    return View(etudiant);
+                }
 
-                    // Vérifier si la classe existe
-                    var classeExists = await _context.Classes
-                        .AnyAsync(c => c.CodeClasse == etudiant.CodeClasse);
-
-                    if (!classeExists)
-                    {
-                        ModelState.AddModelError("CodeClasse", "La classe sélectionnée n'existe pas");
-                        goto PrepareView;
-                    }
-
+                try
+                {
                     _context.Add(etudiant);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", $"Erreur lors de la création : {ex.InnerException?.Message ?? ex.Message}");
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Une erreur s'est produite lors de la création de l'étudiant");
+                }
             }
 
-        PrepareView:
-            ViewData["CodeClasse"] = new SelectList(_context.Classes, "CodeClasse", "NomClasse", etudiant.CodeClasse);
+            ViewBag.Classes = await _context.Classes.ToListAsync();
             return View(etudiant);
         }
 

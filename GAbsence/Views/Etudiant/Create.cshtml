@@ -50,8 +50,12 @@
 
             <div class="form-group mb-3">
                 <label asp-for="CodeClasse" class="control-label">Classe</label>
-                <select asp-for="CodeClasse" class="form-control" asp-items="ViewBag.CodeClasse">
+                <select asp-for="CodeClasse" class="form-control">
                     <option value="">-- Sélectionnez une classe --</option>
+                    @foreach (var classe in ViewBag.Classes)
+                    {
+                        <option value="@classe.CodeClasse">@classe.NomClasse</option>
+                    }
                 </select>
                 <span asp-validation-for="CodeClasse" class="text-danger"></span>
             </div>

@@ -8,23 +8,35 @@
 
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="Create">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@modelError.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <form asp-controller="Classe" asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="form-group mb-3">
                 <label asp-for="CodeClasse" class="control-label">Code de la classe</label>
-                <input asp-for="CodeClasse" class="form-control" />
+                <input asp-for="CodeClasse" class="form-control" required />
                 <span asp-validation-for="CodeClasse" class="text-danger"></span>
             </div>
 
             <div class="form-group mb-3">
                 <label asp-for="NomClasse" class="control-label">Nom de la classe</label>
-                <input asp-for="NomClasse" class="form-control" />
+                <input asp-for="NomClasse" class="form-control" required />
                 <span asp-validation-for="NomClasse" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Créer" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary">Créer</button>
                 <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
             </div>
         </form>
@@ -33,4 +45,11 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-} 
+    <script>
+        $(document).ready(function () {
+            $('form').on('submit', function () {
+                console.log('Form submitted');
+            });
+        });
+    </script>
+}

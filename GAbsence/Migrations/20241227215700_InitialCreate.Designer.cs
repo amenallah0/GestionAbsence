@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAbsence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241227211816_InitialCreate")]
+    [Migration("20241227215700_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -113,6 +113,18 @@ namespace GAbsence.Migrations
                     b.HasKey("CodeClasse");
 
                     b.ToTable("Classes");
+
+                    b.HasData(
+                        new
+                        {
+                            CodeClasse = "DSI31",
+                            NomClasse = "DSI 3.1"
+                        },
+                        new
+                        {
+                            CodeClasse = "DSI32",
+                            NomClasse = "DSI 3.2"
+                        });
                 });
 
             modelBuilder.Entity("GAbsence.Models.Departement", b =>
@@ -190,12 +202,9 @@ namespace GAbsence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClasseCodeClasse")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("CodeClasse")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DateNaissance")
                         .HasColumnType("datetime2");
@@ -218,7 +227,7 @@ namespace GAbsence.Migrations
 
                     b.HasKey("CodeEtudiant");
 
-                    b.HasIndex("ClasseCodeClasse");
+                    b.HasIndex("CodeClasse");
 
                     b.ToTable("Etudiants");
                 });
@@ -528,7 +537,9 @@ namespace GAbsence.Migrations
                 {
                     b.HasOne("GAbsence.Models.Classe", "Classe")
                         .WithMany("Etudiants")
-                        .HasForeignKey("ClasseCodeClasse");
+                        .HasForeignKey("CodeClasse")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Classe");
                 });
@@ -564,7 +575,7 @@ namespace GAbsence.Migrations
             modelBuilder.Entity("GAbsence.Models.Groupe", b =>
                 {
                     b.HasOne("GAbsence.Models.Classe", "Classe")
-                        .WithMany("Groupes")
+                        .WithMany()
                         .HasForeignKey("ClasseCodeClasse");
 
                     b.Navigation("Classe");
@@ -573,7 +584,7 @@ namespace GAbsence.Migrations
             modelBuilder.Entity("GAbsence.Models.LigneFicheAbsence", b =>
                 {
                     b.HasOne("GAbsence.Models.Etudiant", "Etudiant")
-                        .WithMany("LignesFicheAbsence")
+                        .WithMany()
                         .HasForeignKey("EtudiantCodeEtudiant");
 
                     b.HasOne("GAbsence.Models.FicheAbsenceSeance", "FicheAbsenceSeance")
@@ -648,18 +659,11 @@ namespace GAbsence.Migrations
             modelBuilder.Entity("GAbsence.Models.Classe", b =>
                 {
                     b.Navigation("Etudiants");
-
-                    b.Navigation("Groupes");
                 });
 
             modelBuilder.Entity("GAbsence.Models.Departement", b =>
                 {
                     b.Navigation("Enseignants");
-                });
-
-            modelBuilder.Entity("GAbsence.Models.Etudiant", b =>
-                {
-                    b.Navigation("LignesFicheAbsence");
                 });
 
             modelBuilder.Entity("GAbsence.Models.FicheAbsence", b =>
