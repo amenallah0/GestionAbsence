@@ -1,0 +1,70 @@
+@model GAbsence.Models.FicheAbsence
+
+@{
+    ViewData["Title"] = "Saisie des Absences";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="DateJour" class="control-label">Date</label>
+                <input asp-for="DateJour" class="form-control" type="date" />
+                <span asp-validation-for="DateJour" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CodeEnseignant" class="control-label">Enseignant</label>
+                <select asp-for="CodeEnseignant" class="form-control" asp-items="ViewBag.Enseignants"></select>
+            </div>
+
+            <div class="form-group">
+                <label>Séances</label>
+                <select name="SeanceIds" class="form-control" asp-items="ViewBag.Seances" multiple></select>
+            </div>
+
+            <div class="form-group">
+                <label>Étudiants Absents</label>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Absent</th>
+                                <th>Code</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < ViewBag.Etudiants.Count; i++)
+                            {
+                                var etudiant = ViewBag.Etudiants[i];
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="EtudiantsAbsents" value="@etudiant.CodeEtudiant" />
+                                    </td>
+                                    <td>@etudiant.CodeEtudiant</td>
+                                    <td>@etudiant.Nom</td>
+                                    <td>@etudiant.Prenom</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Enregistrer" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

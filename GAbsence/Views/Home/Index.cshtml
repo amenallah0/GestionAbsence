@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Accueil";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Gestion des Absences</h1>
+    
+    @if (User.IsInRole("Administrateur"))
+    {
+        <div class="admin-panel">
+            <h2>Panel Administrateur</h2>
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <a asp-controller="Etudiants" asp-action="Index" class="btn btn-primary btn-lg btn-block">Gestion des Étudiants</a>
+                </div>
+                <div class="col-md-4">
+                    <a asp-controller="Enseignants" asp-action="Index" class="btn btn-primary btn-lg btn-block">Gestion des Enseignants</a>
+                </div>
+                <div class="col-md-4">
+                    <a asp-controller="Matieres" asp-action="Index" class="btn btn-primary btn-lg btn-block">Gestion des Matières</a>
+                </div>
+            </div>
+        </div>
+    }
+    
+    @if (User.IsInRole("Responsable") || User.IsInRole("Administrateur"))
+    {
+        <div class="responsable-panel mt-4">
+            <h2>Panel Responsable</h2>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <a asp-controller="FicheAbsences" asp-action="Index" class="btn btn-info btn-lg btn-block">Gestion des Absences</a>
+                </div>
+                <div class="col-md-6">
+                    <a asp-controller="Rapports" asp-action="Index" class="btn btn-info btn-lg btn-block">Rapports d'Absences</a>
+                </div>
+            </div>
+        </div>
+    }
+    
+    @if (User.IsInRole("Enseignant"))
+    {
+        <div class="enseignant-panel mt-4">
+            <h2>Panel Enseignant</h2>
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <a asp-controller="FicheAbsences" asp-action="Create" class="btn btn-success btn-lg btn-block">Saisir une Absence</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

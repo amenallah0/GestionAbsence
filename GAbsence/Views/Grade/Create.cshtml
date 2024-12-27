@@ -1,0 +1,36 @@
+@model GAbsence.Models.Grade
+
+@{
+    ViewData["Title"] = "Ajouter un grade";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="CodeGrade" class="control-label">Code du grade</label>
+                <input asp-for="CodeGrade" class="form-control" />
+                <span asp-validation-for="CodeGrade" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="NomGrade" class="control-label">Nom du grade</label>
+                <input asp-for="NomGrade" class="form-control" />
+                <span asp-validation-for="NomGrade" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Créer" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

@@ -1,0 +1,73 @@
+@model GAbsence.Models.Enseignant
+
+@{
+    ViewData["Title"] = "Modifier l'enseignant";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CodeEnseignant" />
+            
+            <div class="form-group mb-3">
+                <label asp-for="Nom" class="control-label">Nom</label>
+                <input asp-for="Nom" class="form-control" />
+                <span asp-validation-for="Nom" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Prenom" class="control-label">Prénom</label>
+                <input asp-for="Prenom" class="form-control" />
+                <span asp-validation-for="Prenom" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="DateRecrutement" class="control-label">Date de recrutement</label>
+                <input asp-for="DateRecrutement" class="form-control" type="date" />
+                <span asp-validation-for="DateRecrutement" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="CodeDepartement" class="control-label">Département</label>
+                <select asp-for="CodeDepartement" class="form-control" asp-items="ViewBag.CodeDepartement"></select>
+                <span asp-validation-for="CodeDepartement" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="CodeGrade" class="control-label">Grade</label>
+                <select asp-for="CodeGrade" class="form-control" asp-items="ViewBag.CodeGrade"></select>
+                <span asp-validation-for="CodeGrade" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Adresse" class="control-label">Adresse</label>
+                <input asp-for="Adresse" class="form-control" />
+                <span asp-validation-for="Adresse" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Mail" class="control-label">Email</label>
+                <input asp-for="Mail" class="form-control" type="email" />
+                <span asp-validation-for="Mail" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Tel" class="control-label">Téléphone</label>
+                <input asp-for="Tel" class="form-control" />
+                <span asp-validation-for="Tel" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Enregistrer" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

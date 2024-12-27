@@ -1,0 +1,42 @@
+@model IEnumerable<GAbsence.Models.Enseignant>
+
+@{
+    ViewData["Title"] = "Liste des Enseignants";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Ajouter un enseignant</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Département</th>
+            <th>Grade</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CodeEnseignant</td>
+                <td>@item.Nom</td>
+                <td>@item.Prenom</td>
+                <td>@item.Departement?.NomDepartement</td>
+                <td>@item.Grade?.NomGrade</td>
+                <td>@item.Mail</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CodeEnseignant" class="btn btn-warning btn-sm">Modifier</a>
+                    <a asp-action="Details" asp-route-id="@item.CodeEnseignant" class="btn btn-info btn-sm">Détails</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table> 

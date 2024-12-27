@@ -1,0 +1,83 @@
+@{
+    ViewData["Title"] = "Tableau de bord";
+}
+
+<div class="container">
+    <h1 class="mb-4">Tableau de bord</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Absences du jour</h5>
+                    <p class="card-text display-4">@ViewBag.AbsencesAujourdhui</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Étudiants</h5>
+                    <p class="card-text display-4">@ViewBag.TotalEtudiants</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Classes</h5>
+                    <p class="card-text display-4">@ViewBag.TotalClasses</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Absences par classe</h5>
+                    <canvas id="absencesParClasse"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Dernières absences</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Étudiant</th>
+                                    <th>Classe</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var absence in ViewBag.DernieresAbsences)
+                                {
+                                    <tr>
+                                        <td>@absence.DateJour.ToShortDateString()</td>
+                                        <td>@absence.Etudiant.NomComplet</td>
+                                        <td>@absence.Etudiant.Classe.NomClasse</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Ajoutez ici le code JavaScript pour les graphiques
+    </script>
+} 
