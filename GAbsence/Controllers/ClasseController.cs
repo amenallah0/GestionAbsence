@@ -121,5 +121,41 @@ namespace GAbsence.Controllers
         {
             return _context.Classes.Any(e => e.CodeClasse == id);
         }
+
+        // GET: Classe/Details/DSI31
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var classe = await _context.Classes
+                .Include(c => c.Etudiants)
+                .FirstOrDefaultAsync(c => c.CodeClasse == id);
+
+            if (classe == null)
+            {
+                return NotFound();
+            }
+
+            // Récupérer les statistiques d'absences pour la classe
+            var absencesParEtudiant = await _context.Absences
+                .Where(a => a.Etudiant.CodeClasse == id)
+                .GroupBy(a => new { a.CodeEtudiant, a.Etudiant.Nom, a.Etudiant.Prenom })
+                .Select(g => new
+                {
+                    Etudiant = g.Key,
+                    TotalAbsences = g.Count(),
+                    AbsencesJustifiees = g.Count(a => a.EstJustifiee),
+                    AbsencesNonJustifiees = g.Count(a => !a.EstJustifiee)
+                })
+                .ToListAsync();
+
+            ViewBag.AbsencesParEtudiant = absencesParEtudiant;
+            ViewBag.TotalAbsencesClasse = absencesParEtudiant.Sum(a => a.TotalAbsences);
+
+            return View(classe);
+        }
     }
 } 

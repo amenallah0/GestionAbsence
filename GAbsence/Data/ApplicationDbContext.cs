@@ -80,7 +80,8 @@ namespace GAbsence.Data
 
             // Données initiales pour les grades
             modelBuilder.Entity<Grade>().HasData(
-                new Grade { CodeGrade = "cqs", NomGrade = "Grade Test" }
+                new Grade { CodeGrade = "PR", Libelle = "Professeur" },
+                new Grade { CodeGrade = "MCF", Libelle = "Maître de conférences" }
             );
 
             // Configuration des relations
@@ -132,11 +133,23 @@ namespace GAbsence.Data
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            modelBuilder.Entity<Absence>()
-                .HasOne(a => a.Etudiant)
-                .WithMany()
-                .HasForeignKey(a => a.CodeEtudiant)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Absence>(entity =>
+            {
+                entity.HasOne(a => a.Etudiant)
+                    .WithMany()
+                    .HasForeignKey(a => a.CodeEtudiant)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(a => a.Enseignant)
+                    .WithMany()
+                    .HasForeignKey(a => a.CodeEnseignant)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(a => a.Matiere)
+                    .WithMany()
+                    .HasForeignKey(a => a.CodeMatiere)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 } 

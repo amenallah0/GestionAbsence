@@ -1,9 +1,14 @@
 namespace GAbsence.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class Grade
     {
-        public required string CodeGrade { get; set; }
-        public required string NomGrade { get; set; }
+        [Key]
+        [Required]
+        public string CodeGrade { get; set; }
+        [Required]
+        public string Libelle { get; set; }
         public virtual ICollection<Enseignant>? Enseignants { get; set; }
     }
 } 

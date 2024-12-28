@@ -114,6 +114,10 @@ namespace GAbsence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CodeMatiere")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("CreneauHoraire")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -124,11 +128,16 @@ namespace GAbsence.Migrations
                     b.Property<bool>("EstJustifiee")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Justification")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CodeEnseignant");
 
                     b.HasIndex("CodeEtudiant");
+
+                    b.HasIndex("CodeMatiere");
 
                     b.ToTable("Absences");
                 });
@@ -186,7 +195,6 @@ namespace GAbsence.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Adresse")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CodeDepartement")
@@ -340,7 +348,7 @@ namespace GAbsence.Migrations
                     b.Property<string>("CodeGrade")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("NomGrade")
+                    b.Property<string>("Libelle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -351,8 +359,8 @@ namespace GAbsence.Migrations
                     b.HasData(
                         new
                         {
-                            CodeGrade = "cqs",
-                            NomGrade = "Grade Test"
+                            CodeGrade = "PR",
+                            Libelle = "Professeur"
                         });
                 });
 
@@ -585,18 +593,26 @@ namespace GAbsence.Migrations
                     b.HasOne("GAbsence.Models.Enseignant", "Enseignant")
                         .WithMany()
                         .HasForeignKey("CodeEnseignant")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("GAbsence.Models.Etudiant", "Etudiant")
                         .WithMany()
                         .HasForeignKey("CodeEtudiant")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GAbsence.Models.Matiere", "Matiere")
+                        .WithMany()
+                        .HasForeignKey("CodeMatiere")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Enseignant");
 
                     b.Navigation("Etudiant");
+
+                    b.Navigation("Matiere");
                 });
 
             modelBuilder.Entity("GAbsence.Models.Enseignant", b =>

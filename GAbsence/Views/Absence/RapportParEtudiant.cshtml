@@ -1,0 +1,80 @@
+@model IEnumerable<dynamic>
+
+<div class="container">
+    <h1>Rapport d'absences</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Informations de l'étudiant</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Code Étudiant</dt>
+                <dd class="col-sm-9">@ViewBag.Etudiant.CodeEtudiant</dd>
+
+                <dt class="col-sm-3">Nom Complet</dt>
+                <dd class="col-sm-9">@ViewBag.Etudiant.Nom @ViewBag.Etudiant.Prenom</dd>
+
+                <dt class="col-sm-3">Classe</dt>
+                <dd class="col-sm-9">@ViewBag.Etudiant.Classe?.NomClasse</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Résumé des absences</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Total des absences</dt>
+                <dd class="col-sm-9">@ViewBag.TotalAbsences</dd>
+
+                <dt class="col-sm-3">Absences justifiées</dt>
+                <dd class="col-sm-9">@ViewBag.AbsencesJustifiees</dd>
+
+                <dt class="col-sm-3">Absences non justifiées</dt>
+                <dd class="col-sm-9">@ViewBag.AbsencesNonJustifiees</dd>
+            </dl>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Liste détaillée des absences</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Créneau</th>
+                            <th>Matière</th>
+                            <th>Enseignant</th>
+                            <th>Justifiée</th>
+                            <th>Justification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var absence in Model)
+                        {
+                            <tr>
+                                <td>@(((DateTime)absence.Date).ToShortDateString())</td>
+                                <td>@absence.CreneauHoraire</td>
+                                <td>@absence.Matiere</td>
+                                <td>@absence.Enseignant</td>
+                                <td>
+                                    @if (absence.EstJustifiee)
+                                    {
+                                        <span class="badge bg-success">Oui</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Non</span>
+                                    }
+                                </td>
+                                <td>@(absence.Justification ?? "-")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div> 

@@ -5,16 +5,16 @@
 <div class="container">
     <h1>@ViewData["Title"]</h1>
 
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Rapport par étudiant</h5>
-                    <form asp-action="RapportParEtudiant" method="get">
+                    <form asp-action="ParEtudiant" method="get">
                         <div class="form-group">
-                            <label>Étudiant</label>
+                            <label>Sélectionner un étudiant</label>
                             <select name="codeEtudiant" class="form-control" asp-items="ViewBag.Etudiants" required>
-                                <option value="">-- Sélectionnez un étudiant --</option>
+                                <option value="">-- Choisir un étudiant --</option>
                             </select>
                         </div>
                         <div class="form-group mt-3">
@@ -29,7 +29,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Rapport par période</h5>
-                    <form asp-action="RapportParPeriode" method="get">
+                    <form asp-action="ParPeriode" method="get">
                         <div class="form-group">
                             <label>Date de début</label>
                             <input type="date" name="dateDebut" class="form-control" required />

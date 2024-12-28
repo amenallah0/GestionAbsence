@@ -47,7 +47,9 @@
 
             <div class="form-group mb-3">
                 <label asp-for="Matiere" class="control-label">Matière</label>
-                <input asp-for="Matiere" class="form-control" required />
+                <select asp-for="Matiere" class="form-control" asp-items="ViewBag.Matieres" required>
+                    <option value="">-- Sélectionnez une matière --</option>
+                </select>
                 <span asp-validation-for="Matiere" class="text-danger"></span>
             </div>
 

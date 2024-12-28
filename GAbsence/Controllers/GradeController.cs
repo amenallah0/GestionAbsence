@@ -30,7 +30,7 @@ namespace GAbsence.Controllers
         // POST: Grade/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CodeGrade,NomGrade")] Grade grade)
+        public async Task<IActionResult> Create([Bind("CodeGrade,Libelle")] Grade grade)
         {
             if (ModelState.IsValid)
             {
@@ -87,6 +87,29 @@ namespace GAbsence.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            return View(grade);
+        }
+
+        // GET: Grade/Details/5
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var grade = await _context.Grades
+                .Include(g => g.Enseignants)
+                .FirstOrDefaultAsync(g => g.CodeGrade == id);
+
+            if (grade == null)
+            {
+                return NotFound();
+            }
+
+            // Statistiques du grade
+            ViewBag.NombreEnseignants = grade.Enseignants?.Count ?? 0;
+
             return View(grade);
         }
 

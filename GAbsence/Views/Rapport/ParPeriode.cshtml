@@ -1,0 +1,35 @@
+@model IEnumerable<GAbsence.Models.Absence>
+
+@{
+    ViewData["Title"] = $"Rapport d'absences du {ViewBag.DateDebut:dd/MM/yyyy} au {ViewBag.DateFin:dd/MM/yyyy}";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Étudiant</th>
+                <th>Classe</th>
+                <th>Créneau</th>
+                <th>Justifiée</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var absence in Model)
+            {
+                <tr>
+                    <td>@absence.Date.ToString("dd/MM/yyyy")</td>
+                    <td>@absence.Etudiant.Nom @absence.Etudiant.Prenom</td>
+                    <td>@absence.Etudiant.Classe?.NomClasse</td>
+                    <td>@absence.CreneauHoraire</td>
+                    <td>@(absence.EstJustifiee ? "Oui" : "Non")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a asp-action="Index" class="btn btn-secondary">Retour</a>
+</div> 

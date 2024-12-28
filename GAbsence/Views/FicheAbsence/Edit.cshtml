@@ -1,0 +1,73 @@
+@model GAbsence.Models.FicheAbsence
+
+<div class="container">
+    <h1>Modifier l'absence</h1>
+
+    <form asp-action="Edit">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="Date" class="control-label"></label>
+            <input asp-for="Date" class="form-control" type="date" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CreneauHoraire" class="control-label">Créneau horaire</label>
+            <select asp-for="CreneauHoraire" class="form-control">
+                <option value="">-- Selectionnez un créneau --</option>
+                <option value="8h-10h">8h-10h</option>
+                <option value="10h-12h">10h-12h</option>
+                <option value="14h-16h">14h-16h</option>
+                <option value="16h-18h">16h-18h</option>
+            </select>
+            <span asp-validation-for="CreneauHoraire" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CodeEtudiant" class="control-label">Étudiant</label>
+            <select asp-for="CodeEtudiant" class="form-control" asp-items="ViewBag.CodeEtudiant">
+                <option value="">-- Sélectionnez un étudiant --</option>
+            </select>
+            <span asp-validation-for="CodeEtudiant" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CodeEnseignant" class="control-label">Enseignant</label>
+            <select asp-for="CodeEnseignant" class="form-control" asp-items="ViewBag.CodeEnseignant">
+                <option value="">-- Sélectionnez un enseignant --</option>
+            </select>
+            <span asp-validation-for="CodeEnseignant" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Matiere" class="control-label">Matière</label>
+            <select asp-for="Matiere" class="form-control" asp-items="ViewBag.CodeMatiere">
+                <option value="">-- Sélectionnez une matière --</option>
+            </select>
+            <span asp-validation-for="Matiere" class="text-danger"></span>
+        </div>
+
+        <div class="form-group form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" asp-for="EstJustifiee" /> Absence justifiée
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Justification" class="control-label"></label>
+            <textarea asp-for="Justification" class="form-control"></textarea>
+            <span asp-validation-for="Justification" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <input type="submit" value="Enregistrer" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

@@ -90,6 +90,29 @@ namespace GAbsence.Controllers
             return View(departement);
         }
 
+        // GET: Departement/Details/5
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var departement = await _context.Departements
+                .Include(d => d.Enseignants)
+                .FirstOrDefaultAsync(d => d.CodeDepartement == id);
+
+            if (departement == null)
+            {
+                return NotFound();
+            }
+
+            // Statistiques du département
+            ViewBag.NombreEnseignants = departement.Enseignants?.Count ?? 0;
+
+            return View(departement);
+        }
+
         private bool DepartementExists(string id)
         {
             return _context.Departements.Any(e => e.CodeDepartement == id);

@@ -30,7 +30,7 @@
                 <td>@item.Nom</td>
                 <td>@item.Prenom</td>
                 <td>@item.Departement?.NomDepartement</td>
-                <td>@item.Grade?.NomGrade</td>
+                <td>@(item.Grade?.Libelle ?? "Non défini")</td>
                 <td>@item.Mail</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.CodeEnseignant" class="btn btn-warning btn-sm">Modifier</a>

@@ -20,7 +20,8 @@ namespace GAbsence.Models
         [Required]
         public string CodeEnseignant { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "La matière est requise")]
+        [Display(Name = "Matière")]
         public string Matiere { get; set; }
         
         public bool EstJustifiee { get; set; }

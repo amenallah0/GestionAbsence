@@ -1,0 +1,59 @@
+@model IEnumerable<GAbsence.Models.Absence>
+
+@{
+    ViewData["Title"] = $"Rapport d'absences - {ViewBag.Etudiant.Nom} {ViewBag.Etudiant.Prenom}";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Informations de l'étudiant</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Code Étudiant</dt>
+                <dd class="col-sm-9">@ViewBag.Etudiant.CodeEtudiant</dd>
+
+                <dt class="col-sm-3">Classe</dt>
+                <dd class="col-sm-9">@ViewBag.Etudiant.Classe?.NomClasse</dd>
+
+                <dt class="col-sm-3">Total des absences</dt>
+                <dd class="col-sm-9">@ViewBag.TotalAbsences</dd>
+
+                <dt class="col-sm-3">Absences justifiées</dt>
+                <dd class="col-sm-9">@ViewBag.AbsencesJustifiees</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Liste des absences</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Créneau</th>
+                        <th>Enseignant</th>
+                        <th>Justifiée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var absence in Model)
+                    {
+                        <tr>
+                            <td>@absence.Date.ToString("dd/MM/yyyy")</td>
+                            <td>@absence.CreneauHoraire</td>
+                            <td>@($"{absence.Enseignant?.Nom} {absence.Enseignant?.Prenom}")</td>
+                            <td>@(absence.EstJustifiee ? "Oui" : "Non")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Index" class="btn btn-secondary">Retour aux rapports</a>
+    </div>
+</div> 

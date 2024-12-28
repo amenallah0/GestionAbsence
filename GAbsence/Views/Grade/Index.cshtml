@@ -24,7 +24,7 @@
         {
             <tr>
                 <td>@item.CodeGrade</td>
-                <td>@item.NomGrade</td>
+                <td>@item.Libelle</td>
                 <td>@(item.Enseignants?.Count ?? 0)</td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.CodeGrade" class="btn btn-warning btn-sm">Modifier</a>

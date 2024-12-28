@@ -1,0 +1,39 @@
+@model GAbsence.Models.FicheAbsence
+
+<div class="container">
+    <h1>Supprimer l'absence</h1>
+
+    <div class="alert alert-danger">
+        <h4>Êtes-vous sûr de vouloir supprimer cette absence ?</h4>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Date</dt>
+                <dd class="col-sm-9">@Model.Date.ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-3">Créneau</dt>
+                <dd class="col-sm-9">@Model.CreneauHoraire</dd>
+
+                <dt class="col-sm-3">Étudiant</dt>
+                <dd class="col-sm-9">@($"{Model.Etudiant?.Nom} {Model.Etudiant?.Prenom}")</dd>
+
+                <dt class="col-sm-3">Enseignant</dt>
+                <dd class="col-sm-9">@($"{Model.Enseignant?.Nom} {Model.Enseignant?.Prenom}")</dd>
+
+                <dt class="col-sm-3">Matière</dt>
+                <dd class="col-sm-9">@Model.Matiere</dd>
+
+                <dt class="col-sm-3">Justifiée</dt>
+                <dd class="col-sm-9">@(Model.EstJustifiee ? "Oui" : "Non")</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" class="mt-3">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Confirmer la suppression</button>
+        <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+    </form>
+</div> 

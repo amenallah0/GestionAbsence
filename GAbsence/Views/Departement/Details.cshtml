@@ -1,0 +1,64 @@
+@model GAbsence.Models.Departement
+
+<div class="container">
+    <h1>Détails du département</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Informations générales</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Code</dt>
+                <dd class="col-sm-9">@Model.CodeDepartement</dd>
+
+                <dt class="col-sm-3">Nom du département</dt>
+                <dd class="col-sm-9">@Model.NomDepartement</dd>
+
+                <dt class="col-sm-3">Nombre d'enseignants</dt>
+                <dd class="col-sm-9">@ViewBag.NombreEnseignants</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Liste des enseignants</h5>
+            @if (Model.Enseignants != null && Model.Enseignants.Any())
+            {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Grade</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var enseignant in Model.Enseignants)
+                        {
+                            <tr>
+                                <td>@enseignant.CodeEnseignant</td>
+                                <td>@enseignant.Nom</td>
+                                <td>@enseignant.Prenom</td>
+                                <td>@enseignant.Grade</td>
+                                <td>@enseignant.Mail</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    Aucun enseignant n'est affecté à ce département.
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Edit" asp-route-id="@Model.CodeDepartement" class="btn btn-primary">Modifier</a>
+        <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+    </div>
+</div> 

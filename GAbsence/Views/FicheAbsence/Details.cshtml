@@ -1,0 +1,49 @@
+@model GAbsence.Models.FicheAbsence
+
+<div class="container">
+    <h1>Détails de l'absence</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Date</dt>
+                <dd class="col-sm-9">@Model.Date.ToString("dd/MM/yyyy")</dd>
+
+                <dt class="col-sm-3">Créneau</dt>
+                <dd class="col-sm-9">@Model.CreneauHoraire</dd>
+
+                <dt class="col-sm-3">Étudiant</dt>
+                <dd class="col-sm-9">@($"{Model.Etudiant?.Nom} {Model.Etudiant?.Prenom}")</dd>
+
+                <dt class="col-sm-3">Enseignant</dt>
+                <dd class="col-sm-9">@($"{Model.Enseignant?.Nom} {Model.Enseignant?.Prenom}")</dd>
+
+                <dt class="col-sm-3">Matière</dt>
+                <dd class="col-sm-9">@Model.Matiere</dd>
+
+                <dt class="col-sm-3">Justifiée</dt>
+                <dd class="col-sm-9">
+                    @if (Model.EstJustifiee)
+                    {
+                        <span class="badge bg-success">Oui</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Non</span>
+                    }
+                </dd>
+
+                @if (!string.IsNullOrEmpty(Model.Justification))
+                {
+                    <dt class="col-sm-3">Justification</dt>
+                    <dd class="col-sm-9">@Model.Justification</dd>
+                }
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Modifier</a>
+        <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+    </div>
+</div> 

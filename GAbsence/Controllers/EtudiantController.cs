@@ -170,8 +170,11 @@ namespace GAbsence.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var etudiant = await _context.Etudiants.FindAsync(id);
-            _context.Etudiants.Remove(etudiant);
-            await _context.SaveChangesAsync();
+            if (etudiant != null)
+            {
+                _context.Etudiants.Remove(etudiant);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 

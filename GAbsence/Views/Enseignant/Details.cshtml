@@ -1,0 +1,75 @@
+@model GAbsence.Models.Enseignant
+
+<div class="container">
+    <h1>Détails de l'enseignant</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Informations personnelles</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Code</dt>
+                <dd class="col-sm-9">@Model.CodeEnseignant</dd>
+
+                <dt class="col-sm-3">Nom</dt>
+                <dd class="col-sm-9">@Model.Nom</dd>
+
+                <dt class="col-sm-3">Prénom</dt>
+                <dd class="col-sm-9">@Model.Prenom</dd>
+
+                <dt class="col-sm-3">Département</dt>
+                <dd class="col-sm-9">@(Model.Departement?.NomDepartement ?? "Non défini")</dd>
+
+                <dt class="col-sm-3">Grade</dt>
+                <dd class="col-sm-9">@(Model.Grade?.Libelle ?? "Non défini")</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Mail</dd>
+
+                <dt class="col-sm-3">Total des absences supervisées</dt>
+                <dd class="col-sm-9">@ViewBag.TotalAbsences</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Statistiques des absences par matière</h5>
+            
+            @if (ViewBag.Statistiques != null && ViewBag.Statistiques.Count > 0)
+            {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Matière</th>
+                            <th>Total absences</th>
+                            <th>Justifiées</th>
+                            <th>Non justifiées</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var stat in ViewBag.Statistiques)
+                        {
+                            <tr>
+                                <td>@stat.Matiere</td>
+                                <td>@stat.TotalAbsences</td>
+                                <td>@stat.AbsencesJustifiees</td>
+                                <td>@stat.AbsencesNonJustifiees</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    Aucune absence n'a été enregistrée pour cet enseignant.
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Edit" asp-route-id="@Model.CodeEnseignant" class="btn btn-primary">Modifier</a>
+        <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+    </div>
+</div> 
