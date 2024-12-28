@@ -5,9 +5,11 @@ namespace GAbsence.Models
     public class Matiere
     {
         [Key]
+        [Required(ErrorMessage = "Le code matière est obligatoire")]
         public string CodeMatiere { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Le libellé est obligatoire")]
+        [Display(Name = "Nom de la matière")]
         public string Libelle { get; set; }
         
         [Required]
@@ -15,5 +17,8 @@ namespace GAbsence.Models
         
         [Required]
         public int Coefficient { get; set; }
+        
+        // Navigation properties
+        public virtual ICollection<Absence>? Absences { get; set; }
     }
 } 

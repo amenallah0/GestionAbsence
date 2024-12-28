@@ -16,6 +16,7 @@ namespace GAbsence.Controllers
         public async Task<IActionResult> Index()
         {
             var departements = await _context.Departements
+                .Include(d => d.Classes)
                 .Include(d => d.Enseignants)
                 .ToListAsync();
             return View(departements);
@@ -34,6 +35,7 @@ namespace GAbsence.Controllers
         {
             if (ModelState.IsValid)
             {
+                departement.DateCreation = DateTime.Now;
                 _context.Add(departement);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -60,7 +62,7 @@ namespace GAbsence.Controllers
         // POST: Departement/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CodeDepartement,NomDepartement")] Departement departement)
+        public async Task<IActionResult> Edit(string id, [Bind("CodeDepartement,NomDepartement,DateCreation")] Departement departement)
         {
             if (id != departement.CodeDepartement)
             {

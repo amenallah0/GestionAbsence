@@ -6,45 +6,36 @@ namespace GAbsence.Models
 {
     public class Absence
 {
-    [Key]
     public int Id { get; set; }
-
-    [Required]
-    [Display(Name = "Code Étudiant")]
+    
+    [Required(ErrorMessage = "L'étudiant est obligatoire")]
     public string CodeEtudiant { get; set; }
-
-    [Required]
-    [Display(Name = "Code Enseignant")]
-    public string CodeEnseignant { get; set; }
-
-    [Required]
-    [Display(Name = "Code Matière")]
+    
+    [Required(ErrorMessage = "La matière est obligatoire")]
     public string CodeMatiere { get; set; }
-
-    [Required]
-    [DataType(DataType.Date)]
+    
+    [Required(ErrorMessage = "L'enseignant est obligatoire")]
+    public string CodeEnseignant { get; set; }
+    
+    [Required(ErrorMessage = "La date est obligatoire")]
     public DateTime Date { get; set; }
-
-    [Required]
-    [Display(Name = "Créneau Horaire")]
-    public string CreneauHoraire { get; set; }
-
-    [Display(Name = "Justifiée")]
+    
+    [Required(ErrorMessage = "Le créneau horaire est obligatoire")]
+    [Display(Name = "Créneau horaire")]
+    public string CreneauHoraire { get; set; } = string.Empty;
+    
     public bool EstJustifiee { get; set; }
-
+    
     public string? Justification { get; set; }
-
-    // Navigation properties avec configuration explicite des clés étrangères
+    
+    // Navigation properties
     [ForeignKey("CodeEtudiant")]
-    [Required]
-    public virtual Etudiant Etudiant { get; set; }
-
-    [ForeignKey("CodeEnseignant")]
-    [Required]
-    public virtual Enseignant Enseignant { get; set; }
-
+    public virtual Etudiant? Etudiant { get; set; }
+    
     [ForeignKey("CodeMatiere")]
-    [Required]
-    public virtual Matiere Matiere { get; set; }
+    public virtual Matiere? Matiere { get; set; }
+    
+    [ForeignKey("CodeEnseignant")]
+    public virtual Enseignant? Enseignant { get; set; }
 }
-} 
+}

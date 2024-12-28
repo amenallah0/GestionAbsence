@@ -131,6 +131,9 @@ namespace GAbsence.Migrations
                     b.Property<string>("Justification")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("MatiereCodeMatiere")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CodeEnseignant");
@@ -138,6 +141,8 @@ namespace GAbsence.Migrations
                     b.HasIndex("CodeEtudiant");
 
                     b.HasIndex("CodeMatiere");
+
+                    b.HasIndex("MatiereCodeMatiere");
 
                     b.ToTable("Absences");
                 });
@@ -147,11 +152,16 @@ namespace GAbsence.Migrations
                     b.Property<string>("CodeClasse")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("DepartementCodeDepartement")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("NomClasse")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CodeClasse");
+
+                    b.HasIndex("DepartementCodeDepartement");
 
                     b.ToTable("Classes");
 
@@ -172,6 +182,9 @@ namespace GAbsence.Migrations
                 {
                     b.Property<string>("CodeDepartement")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("DateCreation")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NomDepartement")
                         .IsRequired()
@@ -361,6 +374,11 @@ namespace GAbsence.Migrations
                         {
                             CodeGrade = "PR",
                             Libelle = "Professeur"
+                        },
+                        new
+                        {
+                            CodeGrade = "MCF",
+                            Libelle = "Maître de conférences"
                         });
                 });
 
@@ -608,11 +626,22 @@ namespace GAbsence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("GAbsence.Models.Matiere", null)
+                        .WithMany("Absences")
+                        .HasForeignKey("MatiereCodeMatiere");
+
                     b.Navigation("Enseignant");
 
                     b.Navigation("Etudiant");
 
                     b.Navigation("Matiere");
+                });
+
+            modelBuilder.Entity("GAbsence.Models.Classe", b =>
+                {
+                    b.HasOne("GAbsence.Models.Departement", null)
+                        .WithMany("Classes")
+                        .HasForeignKey("DepartementCodeDepartement");
                 });
 
             modelBuilder.Entity("GAbsence.Models.Enseignant", b =>
@@ -778,6 +807,8 @@ namespace GAbsence.Migrations
 
             modelBuilder.Entity("GAbsence.Models.Departement", b =>
                 {
+                    b.Navigation("Classes");
+
                     b.Navigation("Enseignants");
                 });
 
@@ -789,6 +820,11 @@ namespace GAbsence.Migrations
             modelBuilder.Entity("GAbsence.Models.Grade", b =>
                 {
                     b.Navigation("Enseignants");
+                });
+
+            modelBuilder.Entity("GAbsence.Models.Matiere", b =>
+                {
+                    b.Navigation("Absences");
                 });
 
             modelBuilder.Entity("GAbsence.Models.Seance", b =>

@@ -56,23 +56,12 @@ namespace GAbsence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Classes",
-                columns: table => new
-                {
-                    CodeClasse = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NomClasse = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Classes", x => x.CodeClasse);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Departements",
                 columns: table => new
                 {
                     CodeDepartement = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NomDepartement = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    NomDepartement = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateCreation = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -212,46 +201,21 @@ namespace GAbsence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Etudiants",
+                name: "Classes",
                 columns: table => new
                 {
-                    CodeEtudiant = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Prenom = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateNaissance = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Adresse = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tel = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CodeClasse = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    CodeClasse = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NomClasse = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DepartementCodeDepartement = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Etudiants", x => x.CodeEtudiant);
+                    table.PrimaryKey("PK_Classes", x => x.CodeClasse);
                     table.ForeignKey(
-                        name: "FK_Etudiants_Classes_CodeClasse",
-                        column: x => x.CodeClasse,
-                        principalTable: "Classes",
-                        principalColumn: "CodeClasse",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Groupes",
-                columns: table => new
-                {
-                    CodeGroupe = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NomGroupe = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CodeClasse = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClasseCodeClasse = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groupes", x => x.CodeGroupe);
-                    table.ForeignKey(
-                        name: "FK_Groupes_Classes_ClasseCodeClasse",
-                        column: x => x.ClasseCodeClasse,
-                        principalTable: "Classes",
-                        principalColumn: "CodeClasse");
+                        name: "FK_Classes_Departements_DepartementCodeDepartement",
+                        column: x => x.DepartementCodeDepartement,
+                        principalTable: "Departements",
+                        principalColumn: "CodeDepartement");
                 });
 
             migrationBuilder.CreateTable(
@@ -306,18 +270,62 @@ namespace GAbsence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Etudiants",
+                columns: table => new
+                {
+                    CodeEtudiant = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Prenom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateNaissance = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Adresse = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CodeClasse = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Etudiants", x => x.CodeEtudiant);
+                    table.ForeignKey(
+                        name: "FK_Etudiants_Classes_CodeClasse",
+                        column: x => x.CodeClasse,
+                        principalTable: "Classes",
+                        principalColumn: "CodeClasse",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Groupes",
+                columns: table => new
+                {
+                    CodeGroupe = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NomGroupe = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CodeClasse = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClasseCodeClasse = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Groupes", x => x.CodeGroupe);
+                    table.ForeignKey(
+                        name: "FK_Groupes_Classes_ClasseCodeClasse",
+                        column: x => x.ClasseCodeClasse,
+                        principalTable: "Classes",
+                        principalColumn: "CodeClasse");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Absences",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CodeEtudiant = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CodeEnseignant = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CodeMatiere = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CodeEnseignant = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreneauHoraire = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EstJustifiee = table.Column<bool>(type: "bit", nullable: false),
-                    Justification = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Justification = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MatiereCodeMatiere = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -340,6 +348,11 @@ namespace GAbsence.Migrations
                         principalTable: "Matieres",
                         principalColumn: "CodeMatiere",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Absences_Matieres_MatiereCodeMatiere",
+                        column: x => x.MatiereCodeMatiere,
+                        principalTable: "Matieres",
+                        principalColumn: "CodeMatiere");
                 });
 
             migrationBuilder.CreateTable(
@@ -431,22 +444,26 @@ namespace GAbsence.Migrations
 
             migrationBuilder.InsertData(
                 table: "Classes",
-                columns: new[] { "CodeClasse", "NomClasse" },
+                columns: new[] { "CodeClasse", "DepartementCodeDepartement", "NomClasse" },
                 values: new object[,]
                 {
-                    { "DSI31", "DSI 3.1" },
-                    { "DSI32", "DSI 3.2" }
+                    { "DSI31", null, "DSI 3.1" },
+                    { "DSI32", null, "DSI 3.2" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Departements",
-                columns: new[] { "CodeDepartement", "NomDepartement" },
-                values: new object[] { "qcscsq", "Département Test" });
+                columns: new[] { "CodeDepartement", "DateCreation", "NomDepartement" },
+                values: new object[] { "qcscsq", null, "Département Test" });
 
             migrationBuilder.InsertData(
                 table: "Grades",
                 columns: new[] { "CodeGrade", "Libelle" },
-                values: new object[] { "PR", "Professeur" });
+                values: new object[,]
+                {
+                    { "MCF", "Maître de conférences" },
+                    { "PR", "Professeur" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Absences_CodeEnseignant",
@@ -462,6 +479,11 @@ namespace GAbsence.Migrations
                 name: "IX_Absences_CodeMatiere",
                 table: "Absences",
                 column: "CodeMatiere");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Absences_MatiereCodeMatiere",
+                table: "Absences",
+                column: "MatiereCodeMatiere");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -501,6 +523,11 @@ namespace GAbsence.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Classes_DepartementCodeDepartement",
+                table: "Classes",
+                column: "DepartementCodeDepartement");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Enseignants_CodeDepartement",
@@ -615,13 +642,13 @@ namespace GAbsence.Migrations
                 name: "Matieres");
 
             migrationBuilder.DropTable(
-                name: "Departements");
-
-            migrationBuilder.DropTable(
                 name: "Grades");
 
             migrationBuilder.DropTable(
                 name: "Classes");
+
+            migrationBuilder.DropTable(
+                name: "Departements");
         }
     }
 }

@@ -18,49 +18,43 @@ namespace GAbsence.Controllers
             _logger = logger;
         }
 
+        private void LoadDropDownLists()
+        {
+            ViewBag.Etudiants = new SelectList(_context.Etudiants
+                .Select(e => new { e.CodeEtudiant, NomComplet = $"{e.Nom} {e.Prenom}" }), 
+                "CodeEtudiant", 
+                "NomComplet");
+
+            ViewBag.Matieres = new SelectList(_context.Matieres, 
+                "CodeMatiere", 
+                "Libelle");
+
+            ViewBag.Enseignants = new SelectList(_context.Enseignants
+                .Select(e => new { e.CodeEnseignant, NomComplet = $"{e.Nom} {e.Prenom}" }), 
+                "CodeEnseignant", 
+                "NomComplet");
+
+            // Définir les créneaux horaires comme des SelectListItem
+            ViewBag.CreneauxHoraires = new[]
+            {
+                new SelectListItem { Value = "08:00-10:00", Text = "08:00 - 10:00" },
+                new SelectListItem { Value = "10:00-12:00", Text = "10:00 - 12:00" },
+                new SelectListItem { Value = "14:00-16:00", Text = "14:00 - 16:00" },
+                new SelectListItem { Value = "16:00-18:00", Text = "16:00 - 18:00" }
+            };
+        }
+
         // GET: Absence/Create
         public IActionResult Create()
         {
-            // Préparer les listes déroulantes
-            ViewBag.Creneaux = new List<string> 
-            { 
-                "8h-10h", 
-                "10h-12h", 
-                "14h-16h", 
-                "16h-18h" 
-            };
-
-            ViewBag.Etudiants = new SelectList(_context.Etudiants
-                .OrderBy(e => e.Nom)
-                .Select(e => new
-                {
-                    e.CodeEtudiant,
-                    NomComplet = $"{e.Nom} {e.Prenom}"
-                }), "CodeEtudiant", "NomComplet");
-
-            ViewBag.Enseignants = new SelectList(_context.Enseignants
-                .OrderBy(e => e.Nom)
-                .Select(e => new
-                {
-                    e.CodeEnseignant,
-                    NomComplet = $"{e.Nom} {e.Prenom}"
-                }), "CodeEnseignant", "NomComplet");
-
-            ViewBag.Matieres = new SelectList(_context.Matieres
-                .OrderBy(m => m.Libelle)
-                .Select(m => new
-                {
-                    m.CodeMatiere,
-                    m.Libelle
-                }), "CodeMatiere", "Libelle");
-
+            LoadDropDownLists();
             return View();
         }
 
         // POST: Absence/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Absence absence)
+        public async Task<IActionResult> Create([Bind("CodeEtudiant,CodeMatiere,CodeEnseignant,Date,CreneauHoraire,EstJustifiee,Justification")] Absence absence)
         {
             if (ModelState.IsValid)
             {
@@ -68,30 +62,28 @@ namespace GAbsence.Controllers
                 {
                     _context.Add(absence);
                     await _context.SaveChangesAsync();
-                    _logger.LogInformation($"Absence créée pour l'étudiant {absence.CodeEtudiant}");
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Erreur lors de la création de l'absence: {ex.Message}");
-                    ModelState.AddModelError("", "Une erreur s'est produite lors de l'enregistrement");
+                    ModelState.AddModelError("", "Une erreur s'est produite lors de l'enregistrement.");
                 }
             }
-            
-            ViewBag.Etudiants = _context.Etudiants.Select(e => 
-                new SelectListItem { 
-                    Value = e.CodeEtudiant.ToString(), 
-                    Text = $"{e.Nom} {e.Prenom}" 
-                }).ToList();
+
+            // Recharger les listes en cas d'erreur
+            LoadDropDownLists();
             return View(absence);
         }
 
-        // GET: Absence/Index
+        // GET: Absence
         public async Task<IActionResult> Index()
         {
             var absences = await _context.Absences
                 .Include(a => a.Etudiant)
+                .Include(a => a.Matiere)
+                .Include(a => a.Enseignant)
                 .ToListAsync();
+
             return View(absences);
         }
 

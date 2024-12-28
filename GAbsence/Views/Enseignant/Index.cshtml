@@ -1,42 +1,120 @@
 @model IEnumerable<GAbsence.Models.Enseignant>
 
-@{
-    ViewData["Title"] = "Liste des Enseignants";
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">
+            <i class="fas fa-chalkboard-teacher me-2"></i>
+            Liste des Enseignants
+        </h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Ajouter un enseignant
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Code</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Département</th>
+                            <th>Grade</th>
+                            <th>Email</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="badge bg-secondary">@item.CodeEnseignant</span>
+                                </td>
+                                <td>@item.Nom</td>
+                                <td>@item.Prenom</td>
+                                <td>
+                                    <span class="badge bg-info">
+                                        @(item.Departement?.NomDepartement ?? "Non défini")
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success">
+                                        @(item.Grade?.Libelle ?? "Non défini")
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="mailto:@item.Mail" class="text-decoration-none">
+                                        <i class="fas fa-envelope me-1"></i>
+                                        @item.Mail
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a asp-action="Edit" asp-route-id="@item.CodeEnseignant" 
+                                           class="btn btn-sm btn-outline-primary" title="Modifier">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.CodeEnseignant" 
+                                           class="btn btn-sm btn-outline-info" title="Détails">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.CodeEnseignant" 
+                                           class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section CSS {
+    <style>
+        .table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+        
+        .badge {
+            font-weight: 500;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0,0,0,.02);
+        }
+    </style>
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">Ajouter un enseignant</a>
-</p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Code</th>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Département</th>
-            <th>Grade</th>
-            <th>Email</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.CodeEnseignant</td>
-                <td>@item.Nom</td>
-                <td>@item.Prenom</td>
-                <td>@item.Departement?.NomDepartement</td>
-                <td>@(item.Grade?.Libelle ?? "Non défini")</td>
-                <td>@item.Mail</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CodeEnseignant" class="btn btn-warning btn-sm">Modifier</a>
-                    <a asp-action="Details" asp-route-id="@item.CodeEnseignant" class="btn btn-info btn-sm">Détails</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table> 
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Animation pour les nouvelles lignes
+            $("tbody tr").each(function(index) {
+                $(this).css({
+                    'opacity': 0,
+                    'transform': 'translateY(20px)'
+                }).animate({
+                    'opacity': 1,
+                    'transform': 'translateY(0)'
+                }, 200 + (index * 100));
+            });
+        });
+    </script>
+} 

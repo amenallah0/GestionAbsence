@@ -1,41 +1,170 @@
 @model IEnumerable<GAbsence.Models.Etudiant>
 
-@{
-    ViewData["Title"] = "Liste des Étudiants";
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">
+            <i class="fas fa-user-graduate me-2"></i>
+            Liste des Étudiants
+        </h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Ajouter un étudiant
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-white">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un étudiant...">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select id="classeFilter" class="form-select">
+                        <option value="">Toutes les classes</option>
+                        @foreach (var classe in ViewBag.Classes ?? new List<string>())
+                        {
+                            <option value="@classe">@classe</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Code</th>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Classe</th>
+                            <th>Email</th>
+                            <th class="text-center">Absences</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="student-row" data-classe="@item.CodeClasse">
+                                <td>
+                                    <span class="badge bg-secondary">@item.CodeEtudiant</span>
+                                </td>
+                                <td>@item.Nom</td>
+                                <td>@item.Prenom</td>
+                                <td>
+                                    <span class="badge bg-info">
+                                        @(item.Classe?.NomClasse ?? "Non défini")
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="mailto:@item.Mail" class="text-decoration-none">
+                                        <i class="fas fa-envelope me-1"></i>
+                                        @item.Mail
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    @{
+                                        var absences = ((IEnumerable<dynamic>)ViewBag.Absences)
+                                            ?.FirstOrDefault(a => a.CodeEtudiant == item.CodeEtudiant);
+                                        var totalAbsences = absences?.Total ?? 0;
+                                        var badgeClass = totalAbsences == 0 ? "bg-success" :
+                                                       totalAbsences <= 3 ? "bg-warning" : "bg-danger";
+                                    }
+                                    <span class="badge @badgeClass">@totalAbsences</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a asp-action="Edit" asp-route-id="@item.CodeEtudiant" 
+                                           class="btn btn-sm btn-outline-primary" title="Modifier">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.CodeEtudiant" 
+                                           class="btn btn-sm btn-outline-info" title="Détails">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.CodeEtudiant" 
+                                           class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section CSS {
+    <style>
+        .table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+        
+        .badge {
+            font-weight: 500;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0,0,0,.02);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 }
 
-<h1>@ViewData["Title"]</h1>
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Recherche en temps réel
+            $("#searchInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".student-row").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Ajouter un étudiant</a>
-</p>
+            // Filtre par classe
+            $("#classeFilter").on("change", function() {
+                var selectedClasse = $(this).val();
+                if (selectedClasse) {
+                    $(".student-row").each(function() {
+                        $(this).toggle($(this).data("classe") === selectedClasse);
+                    });
+                } else {
+                    $(".student-row").show();
+                }
+            });
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Code</th>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Classe</th>
-            <th>Email</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.CodeEtudiant</td>
-                <td>@item.Nom</td>
-                <td>@item.Prenom</td>
-                <td>@(item.Classe?.NomClasse ?? "Non assigné")</td>
-                <td>@item.Mail</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CodeEtudiant" class="btn btn-warning btn-sm">Modifier</a>
-                    <a asp-action="Details" asp-route-id="@item.CodeEtudiant" class="btn btn-info btn-sm">Détails</a>
-                    <a asp-action="Delete" asp-route-id="@item.CodeEtudiant" class="btn btn-danger btn-sm">Supprimer</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table> 
+            // Animation des lignes
+            $("tbody tr").each(function(index) {
+                $(this).css({
+                    'opacity': 0,
+                    'transform': 'translateY(20px)'
+                }).animate({
+                    'opacity': 1,
+                    'transform': 'translateY(0)'
+                }, 200 + (index * 100));
+            });
+        });
+    </script>
+} 

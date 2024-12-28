@@ -1,57 +1,94 @@
 @model GAbsence.Models.Absence
 
-<div class="container">
-    <h1>Ajouter une absence</h1>
+<div class="container py-4">
+    <h1 class="mb-4">
+        <i class="fas fa-plus-circle me-2"></i>
+        Nouvelle Absence
+    </h1>
 
-    <form asp-action="Create" method="post">
-        <div class="form-group">
-            <label asp-for="Date">Date</label>
-            <input asp-for="Date" class="form-control" type="date" required />
-        </div>
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <div class="form-group">
-            <label asp-for="CreneauHoraire">Créneau horaire</label>
-            <select asp-for="CreneauHoraire" class="form-control" asp-items="@(new SelectList(ViewBag.Creneaux))" required>
-                <option value="">-- Sélectionnez un créneau --</option>
-            </select>
-        </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="CodeEtudiant" class="form-label">Étudiant</label>
+                        <select asp-for="CodeEtudiant" class="form-select" asp-items="ViewBag.Etudiants">
+                            <option value="">-- Sélectionner un étudiant --</option>
+                        </select>
+                        <span asp-validation-for="CodeEtudiant" class="text-danger"></span>
+                    </div>
 
-        <div class="form-group">
-            <label asp-for="CodeEtudiant">Étudiant</label>
-            <select asp-for="CodeEtudiant" class="form-control" asp-items="ViewBag.Etudiants" required>
-                <option value="">-- Sélectionnez un étudiant --</option>
-            </select>
-        </div>
+                    <div class="col-md-6">
+                        <label asp-for="CodeMatiere" class="form-label">Matière</label>
+                        <select asp-for="CodeMatiere" class="form-select" asp-items="ViewBag.Matieres">
+                            <option value="">-- Sélectionner une matière --</option>
+                        </select>
+                        <span asp-validation-for="CodeMatiere" class="text-danger"></span>
+                    </div>
 
-        <div class="form-group">
-            <label asp-for="CodeEnseignant">Enseignant</label>
-            <select asp-for="CodeEnseignant" class="form-control" asp-items="ViewBag.Enseignants" required>
-                <option value="">-- Sélectionnez un enseignant --</option>
-            </select>
-        </div>
+                    <div class="col-md-6">
+                        <label asp-for="CodeEnseignant" class="form-label">Enseignant</label>
+                        <select asp-for="CodeEnseignant" class="form-select" asp-items="ViewBag.Enseignants">
+                            <option value="">-- Sélectionner un enseignant --</option>
+                        </select>
+                        <span asp-validation-for="CodeEnseignant" class="text-danger"></span>
+                    </div>
 
-        <div class="form-group">
-            <label asp-for="CodeMatiere">Matière</label>
-            <select asp-for="CodeMatiere" class="form-control" asp-items="ViewBag.Matieres" required>
-                <option value="">-- Sélectionnez une matière --</option>
-            </select>
-        </div>
+                    <div class="col-md-6">
+                        <label asp-for="Date" class="form-label">Date</label>
+                        <input asp-for="Date" class="form-control" type="date" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
 
-        <div class="form-group">
-            <div class="custom-control custom-checkbox">
-                <input asp-for="EstJustifiee" class="custom-control-input" type="checkbox" />
-                <label asp-for="EstJustifiee" class="custom-control-label">Absence justifiée</label>
-            </div>
-        </div>
+                    <div class="col-md-6">
+                        <label asp-for="CreneauHoraire" class="form-label">Créneau horaire</label>
+                        <select asp-for="CreneauHoraire" class="form-select" asp-items="@(new SelectList(ViewBag.CreneauxHoraires, "Value", "Text"))">
+                            <option value="">-- Sélectionner un créneau --</option>
+                        </select>
+                        <span asp-validation-for="CreneauHoraire" class="text-danger"></span>
+                    </div>
 
-        <div class="form-group">
-            <label asp-for="Justification">Justification</label>
-            <textarea asp-for="Justification" class="form-control" rows="3"></textarea>
-        </div>
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input asp-for="EstJustifiee" class="form-check-input" type="checkbox" />
+                            <label asp-for="EstJustifiee" class="form-check-label">Absence justifiée</label>
+                        </div>
+                    </div>
 
-        <div class="form-group mt-3">
-            <button type="submit" class="btn btn-primary">Créer</button>
-            <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+                    <div class="col-12">
+                        <label asp-for="Justification" class="form-label">Justification</label>
+                        <textarea asp-for="Justification" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Justification" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Enregistrer
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-times me-2"></i>Annuler
+                        </a>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
-</div> 
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Empêcher la réinitialisation du formulaire lors de la validation
+        $(document).ready(function () {
+            $('form').on('submit', function () {
+                if ($(this).valid()) {
+                    return true;
+                }
+                return false;
+            });
+        });
+    </script>
+}
