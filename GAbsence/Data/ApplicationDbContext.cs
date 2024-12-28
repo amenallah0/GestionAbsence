@@ -23,6 +23,7 @@ namespace GAbsence.Data
         public DbSet<Departement> Departements { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Absence> Absences { get; set; }
+        public DbSet<Filiere> Filieres { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,7 +41,76 @@ namespace GAbsence.Data
             modelBuilder.Entity<Etudiant>().HasKey(e => e.CodeEtudiant);
             modelBuilder.Entity<Departement>().HasKey(d => d.CodeDepartement);
             modelBuilder.Entity<Grade>().HasKey(g => g.CodeGrade);
+            modelBuilder.Entity<Filiere>().HasKey(f => f.CodeFiliere);
 
+            // Configuration des relations
+            modelBuilder.Entity<Classe>()
+                .HasOne(c => c.Filiere)
+                .WithMany(f => f.Classes)
+                .HasForeignKey(c => c.CodeFiliere)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Etudiant>()
+                .HasOne(e => e.Classe)
+                .WithMany(c => c.Etudiants)
+                .HasForeignKey(e => e.CodeClasse)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Seed data
+            modelBuilder.Entity<Filiere>().HasData(
+                new Filiere
+                {
+                    CodeFiliere = "GL",
+                    NomFiliere = "Génie Logiciel",
+                    Description = "Formation en développement logiciel"
+                },
+                new Filiere
+                {
+                    CodeFiliere = "RT",
+                    NomFiliere = "Réseaux et Télécommunications",
+                    Description = "Formation en réseaux"
+                }
+            );
+
+            modelBuilder.Entity<Classe>().HasData(
+                new Classe
+                {
+                    CodeClasse = "GL2024",
+                    NomClasse = "Génie Logiciel 2024",
+                    Niveau = 1,
+                    CodeFiliere = "GL"
+                },
+                new Classe
+                {
+                    CodeClasse = "RT2024",
+                    NomClasse = "Réseaux et Télécoms 2024",
+                    Niveau = 1,
+                    CodeFiliere = "RT"
+                }
+            );
+
+            modelBuilder.Entity<Departement>().HasData(
+                new Departement
+                {
+                    CodeDepartement = "INFO",
+                    NomDepartement = "Informatique",
+                    DateCreation = new DateTime(2024, 1, 1)
+                },
+                new Departement
+                {
+                    CodeDepartement = "MATH",
+                    NomDepartement = "Mathématiques",
+                    DateCreation = new DateTime(2024, 1, 1)
+                },
+                new Departement
+                {
+                    CodeDepartement = "PHY",
+                    NomDepartement = "Physique",
+                    DateCreation = new DateTime(2024, 1, 1)
+                }
+            );
+
+            // Autres configurations existantes...
             modelBuilder.Entity<Enseignant>(entity =>
             {
                 entity.ToTable("Enseignants");
@@ -82,23 +152,6 @@ namespace GAbsence.Data
             modelBuilder.Entity<Grade>().HasData(
                 new Grade { CodeGrade = "PR", Libelle = "Professeur" },
                 new Grade { CodeGrade = "MCF", Libelle = "Maître de conférences" }
-            );
-
-            // Configuration des relations
-            modelBuilder.Entity<Etudiant>(entity =>
-            {
-                entity.HasKey(e => e.CodeEtudiant);
-                
-                entity.HasOne(d => d.Classe)
-                    .WithMany(p => p.Etudiants)
-                    .HasForeignKey(d => d.CodeClasse)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            // Données initiales pour les classes
-            modelBuilder.Entity<Classe>().HasData(
-                new Classe { CodeClasse = "DSI31", NomClasse = "DSI 3.1" },
-                new Classe { CodeClasse = "DSI32", NomClasse = "DSI 3.2" }
             );
 
             // Configuration de FicheAbsence

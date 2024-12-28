@@ -1,72 +1,176 @@
 @model IEnumerable<GAbsence.Models.Absence>
 
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>
-            <i class="fas fa-calendar-times me-2"></i>
-            Liste des Absences
-        </h1>
-        <a asp-action="Create" class="btn btn-primary">
-            <i class="fas fa-plus me-2"></i>Nouvelle Absence
-        </a>
-    </div>
+@{
+    ViewData["Title"] = "Liste des Absences";
+}
 
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Étudiant</th>
-                    <th>Matière</th>
-                    <th>Enseignant</th>
-                    <th>Date</th>
-                    <th>Créneau</th>
-                    <th>Justifiée</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@($"{item.Etudiant?.Nom} {item.Etudiant?.Prenom}")</td>
-                        <td>@item.Matiere?.Libelle</td>
-                        <td>@($"{item.Enseignant?.Nom} {item.Enseignant?.Prenom}")</td>
-                        <td>@item.Date.ToShortDateString()</td>
-                        <td>@item.CreneauHoraire</td>
-                        <td>
-                            @if (item.EstJustifiee)
-                            {
-                                <span class="badge bg-success">Oui</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-danger">Non</span>
-                            }
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">
-                                    <i class="fas fa-info-circle"></i>
-                                </a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="container py-4">
+    <div class="card">
+        <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+            <h1 class="h3 mb-0">
+                <i class="fas fa-calendar-times me-2"></i>
+                Liste des Absences
+            </h1>
+            <a asp-action="Create" class="btn btn-dark">
+                <i class="fas fa-plus me-2"></i>Nouvelle Absence
+            </a>
+        </div>
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" id="searchInput" class="form-control" placeholder="Rechercher...">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-filter"></i>
+                            </span>
+                            <select id="filterStatus" class="form-select">
+                                <option value="">Tous les statuts</option>
+                                <option value="Justifiée">Justifiée</option>
+                                <option value="Non justifiée">Non justifiée</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-hover" id="absencesTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>
+                                <i class="fas fa-user-graduate me-2"></i>
+                                @Html.DisplayNameFor(model => model.Etudiant)
+                            </th>
+                            <th>
+                                <i class="fas fa-book me-2"></i>
+                                @Html.DisplayNameFor(model => model.Matiere)
+                            </th>
+                            <th>
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                @Html.DisplayNameFor(model => model.Date)
+                            </th>
+                            <th>
+                                <i class="fas fa-clock me-2"></i>
+                                @Html.DisplayNameFor(model => model.CreneauHoraire)
+                            </th>
+                            <th>
+                                <i class="fas fa-check-circle me-2"></i>
+                                @Html.DisplayNameFor(model => model.EstJustifiee)
+                            </th>
+                            <th>
+                                <i class="fas fa-file-alt me-2"></i>
+                                @Html.DisplayNameFor(model => model.Justification)
+                            </th>
+                            <th>
+                                <i class="fas fa-chalkboard-teacher me-2"></i>
+                                @Html.DisplayNameFor(model => model.Enseignant)
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Etudiant.Nom)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Etudiant.Prenom)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Matiere.Libelle)</td>
+                                <td>@item.Date.ToString("dd/MM/yyyy")</td>
+                                <td>@Html.DisplayFor(modelItem => item.CreneauHoraire)</td>
+                                <td>
+                                    @if (item.EstJustifiee)
+                                    {
+                                        <span class="badge bg-success">Justifiée</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Non justifiée</span>
+                                    }
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.Justification)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Enseignant.Nom)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Enseignant.Prenom)</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" 
+                                           class="btn btn-sm btn-warning" title="Modifier">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" 
+                                           class="btn btn-sm btn-info" title="Détails">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" 
+                                           class="btn btn-sm btn-danger" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
-@section CSS {
-    <style>
-        .table td {
-            vertical-align: middle;
-        }
-    </style>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Recherche en temps réel
+            $("#searchInput, #filterStatus").on("keyup change", function () {
+                var searchValue = $("#searchInput").val().toLowerCase();
+                var statusFilter = $("#filterStatus").val().toLowerCase();
+
+                $("#absencesTable tbody tr").filter(function () {
+                    var text = $(this).text().toLowerCase();
+                    var statusMatch = true;
+                    
+                    if (statusFilter) {
+                        var status = $(this).find("td:eq(4)").text().toLowerCase();
+                        statusMatch = status.includes(statusFilter);
+                    }
+                    
+                    var textMatch = text.indexOf(searchValue) > -1;
+                    $(this).toggle(textMatch && statusMatch);
+                });
+            });
+
+            // Tri des colonnes
+            $("th").click(function() {
+                var table = $(this).parents("table").eq(0);
+                var rows = table.find("tr:gt(0)").toArray().sort(comparer($(this).index()));
+                this.asc = !this.asc;
+                if (!this.asc) {
+                    rows = rows.reverse();
+                }
+                for (var i = 0; i < rows.length; i++) {
+                    table.append(rows[i]);
+                }
+            });
+
+            function comparer(index) {
+                return function(a, b) {
+                    var valA = getCellValue(a, index), valB = getCellValue(b, index);
+                    return $.isNumeric(valA) && $.isNumeric(valB) ? 
+                           parseFloat(valA) - parseFloat(valB) : valA.localeCompare(valB);
+                }
+            }
+
+            function getCellValue(row, index) {
+                return $(row).children("td").eq(index).text();
+            }
+
+            // Tooltips Bootstrap
+            $('[title]').tooltip();
+        });
+    </script>
 } 

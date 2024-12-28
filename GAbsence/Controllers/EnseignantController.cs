@@ -26,46 +26,17 @@ namespace GAbsence.Controllers
         // GET: Enseignant/Create
         public IActionResult Create()
         {
-            var departements = _context.Departements.ToList();
-            var grades = _context.Grades.ToList();
-
-            if (!departements.Any())
-            {
-                // Initialiser les départements si la table est vide
-                var defaultDepartements = new List<Departement>
-                {
-                    new Departement { CodeDepartement = "INFO", NomDepartement = "Informatique" },
-                    new Departement { CodeDepartement = "MATH", NomDepartement = "Mathématiques" }
-                };
-                _context.Departements.AddRange(defaultDepartements);
-                _context.SaveChanges();
-                departements = defaultDepartements;
-            }
-
-            if (!grades.Any())
-            {
-                // Initialiser les grades si la table est vide
-                var defaultGrades = new List<Grade>
-                {
-                    new Grade { CodeGrade = "PR", Libelle = "Professeur" },
-                    new Grade { CodeGrade = "MCF", Libelle = "Maître de conférences" }
-                };
-                _context.Grades.AddRange(defaultGrades);
-                _context.SaveChanges();
-                grades = defaultGrades;
-            }
-
-            // Créer les SelectList avec les données vérifiées
-            ViewData["CodeDepartement"] = new SelectList(departements, "CodeDepartement", "NomDepartement");
-            ViewData["CodeGrade"] = new SelectList(grades, "CodeGrade", "Libelle");
-
+            // Charger la liste des départements pour le dropdown
+            ViewBag.Departements = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement");
+            // Charger la liste des grades si nécessaire
+            ViewBag.Grades = new SelectList(_context.Grades, "CodeGrade", "Libelle");
             return View();
         }
 
         // POST: Enseignant/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CodeEnseignant,Nom,Prenom,Mail,Tel,CodeDepartement,CodeGrade")] Enseignant enseignant)
+        public async Task<IActionResult> Create([Bind("CodeEnseignant,Nom,Prenom,DateRecrutement,Adresse,Mail,Tel,CodeDepartement,CodeGrade")] Enseignant enseignant)
         {
             if (ModelState.IsValid)
             {
@@ -73,20 +44,9 @@ namespace GAbsence.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
             // Recharger les listes en cas d'erreur
-            ViewData["CodeDepartement"] = new SelectList(
-                await _context.Departements.ToListAsync(), 
-                "CodeDepartement", 
-                "NomDepartement", 
-                enseignant.CodeDepartement);
-            
-            ViewData["CodeGrade"] = new SelectList(
-                await _context.Grades.ToListAsync(), 
-                "CodeGrade", 
-                "Libelle", 
-                enseignant.CodeGrade);
-
+            ViewBag.Departements = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement", enseignant.CodeDepartement);
+            ViewBag.Grades = new SelectList(_context.Grades, "CodeGrade", "Libelle", enseignant.CodeGrade);
             return View(enseignant);
         }
 

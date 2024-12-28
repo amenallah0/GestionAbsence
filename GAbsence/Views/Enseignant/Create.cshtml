@@ -1,78 +1,123 @@
 @model GAbsence.Models.Enseignant
 
-<div class="container">
-    <h1>Ajouter un enseignant</h1>
-
-    <form asp-action="Create">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <div class="form-group">
-            <label asp-for="CodeEnseignant" class="control-label">Code</label>
-            <input asp-for="CodeEnseignant" class="form-control" />
-            <span asp-validation-for="CodeEnseignant" class="text-danger"></span>
+<div class="container py-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h1 class="h3 mb-0">
+                <i class="fas fa-chalkboard-teacher me-2"></i>
+                Nouvel Enseignant
+            </h1>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Nom" class="control-label">Nom</label>
-            <input asp-for="Nom" class="form-control" />
-            <span asp-validation-for="Nom" class="text-danger"></span>
-        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-        <div class="form-group">
-            <label asp-for="Prenom" class="control-label">Prénom</label>
-            <input asp-for="Prenom" class="form-control" />
-            <span asp-validation-for="Prenom" class="text-danger"></span>
-        </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="CodeEnseignant" class="form-label">Code Enseignant</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-id-card"></i>
+                            </span>
+                            <input asp-for="CodeEnseignant" class="form-control" placeholder="Ex: ENS001" />
+                        </div>
+                        <span asp-validation-for="CodeEnseignant" class="text-danger"></span>
+                    </div>
 
-        <div class="form-group">
-            <label asp-for="Mail" class="control-label">Email</label>
-            <input asp-for="Mail" class="form-control" />
-            <span asp-validation-for="Mail" class="text-danger"></span>
-        </div>
+                    <div class="col-md-6">
+                        <label asp-for="Nom" class="form-label">Nom</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <input asp-for="Nom" class="form-control" placeholder="Nom de l'enseignant" />
+                        </div>
+                        <span asp-validation-for="Nom" class="text-danger"></span>
+                    </div>
 
-        <div class="form-group">
-            <label asp-for="Tel" class="control-label">Téléphone</label>
-            <input asp-for="Tel" class="form-control" />
-            <span asp-validation-for="Tel" class="text-danger"></span>
-        </div>
+                    <div class="col-md-6">
+                        <label asp-for="Prenom" class="form-label">Prénom</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <input asp-for="Prenom" class="form-control" placeholder="Prénom de l'enseignant" />
+                        </div>
+                        <span asp-validation-for="Prenom" class="text-danger"></span>
+                    </div>
 
-        <div class="form-group">
-            <label asp-for="CodeDepartement" class="control-label">Département</label>
-            <select asp-for="CodeDepartement" class="form-control">
-                <option value="">-- Sélectionnez un département --</option>
-                @if (ViewBag.CodeDepartement != null)
-                {
-                    @foreach (var item in ViewBag.CodeDepartement)
-                    {
-                        <option value="@item.Value">@item.Text</option>
-                    }
-                }
-            </select>
-            <span asp-validation-for="CodeDepartement" class="text-danger"></span>
-        </div>
+                    <div class="col-md-6">
+                        <label asp-for="Mail" class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <input asp-for="Mail" class="form-control" type="email" placeholder="email@exemple.com" />
+                        </div>
+                        <span asp-validation-for="Mail" class="text-danger"></span>
+                    </div>
 
-        <div class="form-group">
-            <label asp-for="CodeGrade" class="control-label">Grade</label>
-            <select asp-for="CodeGrade" class="form-control">
-                <option value="">-- Sélectionnez un grade --</option>
-                @if (ViewBag.CodeGrade != null)
-                {
-                    @foreach (var item in ViewBag.CodeGrade)
-                    {
-                        <option value="@item.Value">@item.Text</option>
-                    }
-                }
-            </select>
-            <span asp-validation-for="CodeGrade" class="text-danger"></span>
-        </div>
+                    <div class="col-md-6">
+                        <label asp-for="Tel" class="form-label">Téléphone</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-phone"></i>
+                            </span>
+                            <input asp-for="Tel" class="form-control" placeholder="+212 6XX XXXXXX" />
+                        </div>
+                        <span asp-validation-for="Tel" class="text-danger"></span>
+                    </div>
 
-        <div class="form-group mt-3">
-            <input type="submit" value="Enregistrer" class="btn btn-primary" />
-            <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+                    <div class="col-md-6">
+                        <label asp-for="CodeDepartement" class="form-label">Département</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-building"></i>
+                            </span>
+                            <select asp-for="CodeDepartement" class="form-select" asp-items="ViewBag.Departements">
+                                <option value="">-- Sélectionner un département --</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="CodeDepartement" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="CodeGrade" class="form-label">Grade</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-graduation-cap"></i>
+                            </span>
+                            <select asp-for="CodeGrade" class="form-select" asp-items="ViewBag.Grades">
+                                <option value="">-- Sélectionner un grade --</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="CodeGrade" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Enregistrer
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-times me-2"></i>Annuler
+                    </a>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-} 
+    
+    <script>
+        $(document).ready(function () {
+            // Majuscules pour le code enseignant
+            $('#CodeEnseignant').on('input', function() {
+                $(this).val($(this).val().toUpperCase());
+            });
+        });
+    </script>
+}

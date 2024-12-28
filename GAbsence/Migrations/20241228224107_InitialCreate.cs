@@ -69,6 +69,19 @@ namespace GAbsence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Filieres",
+                columns: table => new
+                {
+                    CodeFiliere = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NomFiliere = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Filieres", x => x.CodeFiliere);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Grades",
                 columns: table => new
                 {
@@ -206,6 +219,8 @@ namespace GAbsence.Migrations
                 {
                     CodeClasse = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     NomClasse = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Niveau = table.Column<int>(type: "int", nullable: false),
+                    CodeFiliere = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DepartementCodeDepartement = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -216,6 +231,12 @@ namespace GAbsence.Migrations
                         column: x => x.DepartementCodeDepartement,
                         principalTable: "Departements",
                         principalColumn: "CodeDepartement");
+                    table.ForeignKey(
+                        name: "FK_Classes_Filieres_CodeFiliere",
+                        column: x => x.CodeFiliere,
+                        principalTable: "Filieres",
+                        principalColumn: "CodeFiliere",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -443,18 +464,22 @@ namespace GAbsence.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Classes",
-                columns: new[] { "CodeClasse", "DepartementCodeDepartement", "NomClasse" },
+                table: "Departements",
+                columns: new[] { "CodeDepartement", "DateCreation", "NomDepartement" },
                 values: new object[,]
                 {
-                    { "DSI31", null, "DSI 3.1" },
-                    { "DSI32", null, "DSI 3.2" }
+                    { "INFO", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Informatique" },
+                    { "qcscsq", null, "Département Test" }
                 });
 
             migrationBuilder.InsertData(
-                table: "Departements",
-                columns: new[] { "CodeDepartement", "DateCreation", "NomDepartement" },
-                values: new object[] { "qcscsq", null, "Département Test" });
+                table: "Filieres",
+                columns: new[] { "CodeFiliere", "Description", "NomFiliere" },
+                values: new object[,]
+                {
+                    { "GL", "Formation en développement logiciel", "Génie Logiciel" },
+                    { "RT", "Formation en réseaux", "Réseaux et Télécommunications" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Grades",
@@ -463,6 +488,15 @@ namespace GAbsence.Migrations
                 {
                     { "MCF", "Maître de conférences" },
                     { "PR", "Professeur" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Classes",
+                columns: new[] { "CodeClasse", "CodeFiliere", "DepartementCodeDepartement", "Niveau", "NomClasse" },
+                values: new object[,]
+                {
+                    { "GL2024", "GL", null, 1, "Génie Logiciel 2024" },
+                    { "RT2024", "RT", null, 1, "Réseaux et Télécoms 2024" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -523,6 +557,11 @@ namespace GAbsence.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Classes_CodeFiliere",
+                table: "Classes",
+                column: "CodeFiliere");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Classes_DepartementCodeDepartement",
@@ -649,6 +688,9 @@ namespace GAbsence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Departements");
+
+            migrationBuilder.DropTable(
+                name: "Filieres");
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAbsence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241228220633_InitialCreate")]
+    [Migration("20241228224107_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -155,14 +155,23 @@ namespace GAbsence.Migrations
                     b.Property<string>("CodeClasse")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CodeFiliere")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("DepartementCodeDepartement")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Niveau")
+                        .HasColumnType("int");
 
                     b.Property<string>("NomClasse")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CodeClasse");
+
+                    b.HasIndex("CodeFiliere");
 
                     b.HasIndex("DepartementCodeDepartement");
 
@@ -171,13 +180,17 @@ namespace GAbsence.Migrations
                     b.HasData(
                         new
                         {
-                            CodeClasse = "DSI31",
-                            NomClasse = "DSI 3.1"
+                            CodeClasse = "GL2024",
+                            CodeFiliere = "GL",
+                            Niveau = 1,
+                            NomClasse = "Génie Logiciel 2024"
                         },
                         new
                         {
-                            CodeClasse = "DSI32",
-                            NomClasse = "DSI 3.2"
+                            CodeClasse = "RT2024",
+                            CodeFiliere = "RT",
+                            Niveau = 1,
+                            NomClasse = "Réseaux et Télécoms 2024"
                         });
                 });
 
@@ -198,6 +211,12 @@ namespace GAbsence.Migrations
                     b.ToTable("Departements", (string)null);
 
                     b.HasData(
+                        new
+                        {
+                            CodeDepartement = "INFO",
+                            DateCreation = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NomDepartement = "Informatique"
+                        },
                         new
                         {
                             CodeDepartement = "qcscsq",
@@ -357,6 +376,37 @@ namespace GAbsence.Migrations
                     b.HasIndex("SeanceCodeSeance");
 
                     b.ToTable("FicheAbsenceSeances");
+                });
+
+            modelBuilder.Entity("GAbsence.Models.Filiere", b =>
+                {
+                    b.Property<string>("CodeFiliere")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomFiliere")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CodeFiliere");
+
+                    b.ToTable("Filieres");
+
+                    b.HasData(
+                        new
+                        {
+                            CodeFiliere = "GL",
+                            Description = "Formation en développement logiciel",
+                            NomFiliere = "Génie Logiciel"
+                        },
+                        new
+                        {
+                            CodeFiliere = "RT",
+                            Description = "Formation en réseaux",
+                            NomFiliere = "Réseaux et Télécommunications"
+                        });
                 });
 
             modelBuilder.Entity("GAbsence.Models.Grade", b =>
@@ -642,9 +692,17 @@ namespace GAbsence.Migrations
 
             modelBuilder.Entity("GAbsence.Models.Classe", b =>
                 {
+                    b.HasOne("GAbsence.Models.Filiere", "Filiere")
+                        .WithMany("Classes")
+                        .HasForeignKey("CodeFiliere")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("GAbsence.Models.Departement", null)
                         .WithMany("Classes")
                         .HasForeignKey("DepartementCodeDepartement");
+
+                    b.Navigation("Filiere");
                 });
 
             modelBuilder.Entity("GAbsence.Models.Enseignant", b =>
@@ -818,6 +876,11 @@ namespace GAbsence.Migrations
             modelBuilder.Entity("GAbsence.Models.FicheAbsenceSeance", b =>
                 {
                     b.Navigation("LignesFicheAbsence");
+                });
+
+            modelBuilder.Entity("GAbsence.Models.Filiere", b =>
+                {
+                    b.Navigation("Classes");
                 });
 
             modelBuilder.Entity("GAbsence.Models.Grade", b =>

@@ -1,42 +1,96 @@
 @model GAbsence.Models.Matiere
 
-@{
-    ViewData["Title"] = "Créer une matière";
-}
-
-<div class="container">
-    <h1>@ViewData["Title"]</h1>
-
-    <form asp-action="Create">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        
-        <div class="form-group">
-            <label asp-for="CodeMatiere" class="control-label">Code Matière</label>
-            <input asp-for="CodeMatiere" class="form-control" />
-            <span asp-validation-for="CodeMatiere" class="text-danger"></span>
+<div class="container py-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h1 class="h3 mb-0">
+                <i class="fas fa-book me-2"></i>
+                Nouvelle Matière
+            </h1>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Libelle" class="control-label">Libellé</label>
-            <input asp-for="Libelle" class="form-control" />
-            <span asp-validation-for="Libelle" class="text-danger"></span>
-        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-        <div class="form-group">
-            <label asp-for="NbreHeures" class="control-label">Nombre d'heures</label>
-            <input asp-for="NbreHeures" class="form-control" />
-            <span asp-validation-for="NbreHeures" class="text-danger"></span>
-        </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="CodeMatiere" class="form-label">Code Matière</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-hashtag"></i>
+                            </span>
+                            <input asp-for="CodeMatiere" class="form-control" placeholder="Ex: MAT001" />
+                        </div>
+                        <span asp-validation-for="CodeMatiere" class="text-danger"></span>
+                    </div>
 
-        <div class="form-group">
-            <label asp-for="Coefficient" class="control-label">Coefficient</label>
-            <input asp-for="Coefficient" class="form-control" />
-            <span asp-validation-for="Coefficient" class="text-danger"></span>
-        </div>
+                    <div class="col-md-6">
+                        <label asp-for="Libelle" class="form-label">Nom de la matière</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-book-open"></i>
+                            </span>
+                            <input asp-for="Libelle" class="form-control" placeholder="Nom de la matière" />
+                        </div>
+                        <span asp-validation-for="Libelle" class="text-danger"></span>
+                    </div>
 
-        <div class="form-group mt-3">
-            <input type="submit" value="Créer" class="btn btn-primary" />
-            <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+                    <div class="col-md-6">
+                        <label asp-for="NbreHeures" class="form-label">Nombre d'heures</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-clock"></i>
+                            </span>
+                            <input asp-for="NbreHeures" class="form-control" type="number" min="1" 
+                                   placeholder="Nombre d'heures total" />
+                        </div>
+                        <span asp-validation-for="NbreHeures" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Coefficient" class="form-label">Coefficient</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-calculator"></i>
+                            </span>
+                            <input asp-for="Coefficient" class="form-control" type="number" min="1" 
+                                   placeholder="Coefficient de la matière" />
+                        </div>
+                        <span asp-validation-for="Coefficient" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Enregistrer
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-times me-2"></i>Annuler
+                    </a>
+                </div>
+            </form>
         </div>
-    </form>
-</div> 
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function () {
+            // Majuscules pour le code matière
+            $('#CodeMatiere').on('input', function() {
+                $(this).val($(this).val().toUpperCase());
+            });
+
+            // Validation du nombre d'heures et coefficient
+            $('#NbreHeures, #Coefficient').on('input', function() {
+                let value = parseInt($(this).val());
+                if (value < 1) {
+                    $(this).val(1);
+                }
+            });
+        });
+    </script>
+} 

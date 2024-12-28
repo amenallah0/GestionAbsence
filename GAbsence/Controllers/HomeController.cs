@@ -18,6 +18,45 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        // Statistiques générales
+        ViewBag.TotalEtudiants = _context.Etudiants.Count();
+        ViewBag.TotalEnseignants = _context.Enseignants.Count();
+        ViewBag.AbsencesMois = _context.Absences
+            .Count(a => a.Date.Month == DateTime.Now.Month);
+        ViewBag.AbsencesNonJustifiees = _context.Absences
+            .Count(a => !a.EstJustifiee);
+        ViewBag.AbsencesJustifiees = _context.Absences
+            .Count(a => a.EstJustifiee);
+
+        // Données pour le graphique par département
+        var absencesByDep = _context.Absences
+            .Include(a => a.Etudiant)
+                .ThenInclude(e => e.Classe)
+                    .ThenInclude(c => c.Filiere)
+            .GroupBy(a => a.Etudiant.Classe.Filiere.NomFiliere)
+            .Select(g => new { Departement = g.Key, Count = g.Count() })
+            .ToList();
+
+        ViewBag.DepartementLabels = absencesByDep.Select(a => a.Departement).ToList();
+        ViewBag.DepartementData = absencesByDep.Select(a => a.Count).ToList();
+
+        // Dernières absences
+        ViewBag.DernieresAbsences = _context.Absences
+            .Include(a => a.Etudiant)
+            .Include(a => a.Matiere)
+            .Include(a => a.Enseignant)
+            .OrderByDescending(a => a.Date)
+            .Take(5)
+            .Select(a => new
+            {
+                NomEtudiant = $"{a.Etudiant.Nom} {a.Etudiant.Prenom}",
+                Date = a.Date,
+                Matiere = a.Matiere.Libelle,
+                NomEnseignant = $"{a.Enseignant.Nom} {a.Enseignant.Prenom}",
+                EstJustifiee = a.EstJustifiee
+            })
+            .ToList();
+
         return View();
     }
 

@@ -1,41 +1,123 @@
 @model IEnumerable<GAbsence.Models.Matiere>
 
 @{
-    ViewData["Title"] = "Liste des matières";
+    ViewData["Title"] = "Liste des Matières";
 }
 
-<div class="container">
-    <h1>@ViewData["Title"]</h1>
+<div class="container py-4">
+    <div class="card">
+        <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+            <h1 class="h3 mb-0">
+                <i class="fas fa-book me-2"></i>
+                Liste des Matières
+            </h1>
+            <a asp-action="Create" class="btn btn-light">
+                <i class="fas fa-plus me-2"></i>Nouvelle Matière
+            </a>
+        </div>
 
-    <p>
-        <a asp-action="Create" class="btn btn-primary">Créer une nouvelle matière</a>
-    </p>
+        <div class="card-body">
+            <div class="table-responsive">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher une matière...">
+                </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Code</th>
-                <th>Libellé</th>
-                <th>Nombre d'heures</th>
-                <th>Coefficient</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.CodeMatiere</td>
-                    <td>@item.Libelle</td>
-                    <td>@item.NbreHeures</td>
-                    <td>@item.Coefficient</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.CodeMatiere" class="btn btn-sm btn-info">Modifier</a>
-                        <a asp-action="Details" asp-route-id="@item.CodeMatiere" class="btn btn-sm btn-primary">Détails</a>
-                        <a asp-action="Delete" asp-route-id="@item.CodeMatiere" class="btn btn-sm btn-danger">Supprimer</a>
-                    </td>
-                </tr>
+                <table class="table table-hover" id="matieresTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>
+                                <i class="fas fa-hashtag me-2"></i>
+                                @Html.DisplayNameFor(model => model.CodeMatiere)
+                            </th>
+                            <th>
+                                <i class="fas fa-book-open me-2"></i>
+                                @Html.DisplayNameFor(model => model.Libelle)
+                            </th>
+                            <th>
+                                <i class="fas fa-clock me-2"></i>
+                                @Html.DisplayNameFor(model => model.NbreHeures)
+                            </th>
+                            <th>
+                                <i class="fas fa-calculator me-2"></i>
+                                @Html.DisplayNameFor(model => model.Coefficient)
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.CodeMatiere)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Libelle)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NbreHeures)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Coefficient)</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Edit" asp-route-id="@item.CodeMatiere" 
+                                           class="btn btn-sm btn-warning" title="Modifier">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.CodeMatiere" 
+                                           class="btn btn-sm btn-info" title="Détails">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.CodeMatiere" 
+                                           class="btn btn-sm btn-danger" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Recherche en temps réel
+            $("#searchInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#matieresTable tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            // Tri des colonnes
+            $("th").click(function() {
+                var table = $(this).parents("table").eq(0);
+                var rows = table.find("tr:gt(0)").toArray().sort(comparer($(this).index()));
+                this.asc = !this.asc;
+                if (!this.asc) {
+                    rows = rows.reverse();
+                }
+                for (var i = 0; i < rows.length; i++) {
+                    table.append(rows[i]);
+                }
+            });
+
+            function comparer(index) {
+                return function(a, b) {
+                    var valA = getCellValue(a, index), valB = getCellValue(b, index);
+                    return $.isNumeric(valA) && $.isNumeric(valB) ? 
+                           parseFloat(valA) - parseFloat(valB) : valA.localeCompare(valB);
+                }
             }
-        </tbody>
-    </table>
-</div> 
+
+            function getCellValue(row, index) {
+                return $(row).children("td").eq(index).text();
+            }
+
+            // Ajouter des tooltips Bootstrap
+            $('[title]').tooltip();
+        });
+    </script>
+} 

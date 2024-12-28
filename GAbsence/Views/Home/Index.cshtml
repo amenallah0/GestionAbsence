@@ -1,30 +1,213 @@
 ﻿@{
-    ViewData["Title"] = "Accueil";
+    ViewData["Title"] = "Tableau de bord";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Bienvenue</h1>
-    
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <a asp-controller="Home" asp-action="GestionEtudiants" class="btn btn-primary btn-lg w-100">
-                Gestion des Étudiants
-            </a>
+<div class="container py-4">
+    <!-- En-tête du dashboard -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h1 class="display-6">
+                        <i class="fas fa-tachometer-alt me-2"></i>
+                        Tableau de bord
+                    </h1>
+                    <p class="lead mb-0">Aperçu général des absences et statistiques</p>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <a asp-controller="Home" asp-action="GestionEnseignants" class="btn btn-primary btn-lg w-100">
-                Gestion des Enseignants
-            </a>
+    </div>
+
+    <!-- Cartes de statistiques -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="card-title mb-0">Total Étudiants</h6>
+                            <h2 class="my-2">@ViewBag.TotalEtudiants</h2>
+                        </div>
+                        <div class="rounded-circle bg-white p-3">
+                            <i class="fas fa-user-graduate text-info fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <a asp-controller="Home" asp-action="GestionMatieres" class="btn btn-primary btn-lg w-100">
-                Gestion des Matières
-            </a>
+        <div class="col-md-3">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="card-title mb-0">Total Enseignants</h6>
+                            <h2 class="my-2">@ViewBag.TotalEnseignants</h2>
+                        </div>
+                        <div class="rounded-circle bg-white p-3">
+                            <i class="fas fa-chalkboard-teacher text-success fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <a asp-controller="Home" asp-action="GestionAbsences" class="btn btn-primary btn-lg w-100">
-                Gestion des Absences
-            </a>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="card-title mb-0">Absences du Mois</h6>
+                            <h2 class="my-2">@ViewBag.AbsencesMois</h2>
+                        </div>
+                        <div class="rounded-circle bg-white p-3">
+                            <i class="fas fa-calendar-times text-warning fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 class="card-title mb-0">Non Justifiées</h6>
+                            <h2 class="my-2">@ViewBag.AbsencesNonJustifiees</h2>
+                        </div>
+                        <div class="rounded-circle bg-white p-3">
+                            <i class="fas fa-exclamation-circle text-danger fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Absences par Département
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="departementChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-pie me-2"></i>
+                        Répartition des Absences
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="absencesPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dernières absences -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">
+                <i class="fas fa-history me-2"></i>
+                Dernières Absences Enregistrées
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Étudiant</th>
+                            <th>Date</th>
+                            <th>Matière</th>
+                            <th>Enseignant</th>
+                            <th>État</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var absence in ViewBag.DernieresAbsences ?? new List<dynamic>())
+                        {
+                            <tr>
+                                <td>@absence.NomEtudiant</td>
+                                <td>@absence.Date.ToString("dd/MM/yyyy")</td>
+                                <td>@absence.Matiere</td>
+                                <td>@absence.NomEnseignant</td>
+                                <td>
+                                    @if (absence.EstJustifiee)
+                                    {
+                                        <span class="badge bg-success">Justifiée</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Non justifiée</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Graphique des absences par département
+        const depCtx = document.getElementById('departementChart').getContext('2d');
+        new Chart(depCtx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(ViewBag.DepartementLabels)),
+                datasets: [{
+                    label: 'Nombre d\'absences',
+                    data: @Html.Raw(Json.Serialize(ViewBag.DepartementData)),
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Graphique circulaire des absences
+        const pieCtx = document.getElementById('absencesPieChart').getContext('2d');
+        new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Justifiées', 'Non Justifiées'],
+                datasets: [{
+                    data: [@ViewBag.AbsencesJustifiees, @ViewBag.AbsencesNonJustifiees],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.5)',
+                        'rgba(255, 99, 132, 0.5)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+}

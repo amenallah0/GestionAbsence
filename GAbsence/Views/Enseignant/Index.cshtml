@@ -1,68 +1,87 @@
 @model IEnumerable<GAbsence.Models.Enseignant>
 
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">
-            <i class="fas fa-chalkboard-teacher me-2"></i>
-            Liste des Enseignants
-        </h1>
-        <a asp-action="Create" class="btn btn-primary">
-            <i class="fas fa-plus me-2"></i>Ajouter un enseignant
-        </a>
-    </div>
+@{
+    ViewData["Title"] = "Liste des Enseignants";
+}
 
+<div class="container py-4">
     <div class="card">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <h1 class="h3 mb-0">
+                <i class="fas fa-chalkboard-teacher me-2"></i>
+                Liste des Enseignants
+            </h1>
+            <a asp-action="Create" class="btn btn-light">
+                <i class="fas fa-plus me-2"></i>Nouvel Enseignant
+            </a>
+        </div>
+
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover align-middle">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un enseignant...">
+                </div>
+
+                <table class="table table-hover" id="enseignantsTable">
                     <thead class="table-light">
                         <tr>
-                            <th>Code</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Département</th>
-                            <th>Grade</th>
-                            <th>Email</th>
-                            <th class="text-center">Actions</th>
+                            <th>
+                                <i class="fas fa-id-card me-2"></i>
+                                @Html.DisplayNameFor(model => model.CodeEnseignant)
+                            </th>
+                            <th>
+                                <i class="fas fa-user me-2"></i>
+                                @Html.DisplayNameFor(model => model.Nom)
+                            </th>
+                            <th>
+                                <i class="fas fa-user me-2"></i>
+                                @Html.DisplayNameFor(model => model.Prenom)
+                            </th>
+                            <th>
+                                <i class="fas fa-envelope me-2"></i>
+                                @Html.DisplayNameFor(model => model.Mail)
+                            </th>
+                            <th>
+                                <i class="fas fa-phone me-2"></i>
+                                @Html.DisplayNameFor(model => model.Tel)
+                            </th>
+                            <th>
+                                <i class="fas fa-building me-2"></i>
+                                @Html.DisplayNameFor(model => model.Departement)
+                            </th>
+                            <th>
+                                <i class="fas fa-graduation-cap me-2"></i>
+                                @Html.DisplayNameFor(model => model.Grade)
+                            </th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
                             <tr>
+                                <td>@Html.DisplayFor(modelItem => item.CodeEnseignant)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Nom)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Prenom)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Mail)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Tel)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Departement.NomDepartement)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Grade.Libelle)</td>
                                 <td>
-                                    <span class="badge bg-secondary">@item.CodeEnseignant</span>
-                                </td>
-                                <td>@item.Nom</td>
-                                <td>@item.Prenom</td>
-                                <td>
-                                    <span class="badge bg-info">
-                                        @(item.Departement?.NomDepartement ?? "Non défini")
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="badge bg-success">
-                                        @(item.Grade?.Libelle ?? "Non défini")
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="mailto:@item.Mail" class="text-decoration-none">
-                                        <i class="fas fa-envelope me-1"></i>
-                                        @item.Mail
-                                    </a>
-                                </td>
-                                <td>
-                                    <div class="d-flex justify-content-center gap-2">
+                                    <div class="btn-group" role="group">
                                         <a asp-action="Edit" asp-route-id="@item.CodeEnseignant" 
-                                           class="btn btn-sm btn-outline-primary" title="Modifier">
+                                           class="btn btn-sm btn-warning" title="Modifier">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <a asp-action="Details" asp-route-id="@item.CodeEnseignant" 
-                                           class="btn btn-sm btn-outline-info" title="Détails">
+                                           class="btn btn-sm btn-info" title="Détails">
                                             <i class="fas fa-info-circle"></i>
                                         </a>
                                         <a asp-action="Delete" asp-route-id="@item.CodeEnseignant" 
-                                           class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                           class="btn btn-sm btn-danger" title="Supprimer">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
@@ -76,45 +95,44 @@
     </div>
 </div>
 
-@section CSS {
-    <style>
-        .table th {
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.875rem;
-        }
-        
-        .badge {
-            font-weight: 500;
-        }
-
-        .btn-sm {
-            padding: 0.25rem 0.5rem;
-        }
-
-        .table td {
-            vertical-align: middle;
-        }
-
-        .table-hover tbody tr:hover {
-            background-color: rgba(0,0,0,.02);
-        }
-    </style>
-}
-
 @section Scripts {
     <script>
-        $(document).ready(function() {
-            // Animation pour les nouvelles lignes
-            $("tbody tr").each(function(index) {
-                $(this).css({
-                    'opacity': 0,
-                    'transform': 'translateY(20px)'
-                }).animate({
-                    'opacity': 1,
-                    'transform': 'translateY(0)'
-                }, 200 + (index * 100));
+        $(document).ready(function () {
+            // Recherche en temps réel
+            $("#searchInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#enseignantsTable tbody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
             });
+
+            // Tri des colonnes
+            $("th").click(function() {
+                var table = $(this).parents("table").eq(0);
+                var rows = table.find("tr:gt(0)").toArray().sort(comparer($(this).index()));
+                this.asc = !this.asc;
+                if (!this.asc) {
+                    rows = rows.reverse();
+                }
+                for (var i = 0; i < rows.length; i++) {
+                    table.append(rows[i]);
+                }
+            });
+
+            function comparer(index) {
+                return function(a, b) {
+                    var valA = getCellValue(a, index), valB = getCellValue(b, index);
+                    return $.isNumeric(valA) && $.isNumeric(valB) ? 
+                           valA - valB : valA.localeCompare(valB);
+                }
+            }
+
+            function getCellValue(row, index) {
+                return $(row).children("td").eq(index).text();
+            }
+
+            // Ajouter des tooltips Bootstrap
+            $('[title]').tooltip();
         });
     </script>
 } 

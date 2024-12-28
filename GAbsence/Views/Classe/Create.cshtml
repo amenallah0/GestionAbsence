@@ -1,54 +1,94 @@
 @model GAbsence.Models.Classe
 
-@{
-    ViewData["Title"] = "Ajouter une classe";
-}
+<div class="container py-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h1 class="h3 mb-0">
+                <i class="fas fa-chalkboard me-2"></i>
+                Nouvelle Classe
+            </h1>
+        </div>
 
-<h1>@ViewData["Title"]</h1>
+        <div class="card-body">
+            <form asp-action="Create" method="post" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-<div class="row">
-    <div class="col-md-6">
-        @if (!ViewData.ModelState.IsValid)
-        {
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <li>@modelError.ErrorMessage</li>
-                    }
-                </ul>
-            </div>
-        }
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="CodeClasse" class="form-label">Code Classe</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-hashtag"></i>
+                            </span>
+                            <input asp-for="CodeClasse" class="form-control" placeholder="Ex: CLS001" />
+                        </div>
+                        <span asp-validation-for="CodeClasse" class="text-danger"></span>
+                    </div>
 
-        <form asp-controller="Classe" asp-action="Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            <div class="form-group mb-3">
-                <label asp-for="CodeClasse" class="control-label">Code de la classe</label>
-                <input asp-for="CodeClasse" class="form-control" required />
-                <span asp-validation-for="CodeClasse" class="text-danger"></span>
-            </div>
+                    <div class="col-md-6">
+                        <label asp-for="NomClasse" class="form-label">Nom de la Classe</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-chalkboard"></i>
+                            </span>
+                            <input asp-for="NomClasse" class="form-control" placeholder="Nom de la classe" />
+                        </div>
+                        <span asp-validation-for="NomClasse" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="NomClasse" class="control-label">Nom de la classe</label>
-                <input asp-for="NomClasse" class="form-control" required />
-                <span asp-validation-for="NomClasse" class="text-danger"></span>
-            </div>
+                    <div class="col-md-6">
+                        <label asp-for="CodeFiliere" class="form-label">Filière</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-graduation-cap"></i>
+                            </span>
+                            <select asp-for="CodeFiliere" class="form-select" asp-items="ViewBag.Filieres">
+                                <option value="">-- Sélectionner une filière --</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="CodeFiliere" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Créer</button>
-                <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
-            </div>
-        </form>
+                    <div class="col-md-6">
+                        <label asp-for="Niveau" class="form-label">Niveau</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-layer-group"></i>
+                            </span>
+                            <select asp-for="Niveau" class="form-select">
+                                <option value="">-- Sélectionner un niveau --</option>
+                                <option value="1">1ère année</option>
+                                <option value="2">2ème année</option>
+                                <option value="3">3ème année</option>
+                                <option value="4">4ème année</option>
+                                <option value="5">5ème année</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="Niveau" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Enregistrer
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-times me-2"></i>Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
     <script>
         $(document).ready(function () {
-            $('form').on('submit', function () {
-                console.log('Form submitted');
+            // Majuscules pour le code classe
+            $('#CodeClasse').on('input', function() {
+                $(this).val($(this).val().toUpperCase());
             });
         });
     </script>
