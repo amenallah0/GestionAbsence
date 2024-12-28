@@ -1,75 +1,141 @@
 @model GAbsence.Models.Enseignant
 
-<div class="container">
-    <h1>Détails de l'enseignant</h1>
-
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title">Informations personnelles</h5>
-            <dl class="row">
-                <dt class="col-sm-3">Code</dt>
-                <dd class="col-sm-9">@Model.CodeEnseignant</dd>
-
-                <dt class="col-sm-3">Nom</dt>
-                <dd class="col-sm-9">@Model.Nom</dd>
-
-                <dt class="col-sm-3">Prénom</dt>
-                <dd class="col-sm-9">@Model.Prenom</dd>
-
-                <dt class="col-sm-3">Département</dt>
-                <dd class="col-sm-9">@(Model.Departement?.NomDepartement ?? "Non défini")</dd>
-
-                <dt class="col-sm-3">Grade</dt>
-                <dd class="col-sm-9">@(Model.Grade?.Libelle ?? "Non défini")</dd>
-
-                <dt class="col-sm-3">Email</dt>
-                <dd class="col-sm-9">@Model.Mail</dd>
-
-                <dt class="col-sm-3">Total des absences supervisées</dt>
-                <dd class="col-sm-9">@ViewBag.TotalAbsences</dd>
-            </dl>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">
+            <i class="fas fa-user-tie me-2"></i>
+            Détails de l'enseignant
+        </h1>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.CodeEnseignant" class="btn btn-primary">
+                <i class="fas fa-edit me-2"></i>Modifier
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Retour
+            </a>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Statistiques des absences par matière</h5>
-            
-            @if (ViewBag.Statistiques != null && ViewBag.Statistiques.Count > 0)
-            {
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Matière</th>
-                            <th>Total absences</th>
-                            <th>Justifiées</th>
-                            <th>Non justifiées</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var stat in ViewBag.Statistiques)
-                        {
-                            <tr>
-                                <td>@stat.Matiere</td>
-                                <td>@stat.TotalAbsences</td>
-                                <td>@stat.AbsencesJustifiees</td>
-                                <td>@stat.AbsencesNonJustifiees</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <div class="alert alert-info">
-                    Aucune absence n'a été enregistrée pour cet enseignant.
+    <div class="row">
+        <!-- Informations personnelles -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Informations personnelles
+                    </h5>
                 </div>
-            }
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="small text-muted">Code</div>
+                            <div class="fw-bold">@Model.CodeEnseignant</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="small text-muted">Nom complet</div>
+                            <div class="fw-bold">@Model.Nom @Model.Prenom</div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="small text-muted">Département</div>
+                            <div class="fw-bold">
+                                @if (Model.Departement != null)
+                                {
+                                    <span class="badge bg-info">@Model.Departement.NomDepartement</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Non défini</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="small text-muted">Grade</div>
+                            <div class="fw-bold">
+                                @if (Model.Grade != null)
+                                {
+                                    <span class="badge bg-success">@Model.Grade.Libelle</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Non défini</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="small text-muted">Email</div>
+                            <div class="fw-bold">
+                                <a href="mailto:@Model.Mail" class="text-decoration-none">
+                                    <i class="fas fa-envelope me-2"></i>@Model.Mail
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistiques -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Statistiques des absences
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <h3 class="display-4 fw-bold text-info">@ViewBag.TotalAbsences</h3>
+                        <div class="text-muted">Total des absences supervisées</div>
+                    </div>
+
+                    @if (ViewBag.Statistiques != null && ViewBag.Statistiques.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Matière</th>
+                                        <th class="text-center">Total</th>
+                                        <th class="text-center">Justifiées</th>
+                                        <th class="text-center">Non justifiées</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var stat in ViewBag.Statistiques)
+                                    {
+                                        <tr>
+                                            <td>@stat.Matiere.NomMatiere</td>
+                                            <td class="text-center">@stat.TotalAbsences</td>
+                                            <td class="text-center text-success">@stat.AbsencesJustifiees</td>
+                                            <td class="text-center text-danger">@stat.AbsencesNonJustifiees</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Aucune absence n'a été enregistrée pour cet enseignant.
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
     </div>
+</div>
 
-    <div class="mt-3">
-        <a asp-action="Edit" asp-route-id="@Model.CodeEnseignant" class="btn btn-primary">Modifier</a>
-        <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
-    </div>
-</div> 
+@section CSS {
+    <style>
+        .card {
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+} 

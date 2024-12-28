@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GAbsence")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73f74478b8c4210b7a998b560d46b4a21a1ecd56")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f03d9ab8ed46d87b288bafc266168d3df7458a9d")]
 [assembly: System.Reflection.AssemblyProductAttribute("GAbsence")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GAbsence")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
