@@ -1,0 +1,41 @@
+@model IEnumerable<GAbsence.Models.Absence>
+
+@{
+    ViewData["Title"] = "Liste des absences";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Nouvelle absence</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Étudiant</th>
+                <th>Date</th>
+                <th>Créneau</th>
+                <th>Justifiée</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Etudiant.Nom @item.Etudiant.Prenom</td>
+                    <td>@item.Date.ToString("dd/MM/yyyy")</td>
+                    <td>@item.CreneauHoraire</td>
+                    <td>@(item.EstJustifiee ? "Oui" : "Non")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-info">Modifier</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Détails</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Supprimer</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div> 

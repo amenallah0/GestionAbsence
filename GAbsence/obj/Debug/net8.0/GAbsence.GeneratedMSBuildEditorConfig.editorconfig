@@ -26,6 +26,18 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\AmenAllah\Documents\GitHub2\GestionAbsence\GAbsence
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Absence/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWJzZW5jZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Absence/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWJzZW5jZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Absence/Rapport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWJzZW5jZVxSYXBwb3J0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -70,6 +82,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXR1ZGlhbnRcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Etudiant/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXR1ZGlhbnRcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Etudiant/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXR1ZGlhbnRcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Etudiant/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXR1ZGlhbnRcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -102,12 +122,48 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Home/GestionAbsences.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHZXN0aW9uQWJzZW5jZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Home/GestionEnseignants.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHZXN0aW9uRW5zZWlnbmFudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Home/GestionEtudiants.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHZXN0aW9uRXR1ZGlhbnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Home/GestionMatieres.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHZXN0aW9uTWF0aWVyZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Matiere/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0aWVyZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Matiere/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0aWVyZVxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Matiere/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0aWVyZVxEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Matiere/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0aWVyZVxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Matiere/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWF0aWVyZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/AmenAllah/Documents/GitHub2/GestionAbsence/GAbsence/Views/Shared/Error.cshtml]

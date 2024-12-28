@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Gestion des Enseignants";
+}
+
+<div class="container">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ajouter un enseignant</h5>
+                    <p class="card-text">Créer un nouveau dossier enseignant</p>
+                    <a asp-controller="Enseignant" asp-action="Create" class="btn btn-primary">Ajouter</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Liste des enseignants</h5>
+                    <p class="card-text">Consulter et modifier les enseignants</p>
+                    <a asp-controller="Enseignant" asp-action="Index" class="btn btn-info">Voir la liste</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Gestion des départements</h5>
+                    <p class="card-text">Gérer les départements et grades</p>
+                    <a asp-controller="Departement" asp-action="Index" class="btn btn-success">Gérer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

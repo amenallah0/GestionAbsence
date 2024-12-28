@@ -1,0 +1,42 @@
+@model GAbsence.Models.Absence
+
+@{
+    ViewData["Title"] = "Saisir une absence";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        <div class="form-group">
+            <label asp-for="CodeEtudiant" class="control-label">Étudiant</label>
+            <select asp-for="CodeEtudiant" class="form-control" asp-items="ViewBag.Etudiants"></select>
+            <span asp-validation-for="CodeEtudiant" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Date" class="control-label">Date</label>
+            <input asp-for="Date" class="form-control" type="date" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CreneauHoraire" class="control-label">Créneau Horaire</label>
+            <input asp-for="CreneauHoraire" class="form-control" />
+            <span asp-validation-for="CreneauHoraire" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="EstJustifiee" class="control-label">Justifiée</label>
+            <input asp-for="EstJustifiee" type="checkbox" class="form-check-input" />
+            <span asp-validation-for="EstJustifiee" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <input type="submit" value="Enregistrer" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+        </div>
+    </form>
+</div> 

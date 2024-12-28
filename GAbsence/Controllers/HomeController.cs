@@ -31,4 +31,24 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+    public IActionResult GestionEtudiants()
+    {
+        return View();
+    }
+
+    public IActionResult GestionEnseignants()
+    {
+        return View();
+    }
+
+    public IActionResult GestionMatieres()
+    {
+        return View();
+    }
+
+    public IActionResult GestionAbsences()
+    {
+        return View();
+    }
 }

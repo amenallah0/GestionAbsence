@@ -1,0 +1,28 @@
+@model GAbsence.Models.Matiere
+
+@{
+    ViewData["Title"] = "Détails de la matière";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <dl class="row">
+        <dt class="col-sm-2">Code</dt>
+        <dd class="col-sm-10">@Model.CodeMatiere</dd>
+
+        <dt class="col-sm-2">Libellé</dt>
+        <dd class="col-sm-10">@Model.Libelle</dd>
+
+        <dt class="col-sm-2">Nombre d'heures</dt>
+        <dd class="col-sm-10">@Model.NbreHeures</dd>
+
+        <dt class="col-sm-2">Coefficient</dt>
+        <dd class="col-sm-10">@Model.Coefficient</dd>
+    </dl>
+
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.CodeMatiere" class="btn btn-primary">Modifier</a>
+        <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+    </div>
+</div> 

@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Rapports d'absences";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Rapport par étudiant</h5>
+                    <form asp-action="RapportParEtudiant" method="get">
+                        <div class="form-group">
+                            <label>Étudiant</label>
+                            <select name="etudiantId" class="form-control" asp-items="ViewBag.Etudiants"></select>
+                        </div>
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-primary">Générer le rapport</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Rapport par période</h5>
+                    <form asp-action="RapportParPeriode" method="get">
+                        <div class="form-group">
+                            <label>Date de début</label>
+                            <input type="date" name="dateDebut" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Date de fin</label>
+                            <input type="date" name="dateFin" class="form-control" />
+                        </div>
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-primary">Générer le rapport</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

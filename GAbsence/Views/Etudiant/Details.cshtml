@@ -1,0 +1,37 @@
+@model GAbsence.Models.Etudiant
+
+@{
+    ViewData["Title"] = "Détails de l'étudiant";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <dl class="row">
+        <dt class="col-sm-2">Code</dt>
+        <dd class="col-sm-10">@Model.CodeEtudiant</dd>
+
+        <dt class="col-sm-2">Nom</dt>
+        <dd class="col-sm-10">@Model.Nom</dd>
+
+        <dt class="col-sm-2">Prénom</dt>
+        <dd class="col-sm-10">@Model.Prenom</dd>
+
+        <dt class="col-sm-2">Classe</dt>
+        <dd class="col-sm-10">@Model.Classe?.NomClasse</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Mail</dd>
+
+        <dt class="col-sm-2">Téléphone</dt>
+        <dd class="col-sm-10">@Model.Tel</dd>
+
+        <dt class="col-sm-2">Adresse</dt>
+        <dd class="col-sm-10">@Model.Adresse</dd>
+    </dl>
+
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.CodeEtudiant" class="btn btn-primary">Modifier</a>
+        <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+    </div>
+</div> 

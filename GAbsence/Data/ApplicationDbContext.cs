@@ -22,6 +22,7 @@ namespace GAbsence.Data
         public DbSet<Etudiant> Etudiants { get; set; }
         public DbSet<Departement> Departements { get; set; }
         public DbSet<Grade> Grades { get; set; }
+        public DbSet<Absence> Absences { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,8 +33,8 @@ namespace GAbsence.Data
             modelBuilder.Entity<Matiere>().HasKey(m => m.CodeMatiere);
             modelBuilder.Entity<Seance>().HasKey(s => s.CodeSeance);
             modelBuilder.Entity<Groupe>().HasKey(g => g.CodeGroupe);
-            modelBuilder.Entity<FicheAbsence>().HasKey(f => f.CodeFicheAbsence);
-            modelBuilder.Entity<FicheAbsenceSeance>().HasKey(fas => new { fas.CodeFicheAbsence, fas.CodeSeance });
+            modelBuilder.Entity<FicheAbsence>().HasKey(f => f.Id);
+            modelBuilder.Entity<FicheAbsenceSeance>().HasKey(fas => fas.Id);
             modelBuilder.Entity<LigneFicheAbsence>().HasKey(l => new { l.CodeFicheAbsence, l.CodeEtudiant });
             modelBuilder.Entity<Enseignant>().HasKey(e => e.CodeEnseignant);
             modelBuilder.Entity<Etudiant>().HasKey(e => e.CodeEtudiant);
@@ -98,6 +99,44 @@ namespace GAbsence.Data
                 new Classe { CodeClasse = "DSI31", NomClasse = "DSI 3.1" },
                 new Classe { CodeClasse = "DSI32", NomClasse = "DSI 3.2" }
             );
+
+            // Configuration de FicheAbsence
+            modelBuilder.Entity<FicheAbsence>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                
+                entity.HasOne(d => d.Etudiant)
+                    .WithMany()
+                    .HasForeignKey(d => d.CodeEtudiant)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(d => d.Enseignant)
+                    .WithMany()
+                    .HasForeignKey(d => d.CodeEnseignant)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Configuration de FicheAbsenceSeance
+            modelBuilder.Entity<FicheAbsenceSeance>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                
+                entity.HasOne(d => d.FicheAbsence)
+                    .WithMany()
+                    .HasForeignKey(d => d.FicheAbsenceId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(d => d.Seance)
+                    .WithMany()
+                    .HasForeignKey(d => d.CodeSeance)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<Absence>()
+                .HasOne(a => a.Etudiant)
+                .WithMany()
+                .HasForeignKey(a => a.CodeEtudiant)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 } 

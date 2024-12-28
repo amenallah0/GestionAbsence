@@ -1,10 +1,19 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace GAbsence.Models
 {
     public class Matiere
     {
-        public required string CodeMatiere { get; set; }
-        public required string NomMatiere { get; set; }
-        public int NbHeures { get; set; }
-        public virtual ICollection<Seance>? Seances { get; set; }
+        [Key]
+        public string CodeMatiere { get; set; }
+        
+        [Required]
+        public string Libelle { get; set; }
+        
+        [Required]
+        public int NbreHeures { get; set; }
+        
+        [Required]
+        public int Coefficient { get; set; }
     }
 } 

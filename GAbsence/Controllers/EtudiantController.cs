@@ -126,6 +126,55 @@ namespace GAbsence.Controllers
             return View(etudiant);
         }
 
+        // GET: Etudiant/Details/5
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var etudiant = await _context.Etudiants
+                .Include(e => e.Classe)
+                .FirstOrDefaultAsync(m => m.CodeEtudiant == id);
+            if (etudiant == null)
+            {
+                return NotFound();
+            }
+
+            return View(etudiant);
+        }
+
+        // GET: Etudiant/Delete/5
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var etudiant = await _context.Etudiants
+                .Include(e => e.Classe)
+                .FirstOrDefaultAsync(m => m.CodeEtudiant == id);
+            if (etudiant == null)
+            {
+                return NotFound();
+            }
+
+            return View(etudiant);
+        }
+
+        // POST: Etudiant/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var etudiant = await _context.Etudiants.FindAsync(id);
+            _context.Etudiants.Remove(etudiant);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         private bool EtudiantExists(string id)
         {
             return _context.Etudiants.Any(e => e.CodeEtudiant == id);

@@ -1,0 +1,42 @@
+@model GAbsence.Models.Matiere
+
+@{
+    ViewData["Title"] = "Créer une matière";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        
+        <div class="form-group">
+            <label asp-for="CodeMatiere" class="control-label">Code Matière</label>
+            <input asp-for="CodeMatiere" class="form-control" />
+            <span asp-validation-for="CodeMatiere" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Libelle" class="control-label">Libellé</label>
+            <input asp-for="Libelle" class="form-control" />
+            <span asp-validation-for="Libelle" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="NbreHeures" class="control-label">Nombre d'heures</label>
+            <input asp-for="NbreHeures" class="form-control" />
+            <span asp-validation-for="NbreHeures" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Coefficient" class="control-label">Coefficient</label>
+            <input asp-for="Coefficient" class="form-control" />
+            <span asp-validation-for="Coefficient" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mt-3">
+            <input type="submit" value="Créer" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+        </div>
+    </form>
+</div> 

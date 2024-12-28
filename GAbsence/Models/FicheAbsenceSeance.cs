@@ -4,15 +4,18 @@ namespace GAbsence.Models
 {
     public class FicheAbsenceSeance
     {
-        [Required]
-        public required string CodeFicheAbsence { get; set; }
+        [Key]
+        public int Id { get; set; }
         
         [Required]
-        public required string CodeSeance { get; set; }
+        public int FicheAbsenceId { get; set; }
+        
+        [Required]
+        public string CodeSeance { get; set; }
 
         // Navigation properties
-        public virtual FicheAbsence? FicheAbsence { get; set; }
-        public virtual Seance? Seance { get; set; }
-        public virtual ICollection<LigneFicheAbsence>? LignesFicheAbsence { get; set; }
+        public virtual FicheAbsence FicheAbsence { get; set; }
+        public virtual Seance Seance { get; set; }
+        public virtual ICollection<LigneFicheAbsence> LignesFicheAbsence { get; set; }
     }
 } 
