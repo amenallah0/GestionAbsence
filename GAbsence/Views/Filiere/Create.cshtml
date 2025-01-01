@@ -1,46 +1,78 @@
- @model GAbsence.Models.Filiere
+@model GAbsence.Models.Filiere
 
 @{
-    ViewData["Title"] = "Nouvelle Filière";
+    ViewData["Title"] = "Créer une Filière";
 }
 
-<div class="card">
-    <div class="card-header bg-primary text-white">
-        <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Créer une nouvelle filière</h5>
-    </div>
-    <div class="card-body">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            <div class="mb-3">
-                <label asp-for="CodeFiliere" class="form-label"></label>
-                <input asp-for="CodeFiliere" class="form-control" />
-                <span asp-validation-for="CodeFiliere" class="text-danger"></span>
-            </div>
-            
-            <div class="mb-3">
-                <label asp-for="NomFiliere" class="form-label"></label>
-                <input asp-for="NomFiliere" class="form-control" />
-                <span asp-validation-for="NomFiliere" class="text-danger"></span>
-            </div>
-            
-            <div class="mb-3">
-                <label asp-for="Description" class="form-label"></label>
-                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-graduation-cap me-2"></i>Créer une nouvelle filière
+            </h4>
+        </div>
 
-            <div class="mt-4">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save me-1"></i> Enregistrer
-                </button>
-                <a asp-action="Index" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left me-1"></i> Retour à la liste
-                </a>
-            </div>
-        </form>
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="CodeFiliere" class="control-label required"></label>
+                            <input asp-for="CodeFiliere" class="form-control" placeholder="Ex: INFO, MATH, PHY..." />
+                            <span asp-validation-for="CodeFiliere" class="text-danger"></span>
+                            <small class="form-text text-muted">Code unique identifiant la filière</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="NomFiliere" class="control-label required"></label>
+                            <input asp-for="NomFiliere" class="form-control" placeholder="Ex: Informatique, Mathématiques..." />
+                            <span asp-validation-for="NomFiliere" class="text-danger"></span>
+                            <small class="form-text text-muted">Nom complet de la filière</small>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <textarea asp-for="Description" class="form-control" rows="3" 
+                                    placeholder="Description détaillée de la filière..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                            <small class="form-text text-muted">Description optionnelle de la filière</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-transparent text-end mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>Enregistrer
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">
+                        <i class="fas fa-times me-1"></i>Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .required:after {
+            content: " *";
+            color: red;
+        }
+        .card {
+            border-radius: 10px;
+        }
+        .card-header {
+            border-radius: 10px 10px 0 0;
+        }
+    </style>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

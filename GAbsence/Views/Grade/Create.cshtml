@@ -1,43 +1,54 @@
 @model GAbsence.Models.Grade
 
 @{
-    ViewData["Title"] = "Nouveau Grade";
+    ViewData["Title"] = "Créer un Grade";
 }
 
-<div class="card">
-    <div class="card-header bg-primary text-white">
-        <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Ajouter un grade</h5>
-    </div>
-    <div class="card-body">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label asp-for="CodeGrade" class="form-label"></label>
-                    <input asp-for="CodeGrade" class="form-control" />
-                    <span asp-validation-for="CodeGrade" class="text-danger"></span>
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-plus-circle me-2"></i>Créer un nouveau grade
+            </h4>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="CodeGrade" class="control-label required"></label>
+                            <input asp-for="CodeGrade" class="form-control" placeholder="Ex: PR, MCF, ATER..." />
+                            <span asp-validation-for="CodeGrade" class="text-danger"></span>
+                            <small class="form-text text-muted">Code unique identifiant le grade</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Libelle" class="control-label required"></label>
+                            <input asp-for="Libelle" class="form-control" placeholder="Ex: Professeur, Maître de conférences..." />
+                            <span asp-validation-for="Libelle" class="text-danger"></span>
+                            <small class="form-text text-muted">Nom complet du grade</small>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Libelle" class="form-label"></label>
-                    <input asp-for="Libelle" class="form-control" />
-                    <span asp-validation-for="Libelle" class="text-danger"></span>
+                <div class="card-footer bg-transparent text-end mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>Enregistrer
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">
+                        <i class="fas fa-times me-1"></i>Annuler
+                    </a>
                 </div>
-            </div>
-
-            <div class="mt-4">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save me-1"></i> Enregistrer
-                </button>
-                <a asp-action="Index" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left me-1"></i> Retour à la liste
-                </a>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-} 
+}
