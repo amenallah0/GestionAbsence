@@ -4,64 +4,97 @@
     ViewData["Title"] = "Modifier l'étudiant";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-user-edit me-2"></i>Modifier l'étudiant
+            </h4>
+        </div>
 
-<div class="row">
-    <div class="col-md-8">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CodeEtudiant" />
-            
-            <div class="form-group mb-3">
-                <label asp-for="Nom" class="control-label">Nom</label>
-                <input asp-for="Nom" class="form-control" />
-                <span asp-validation-for="Nom" class="text-danger"></span>
-            </div>
+        <div class="card-body">
+            <form asp-action="Edit" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <input type="hidden" asp-for="CodeEtudiant" />
 
-            <div class="form-group mb-3">
-                <label asp-for="Prenom" class="control-label">Prénom</label>
-                <input asp-for="Prenom" class="form-control" />
-                <span asp-validation-for="Prenom" class="text-danger"></span>
-            </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Nom" class="form-label">Nom</label>
+                            <input asp-for="Nom" class="form-control" />
+                            <span asp-validation-for="Nom" class="text-danger"></span>
+                        </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="DateNaissance" class="control-label">Date de naissance</label>
-                <input asp-for="DateNaissance" class="form-control" type="date" />
-                <span asp-validation-for="DateNaissance" class="text-danger"></span>
-            </div>
+                        <div class="mb-3">
+                            <label asp-for="Prenom" class="form-label">Prénom</label>
+                            <input asp-for="Prenom" class="form-control" />
+                            <span asp-validation-for="Prenom" class="text-danger"></span>
+                        </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="CodeClasse" class="control-label">Classe</label>
-                <select asp-for="CodeClasse" class="form-control" asp-items="ViewBag.CodeClasse"></select>
-                <span asp-validation-for="CodeClasse" class="text-danger"></span>
-            </div>
+                        <div class="mb-3">
+                            <label asp-for="DateNaissance" class="form-label">Date de naissance</label>
+                            <input asp-for="DateNaissance" class="form-control" type="date" />
+                            <span asp-validation-for="DateNaissance" class="text-danger"></span>
+                        </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Adresse" class="control-label">Adresse</label>
-                <input asp-for="Adresse" class="form-control" />
-                <span asp-validation-for="Adresse" class="text-danger"></span>
-            </div>
+                        <div class="mb-3">
+                            <label asp-for="CodeClasse" class="form-label">Classe</label>
+                            <select asp-for="CodeClasse" class="form-select"
+                                    asp-items="@(new SelectList(ViewBag.Classes, "CodeClasse", "DisplayText"))">
+                                <option value="">-- Sélectionner une classe --</option>
+                            </select>
+                            <span asp-validation-for="CodeClasse" class="text-danger"></span>
+                        </div>
+                    </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Mail" class="control-label">Email</label>
-                <input asp-for="Mail" class="form-control" type="email" />
-                <span asp-validation-for="Mail" class="text-danger"></span>
-            </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Mail" class="form-label">Email</label>
+                            <input asp-for="Mail" class="form-control" type="email" />
+                            <span asp-validation-for="Mail" class="text-danger"></span>
+                        </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Tel" class="control-label">Téléphone</label>
-                <input asp-for="Tel" class="form-control" />
-                <span asp-validation-for="Tel" class="text-danger"></span>
-            </div>
+                        <div class="mb-3">
+                            <label asp-for="Tel" class="form-label">Téléphone</label>
+                            <input asp-for="Tel" class="form-control" />
+                            <span asp-validation-for="Tel" class="text-danger"></span>
+                        </div>
 
-            <div class="form-group">
-                <input type="submit" value="Enregistrer" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
-            </div>
-        </form>
+                        <div class="mb-3">
+                            <label asp-for="Adresse" class="form-label">Adresse</label>
+                            <textarea asp-for="Adresse" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Adresse" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-transparent text-end mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>Enregistrer
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">
+                        <i class="fas fa-times me-1"></i>Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 10px;
+        }
+        .card-header {
+            border-radius: 10px 10px 0 0;
+        }
+        .form-control, .form-select {
+            border-radius: 5px;
+        }
+    </style>
 } 

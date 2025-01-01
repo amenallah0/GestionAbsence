@@ -41,5 +41,7 @@ namespace GAbsence.Models
 
         // Navigation property
         public virtual Classe? Classe { get; set; }
+
+        public string NomComplet => $"{Nom} {Prenom}";
     }
 } 

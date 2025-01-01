@@ -1,0 +1,49 @@
+@model GAbsence.Models.Filiere
+
+@{
+    ViewData["Title"] = "Détails Filière";
+}
+
+<div class="card">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Détails de la filière</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CodeFiliere)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CodeFiliere)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.NomFiliere)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.NomFiliere)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+            <dt class="col-sm-3">Classes</dt>
+            <dd class="col-sm-9">
+                @if (Model.Classes != null && Model.Classes.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var classe in Model.Classes)
+                        {
+                            <li class="list-group-item">@classe.NomClasse</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">Aucune classe associée</p>
+                }
+            </dd>
+        </dl>
+
+        <div class="mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.CodeFiliere" class="btn btn-warning">
+                <i class="fas fa-edit me-1"></i> Modifier
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+            </a>
+        </div>
+    </div>
+</div> 

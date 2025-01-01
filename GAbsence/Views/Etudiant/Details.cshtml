@@ -1,37 +1,103 @@
 @model GAbsence.Models.Etudiant
 
 @{
-    ViewData["Title"] = "Détails de l'étudiant";
+    ViewData["Title"] = "Détails Étudiant";
 }
 
-<div class="container">
-    <h1>@ViewData["Title"]</h1>
+<div class="card">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i>Détails de l'étudiant</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 text-center mb-4">
+                <div class="border rounded-circle p-3 d-inline-block mb-3">
+                    <i class="fas fa-user-graduate fa-4x text-info"></i>
+                </div>
+                <h4>@Model.NomComplet</h4>
+                <p class="text-muted">@Model.CodeEtudiant</p>
+            </div>
+            <div class="col-md-8">
+                <dl class="row">
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Nom)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Nom)</dd>
 
-    <dl class="row">
-        <dt class="col-sm-2">Code</dt>
-        <dd class="col-sm-10">@Model.CodeEtudiant</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Prenom)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Prenom)</dd>
 
-        <dt class="col-sm-2">Nom</dt>
-        <dd class="col-sm-10">@Model.Nom</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.DateNaissance)</dt>
+                    <dd class="col-sm-8">@Model.DateNaissance.ToString("dd/MM/yyyy")</dd>
 
-        <dt class="col-sm-2">Prénom</dt>
-        <dd class="col-sm-10">@Model.Prenom</dd>
+                    <dt class="col-sm-4">Classe</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.Classe != null)
+                        {
+                            <span class="badge bg-primary">@Model.Classe.NomClasse</span>
+                        }
+                    </dd>
 
-        <dt class="col-sm-2">Classe</dt>
-        <dd class="col-sm-10">@Model.Classe?.NomClasse</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Mail)</dt>
+                    <dd class="col-sm-8">
+                        <a href="mailto:@Model.Mail">@Model.Mail</a>
+                    </dd>
 
-        <dt class="col-sm-2">Email</dt>
-        <dd class="col-sm-10">@Model.Mail</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Tel)</dt>
+                    <dd class="col-sm-8">
+                        <a href="tel:@Model.Tel">@Model.Tel</a>
+                    </dd>
 
-        <dt class="col-sm-2">Téléphone</dt>
-        <dd class="col-sm-10">@Model.Tel</dd>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Adresse)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Adresse)</dd>
+                </dl>
 
-        <dt class="col-sm-2">Adresse</dt>
-        <dd class="col-sm-10">@Model.Adresse</dd>
-    </dl>
+                @*
+                @if (Model.Absences != null && Model.Absences.Any())
+                {
+                    <div class="mt-4">
+                        <h6 class="mb-3">Historique des absences</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Matière</th>
+                                        <th>État</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var absence in Model.Absences.OrderByDescending(a => a.Date))
+                                    {
+                                        <tr>
+                                            <td>@absence.Date.ToString("dd/MM/yyyy")</td>
+                                            <td>@absence.Matiere?.Libelle</td>
+                                            <td>
+                                                @if (absence.EstJustifiee)
+                                                {
+                                                    <span class="badge bg-success">Justifiée</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">Non justifiée</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+                *@
+            </div>
+        </div>
 
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.CodeEtudiant" class="btn btn-primary">Modifier</a>
-        <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+        <div class="mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.CodeEtudiant" class="btn btn-warning">
+                <i class="fas fa-edit me-1"></i> Modifier
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+            </a>
+        </div>
     </div>
 </div> 

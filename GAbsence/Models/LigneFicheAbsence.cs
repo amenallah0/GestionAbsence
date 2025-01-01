@@ -1,17 +1,23 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GAbsence.Models
 {
     public class LigneFicheAbsence
     {
+        [Key]
+        public int Id { get; set; }
+
         [Required]
-        public required string CodeFicheAbsence { get; set; }
-        
+        public string CodeFiche { get; set; }
+
         [Required]
-        public required string CodeEtudiant { get; set; }
+        public string CodeEtudiant { get; set; }
+
+        public bool EstAbsent { get; set; }
 
         // Navigation properties
-        public virtual FicheAbsenceSeance? FicheAbsenceSeance { get; set; }
+        public virtual FicheAbsence? FicheAbsence { get; set; }
         public virtual Etudiant? Etudiant { get; set; }
     }
 } 

@@ -22,7 +22,7 @@
             {
                 <tr>
                     <td>@absence.Date.ToString("dd/MM/yyyy")</td>
-                    <td>@absence.Etudiant.Nom @absence.Etudiant.Prenom</td>
+                    <td>@(absence.Etudiant?.Nom ?? "Inconnu") @(absence.Etudiant?.Prenom ?? "Inconnu")</td>
                     <td>@absence.Etudiant.Classe?.NomClasse</td>
                     <td>@absence.CreneauHoraire</td>
                     <td>@(absence.EstJustifiee ? "Oui" : "Non")</td>

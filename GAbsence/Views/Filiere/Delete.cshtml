@@ -1,0 +1,48 @@
+@model GAbsence.Models.Filiere
+
+@{
+    ViewData["Title"] = "Supprimer Filière";
+}
+
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <h5 class="mb-0"><i class="fas fa-trash me-2"></i>Confirmer la suppression</h5>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            Êtes-vous sûr de vouloir supprimer cette filière ?
+        </div>
+
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CodeFiliere)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CodeFiliere)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.NomFiliere)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.NomFiliere)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+        </dl>
+
+        @if (Model.Classes != null && Model.Classes.Any())
+        {
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                Attention : Cette filière contient @Model.Classes.Count classes. La suppression affectera également ces classes.
+            </div>
+        }
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="CodeFiliere" />
+            <div class="mt-4">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash me-1"></i> Supprimer
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+                </a>
+            </div>
+        </form>
+    </div>
+</div> 

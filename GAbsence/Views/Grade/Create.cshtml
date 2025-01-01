@@ -1,28 +1,41 @@
 @model GAbsence.Models.Grade
 
-<div class="container">
-    <h1>Ajouter un grade</h1>
+@{
+    ViewData["Title"] = "Nouveau Grade";
+}
 
-    <form asp-action="Create">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Ajouter un grade</h5>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CodeGrade" class="form-label"></label>
+                    <input asp-for="CodeGrade" class="form-control" />
+                    <span asp-validation-for="CodeGrade" class="text-danger"></span>
+                </div>
 
-        <div class="form-group">
-            <label asp-for="CodeGrade" class="control-label">Code du grade</label>
-            <input asp-for="CodeGrade" class="form-control" />
-            <span asp-validation-for="CodeGrade" class="text-danger"></span>
-        </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Libelle" class="form-label"></label>
+                    <input asp-for="Libelle" class="form-control" />
+                    <span asp-validation-for="Libelle" class="text-danger"></span>
+                </div>
+            </div>
 
-        <div class="form-group">
-            <label asp-for="Libelle" class="control-label">Nom du grade</label>
-            <input asp-for="Libelle" class="form-control" />
-            <span asp-validation-for="Libelle" class="text-danger"></span>
-        </div>
-
-        <div class="form-group mt-3">
-            <input type="submit" value="Enregistrer" class="btn btn-primary" />
-            <a asp-action="Index" class="btn btn-secondary">Annuler</a>
-        </div>
-    </form>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Enregistrer
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
 
 @section Scripts {

@@ -1,0 +1,46 @@
+@model GAbsence.Models.Absence
+
+@{
+    ViewData["Title"] = "Supprimer Absence";
+}
+
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <h5 class="mb-0"><i class="fas fa-trash me-2"></i>Confirmer la suppression</h5>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            Êtes-vous sûr de vouloir supprimer cette absence ?
+        </div>
+
+        <dl class="row">
+            <dt class="col-sm-3">Étudiant</dt>
+            <dd class="col-sm-9">@($"{Model.Etudiant?.Nom} {Model.Etudiant?.Prenom}")</dd>
+
+            <dt class="col-sm-3">Date</dt>
+            <dd class="col-sm-9">@Model.Date.ToString("dd/MM/yyyy")</dd>
+
+            <dt class="col-sm-3">Créneau</dt>
+            <dd class="col-sm-9">@Model.CreneauHoraire</dd>
+
+            <dt class="col-sm-3">Matière</dt>
+            <dd class="col-sm-9">@Model.Matiere?.Libelle</dd>
+
+            <dt class="col-sm-3">Enseignant</dt>
+            <dd class="col-sm-9">@($"{Model.Enseignant?.Nom} {Model.Enseignant?.Prenom}")</dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <div class="mt-4">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash me-1"></i> Supprimer
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+                </a>
+            </div>
+        </form>
+    </div>
+</div> 

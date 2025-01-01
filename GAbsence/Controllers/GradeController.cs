@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GAbsence.Controllers
 {
     public class GradeController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<GradeController> _logger;
 
-        public GradeController(ApplicationDbContext context)
+        public GradeController(ApplicationDbContext context, ILogger<GradeController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Grade
@@ -41,7 +44,7 @@ namespace GAbsence.Controllers
             return View(grade);
         }
 
-        // GET: Grade/Edit/5
+        // GET: Grade/Edit/MCF
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -49,44 +52,53 @@ namespace GAbsence.Controllers
                 return NotFound();
             }
 
-            var grade = await _context.Grades.FindAsync(id);
+            var grade = await _context.Grades
+                .Include(g => g.Enseignants)
+                .FirstOrDefaultAsync(g => g.CodeGrade == id);
+
             if (grade == null)
             {
                 return NotFound();
             }
+
             return View(grade);
         }
 
-        // POST: Grade/Edit/5
+        // POST: Grade/Edit/MCF
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CodeGrade,NomGrade")] Grade grade)
+        public async Task<IActionResult> Edit(string id, [Bind("CodeGrade,Libelle")] Grade grade)
         {
             if (id != grade.CodeGrade)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var existingGrade = await _context.Grades
+                    .Include(g => g.Enseignants)
+                    .FirstOrDefaultAsync(g => g.CodeGrade == id);
+
+                if (existingGrade == null)
                 {
-                    _context.Update(grade);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!GradeExists(grade.CodeGrade))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                // Mettre à jour uniquement le libellé
+                existingGrade.Libelle = grade.Libelle;
+
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Grade {id} mis à jour avec succès");
+                TempData["Success"] = "Le grade a été modifié avec succès.";
                 return RedirectToAction(nameof(Index));
             }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Erreur lors de la modification du grade {id}: {ex.Message}");
+                ModelState.AddModelError("", "Une erreur est survenue lors de la modification du grade.");
+            }
+
             return View(grade);
         }
 

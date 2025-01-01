@@ -1,7 +1,7 @@
-@model GAbsence.Models.Etudiant
+@model GAbsence.Models.Enseignant
 
 @{
-    ViewData["Title"] = "Supprimer Étudiant";
+    ViewData["Title"] = "Supprimer Enseignant";
 }
 
 <div class="card">
@@ -11,16 +11,20 @@
     <div class="card-body">
         <div class="alert alert-warning">
             <i class="fas fa-exclamation-triangle me-2"></i>
-            Êtes-vous sûr de vouloir supprimer cet étudiant ?
+            Êtes-vous sûr de vouloir supprimer cet enseignant ?
         </div>
 
         <div class="row">
             <div class="col-md-4 text-center mb-4">
                 <div class="border rounded-circle p-3 d-inline-block mb-3">
-                    <i class="fas fa-user-graduate fa-4x text-danger"></i>
+                    <i class="fas fa-user-tie fa-4x text-danger"></i>
                 </div>
-                <h4>@Model.NomComplet</h4>
-                <p class="text-muted">@Model.CodeEtudiant</p>
+                <h4>@($"{Model.Nom} {Model.Prenom}")</h4>
+                <p class="text-muted">@Model.CodeEnseignant</p>
+                @if (Model.Grade != null)
+                {
+                    <span class="badge bg-primary">@Model.Grade.Libelle</span>
+                }
             </div>
             <div class="col-md-8">
                 <dl class="row">
@@ -30,33 +34,25 @@
                     <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Prenom)</dt>
                     <dd class="col-sm-8">@Html.DisplayFor(model => model.Prenom)</dd>
 
-                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.DateNaissance)</dt>
-                    <dd class="col-sm-8">@Model.DateNaissance.ToString("dd/MM/yyyy")</dd>
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">@Model.Email</dd>
 
-                    <dt class="col-sm-4">Classe</dt>
+                    <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Tel)</dt>
                     <dd class="col-sm-8">
-                        @if (Model.Classe != null)
-                        {
-                            <span class="badge bg-primary">@Model.Classe.NomClasse</span>
-                        }
+                        <a href="tel:@Model.Tel">@Model.Tel</a>
                     </dd>
-                </dl>
 
-                @*
-                @if (Model.Absences != null && Model.Absences.Any())
-                {
-                    <div class="alert alert-danger mt-3">
-                        <i class="fas fa-exclamation-circle me-2"></i>
-                        Attention : Cet étudiant a @Model.Absences.Count absence(s) enregistrée(s).
-                        La suppression effacera également ces données.
-                    </div>
-                }
-                *@
+                    <dt class="col-sm-4">Grade</dt>
+                    <dd class="col-sm-8">@(Model.Grade?.Libelle ?? "Non spécifié")</dd>
+
+                    <dt class="col-sm-4">Département</dt>
+                    <dd class="col-sm-8">@(Model.Departement?.NomDepartement ?? "Non spécifié")</dd>
+                </dl>
             </div>
         </div>
 
         <form asp-action="Delete" class="mt-4">
-            <input type="hidden" asp-for="CodeEtudiant" />
+            <input type="hidden" asp-for="CodeEnseignant" />
             <button type="submit" class="btn btn-danger">
                 <i class="fas fa-trash me-1"></i> Supprimer
             </button>

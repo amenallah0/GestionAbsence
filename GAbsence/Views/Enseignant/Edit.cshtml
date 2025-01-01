@@ -1,68 +1,74 @@
 @model GAbsence.Models.Enseignant
 
 @{
-    ViewData["Title"] = "Modifier l'enseignant";
+    ViewData["Title"] = "Modifier Enseignant";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-8">
+<div class="card">
+    <div class="card-header bg-warning">
+        <h5 class="mb-0"><i class="fas fa-user-edit me-2"></i>Modifier l'enseignant</h5>
+    </div>
+    <div class="card-body">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CodeEnseignant" />
-            
-            <div class="form-group mb-3">
-                <label asp-for="Nom" class="control-label">Nom</label>
-                <input asp-for="Nom" class="form-control" />
-                <span asp-validation-for="Nom" class="text-danger"></span>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CodeEnseignant" class="form-label"></label>
+                    <input asp-for="CodeEnseignant" class="form-control" readonly />
+                    <span asp-validation-for="CodeEnseignant" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CodeGrade" class="form-label">Grade</label>
+                    <select asp-for="CodeGrade" class="form-select" asp-items="ViewBag.Grades">
+                        <option value="">-- Sélectionner un grade --</option>
+                    </select>
+                    <span asp-validation-for="CodeGrade" class="text-danger"></span>
+                </div>
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="Prenom" class="control-label">Prénom</label>
-                <input asp-for="Prenom" class="form-control" />
-                <span asp-validation-for="Prenom" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Nom" class="form-label"></label>
+                    <input asp-for="Nom" class="form-control" />
+                    <span asp-validation-for="Nom" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Prenom" class="form-label"></label>
+                    <input asp-for="Prenom" class="form-control" />
+                    <span asp-validation-for="Prenom" class="text-danger"></span>
+                </div>
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="DateRecrutement" class="control-label">Date de recrutement</label>
-                <input asp-for="DateRecrutement" class="form-control" type="date" />
-                <span asp-validation-for="DateRecrutement" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" type="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Tel" class="form-label">Téléphone</label>
+                    <input asp-for="Tel" class="form-control" type="tel" 
+                           pattern="[0-9]{8}" 
+                           maxlength="8"
+                           placeholder="12345678"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);" />
+                    <span asp-validation-for="Tel" class="text-danger"></span>
+                    <small class="form-text text-muted">Format: 8 chiffres sans espaces</small>
+                </div>
             </div>
 
-            <div class="form-group mb-3">
-                <label asp-for="CodeDepartement" class="control-label">Département</label>
-                <select asp-for="CodeDepartement" class="form-control" asp-items="ViewBag.CodeDepartement"></select>
-                <span asp-validation-for="CodeDepartement" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="CodeGrade" class="control-label">Grade</label>
-                <select asp-for="CodeGrade" class="form-control" asp-items="ViewBag.CodeGrade"></select>
-                <span asp-validation-for="CodeGrade" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="Adresse" class="control-label">Adresse</label>
-                <input asp-for="Adresse" class="form-control" />
-                <span asp-validation-for="Adresse" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="Mail" class="control-label">Email</label>
-                <input asp-for="Mail" class="form-control" type="email" />
-                <span asp-validation-for="Mail" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="Tel" class="control-label">Téléphone</label>
-                <input asp-for="Tel" class="form-control" />
-                <span asp-validation-for="Tel" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Enregistrer" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-warning">
+                    <i class="fas fa-save me-1"></i> Enregistrer
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+                </a>
             </div>
         </form>
     </div>
@@ -70,4 +76,12 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Empêcher la saisie de caractères non numériques dans le champ téléphone
+        document.querySelector('input[type="tel"]').addEventListener('keypress', function(e) {
+            if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+    </script>
 } 

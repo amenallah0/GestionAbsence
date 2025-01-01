@@ -36,7 +36,7 @@ namespace GAbsence.Data
             modelBuilder.Entity<Groupe>().HasKey(g => g.CodeGroupe);
             modelBuilder.Entity<FicheAbsence>().HasKey(f => f.Id);
             modelBuilder.Entity<FicheAbsenceSeance>().HasKey(fas => fas.Id);
-            modelBuilder.Entity<LigneFicheAbsence>().HasKey(l => new { l.CodeFicheAbsence, l.CodeEtudiant });
+            modelBuilder.Entity<LigneFicheAbsence>().HasKey(l => new { l.CodeFiche, l.CodeEtudiant });
             modelBuilder.Entity<Enseignant>().HasKey(e => e.CodeEnseignant);
             modelBuilder.Entity<Etudiant>().HasKey(e => e.CodeEtudiant);
             modelBuilder.Entity<Departement>().HasKey(d => d.CodeDepartement);
@@ -203,6 +203,29 @@ namespace GAbsence.Data
                     .HasForeignKey(a => a.CodeMatiere)
                     .OnDelete(DeleteBehavior.Restrict);
             });
+
+            // Configuration de la relation many-to-many entre Matiere et Enseignant
+            modelBuilder.Entity<Matiere>()
+                .HasMany(m => m.Enseignants)
+                .WithMany(e => e.Matieres)
+                .UsingEntity<Dictionary<string, object>>(
+                    "MatiereEnseignants",
+                    j => j
+                        .HasOne<Enseignant>()
+                        .WithMany()
+                        .HasForeignKey("CodeEnseignant")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    j => j
+                        .HasOne<Matiere>()
+                        .WithMany()
+                        .HasForeignKey("CodeMatiere")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    j =>
+                    {
+                        j.HasKey("CodeEnseignant", "CodeMatiere");
+                        j.ToTable("MatiereEnseignants");
+                    }
+                );
         }
     }
 } 

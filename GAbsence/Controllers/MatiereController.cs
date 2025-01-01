@@ -2,16 +2,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GAbsence.Models;
 using GAbsence.Data;
+using Microsoft.Extensions.Logging;
 
 namespace GAbsence.Controllers
 {
     public class MatiereController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<MatiereController> _logger;
 
-        public MatiereController(ApplicationDbContext context)
+        public MatiereController(ApplicationDbContext context, ILogger<MatiereController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Matiere
@@ -114,7 +117,11 @@ namespace GAbsence.Controllers
                 return NotFound();
             }
 
-            var matiere = await _context.Matieres.FirstOrDefaultAsync(m => m.CodeMatiere == id);
+            var matiere = await _context.Matieres
+                .Include(m => m.Absences)
+                .Include(m => m.Enseignants)
+                .FirstOrDefaultAsync(m => m.CodeMatiere == id);
+
             if (matiere == null)
             {
                 return NotFound();
@@ -128,13 +135,53 @@ namespace GAbsence.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var matiere = await _context.Matieres.FindAsync(id);
-            if (matiere != null)
+            try
             {
+                var matiere = await _context.Matieres
+                    .Include(m => m.Absences)
+                    .Include(m => m.Enseignants)
+                    .FirstOrDefaultAsync(m => m.CodeMatiere == id);
+
+                if (matiere == null)
+                {
+                    return NotFound();
+                }
+
+                // Vérifier s'il y a des absences liées
+                if (matiere.Absences?.Any() == true)
+                {
+                    ModelState.AddModelError("", "Impossible de supprimer cette matière car elle est liée à des absences.");
+                    return View(matiere);
+                }
+
+                // Supprimer d'abord les relations avec les enseignants
+                if (matiere.Enseignants != null)
+                {
+                    matiere.Enseignants.Clear();
+                    await _context.SaveChangesAsync();
+                }
+
+                // Maintenant supprimer la matière
                 _context.Matieres.Remove(matiere);
                 await _context.SaveChangesAsync();
+
+                TempData["Success"] = "La matière a été supprimée avec succès.";
+                return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                _logger.LogError($"Erreur lors de la suppression de la matière {id}: {ex.Message}");
+                ModelState.AddModelError("", "Une erreur s'est produite lors de la suppression de la matière. " +
+                                          "Veuillez vérifier qu'elle n'est pas utilisée dans d'autres enregistrements.");
+                
+                // Recharger la matière pour la vue
+                var matiere = await _context.Matieres
+                    .Include(m => m.Absences)
+                    .Include(m => m.Enseignants)
+                    .FirstOrDefaultAsync(m => m.CodeMatiere == id);
+
+                return View(matiere);
+            }
         }
 
         private bool MatiereExists(string id)

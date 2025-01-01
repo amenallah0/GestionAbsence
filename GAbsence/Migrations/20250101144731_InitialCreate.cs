@@ -153,8 +153,8 @@ namespace GAbsence.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -198,8 +198,8 @@ namespace GAbsence.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -247,8 +247,8 @@ namespace GAbsence.Migrations
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Prenom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateRecrutement = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Adresse = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adresse = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Tel = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CodeDepartement = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CodeGrade = table.Column<string>(type: "nvarchar(450)", nullable: false)
@@ -334,6 +334,30 @@ namespace GAbsence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MatiereEnseignants",
+                columns: table => new
+                {
+                    CodeEnseignant = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CodeMatiere = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MatiereEnseignants", x => new { x.CodeEnseignant, x.CodeMatiere });
+                    table.ForeignKey(
+                        name: "FK_MatiereEnseignants_Enseignants_CodeEnseignant",
+                        column: x => x.CodeEnseignant,
+                        principalTable: "Enseignants",
+                        principalColumn: "CodeEnseignant",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MatiereEnseignants_Matieres_CodeMatiere",
+                        column: x => x.CodeMatiere,
+                        principalTable: "Matieres",
+                        principalColumn: "CodeMatiere",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Absences",
                 columns: table => new
                 {
@@ -346,6 +370,7 @@ namespace GAbsence.Migrations
                     CreneauHoraire = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EstJustifiee = table.Column<bool>(type: "bit", nullable: false),
                     Justification = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EnseignantCodeEnseignant = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     MatiereCodeMatiere = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -357,6 +382,11 @@ namespace GAbsence.Migrations
                         principalTable: "Enseignants",
                         principalColumn: "CodeEnseignant",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Absences_Enseignants_EnseignantCodeEnseignant",
+                        column: x => x.EnseignantCodeEnseignant,
+                        principalTable: "Enseignants",
+                        principalColumn: "CodeEnseignant");
                     table.ForeignKey(
                         name: "FK_Absences_Etudiants_CodeEtudiant",
                         column: x => x.CodeEtudiant,
@@ -443,23 +473,31 @@ namespace GAbsence.Migrations
                 name: "LigneFicheAbsences",
                 columns: table => new
                 {
-                    CodeFicheAbsence = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CodeFiche = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CodeEtudiant = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FicheAbsenceSeanceId = table.Column<int>(type: "int", nullable: true),
-                    EtudiantCodeEtudiant = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    EstAbsent = table.Column<bool>(type: "bit", nullable: false),
+                    FicheAbsenceId = table.Column<int>(type: "int", nullable: true),
+                    FicheAbsenceSeanceId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LigneFicheAbsences", x => new { x.CodeFicheAbsence, x.CodeEtudiant });
+                    table.PrimaryKey("PK_LigneFicheAbsences", x => new { x.CodeFiche, x.CodeEtudiant });
                     table.ForeignKey(
-                        name: "FK_LigneFicheAbsences_Etudiants_EtudiantCodeEtudiant",
-                        column: x => x.EtudiantCodeEtudiant,
+                        name: "FK_LigneFicheAbsences_Etudiants_CodeEtudiant",
+                        column: x => x.CodeEtudiant,
                         principalTable: "Etudiants",
-                        principalColumn: "CodeEtudiant");
+                        principalColumn: "CodeEtudiant",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LigneFicheAbsences_FicheAbsenceSeances_FicheAbsenceSeanceId",
                         column: x => x.FicheAbsenceSeanceId,
                         principalTable: "FicheAbsenceSeances",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_LigneFicheAbsences_FicheAbsences_FicheAbsenceId",
+                        column: x => x.FicheAbsenceId,
+                        principalTable: "FicheAbsences",
                         principalColumn: "Id");
                 });
 
@@ -515,6 +553,11 @@ namespace GAbsence.Migrations
                 name: "IX_Absences_CodeMatiere",
                 table: "Absences",
                 column: "CodeMatiere");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Absences_EnseignantCodeEnseignant",
+                table: "Absences",
+                column: "EnseignantCodeEnseignant");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Absences_MatiereCodeMatiere",
@@ -616,14 +659,24 @@ namespace GAbsence.Migrations
                 column: "ClasseCodeClasse");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LigneFicheAbsences_EtudiantCodeEtudiant",
+                name: "IX_LigneFicheAbsences_CodeEtudiant",
                 table: "LigneFicheAbsences",
-                column: "EtudiantCodeEtudiant");
+                column: "CodeEtudiant");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LigneFicheAbsences_FicheAbsenceId",
+                table: "LigneFicheAbsences",
+                column: "FicheAbsenceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LigneFicheAbsences_FicheAbsenceSeanceId",
                 table: "LigneFicheAbsences",
                 column: "FicheAbsenceSeanceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MatiereEnseignants_CodeMatiere",
+                table: "MatiereEnseignants",
+                column: "CodeMatiere");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Seances_MatiereCodeMatiere",
@@ -657,6 +710,9 @@ namespace GAbsence.Migrations
 
             migrationBuilder.DropTable(
                 name: "LigneFicheAbsences");
+
+            migrationBuilder.DropTable(
+                name: "MatiereEnseignants");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

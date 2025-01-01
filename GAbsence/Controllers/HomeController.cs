@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using GAbsence.Models;
 using GAbsence.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GAbsence.Controllers;
 
@@ -10,54 +12,81 @@ namespace GAbsence.Controllers;
 public class HomeController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ApplicationDbContext context)
+    public HomeController(ApplicationDbContext context, ILogger<HomeController> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        // Statistiques générales
-        ViewBag.TotalEtudiants = _context.Etudiants.Count();
-        ViewBag.TotalEnseignants = _context.Enseignants.Count();
-        ViewBag.AbsencesMois = _context.Absences
-            .Count(a => a.Date.Month == DateTime.Now.Month);
-        ViewBag.AbsencesNonJustifiees = _context.Absences
-            .Count(a => !a.EstJustifiee);
-        ViewBag.AbsencesJustifiees = _context.Absences
-            .Count(a => a.EstJustifiee);
+        try
+        {
+            // Statistiques des absences
+            ViewBag.TotalAbsences = await _context.Absences.CountAsync();
+            ViewBag.AbsencesJustifiees = await _context.Absences.CountAsync(a => a.EstJustifiee);
+            ViewBag.AbsencesNonJustifiees = await _context.Absences.CountAsync(a => !a.EstJustifiee);
 
-        // Données pour le graphique par département
-        var absencesByDep = _context.Absences
-            .Include(a => a.Etudiant)
-                .ThenInclude(e => e.Classe)
-                    .ThenInclude(c => c.Filiere)
-            .GroupBy(a => a.Etudiant.Classe.Filiere.NomFiliere)
-            .Select(g => new { Departement = g.Key, Count = g.Count() })
-            .ToList();
+            // Statistiques générales
+            ViewBag.NombreEtudiants = await _context.Etudiants.CountAsync();
+            ViewBag.NombreEnseignants = await _context.Enseignants.CountAsync();
+            ViewBag.NombreClasses = await _context.Classes.CountAsync();
+            ViewBag.NombreDepartements = await _context.Departements.CountAsync();
+            ViewBag.NombreFilieres = await _context.Filieres.CountAsync();
+            ViewBag.NombreMatieres = await _context.Matieres.CountAsync();
 
-        ViewBag.DepartementLabels = absencesByDep.Select(a => a.Departement).ToList();
-        ViewBag.DepartementData = absencesByDep.Select(a => a.Count).ToList();
+            // Absences par matière
+            var absencesByMatiere = await _context.Absences
+                .Include(a => a.Matiere)
+                .Where(a => a.Matiere != null)
+                .GroupBy(a => a.Matiere.Libelle)
+                .Select(g => new
+                {
+                    matiere = g.Key ?? "Non spécifié",
+                    total = g.Count(),
+                    justifiees = g.Count(a => a.EstJustifiee),
+                    nonJustifiees = g.Count(a => !a.EstJustifiee)
+                })
+                .OrderByDescending(x => x.total)
+                .Take(5)
+                .ToListAsync();
 
-        // Dernières absences
-        ViewBag.DernieresAbsences = _context.Absences
-            .Include(a => a.Etudiant)
-            .Include(a => a.Matiere)
-            .Include(a => a.Enseignant)
-            .OrderByDescending(a => a.Date)
-            .Take(5)
-            .Select(a => new
-            {
-                NomEtudiant = $"{a.Etudiant.Nom} {a.Etudiant.Prenom}",
-                Date = a.Date,
-                Matiere = a.Matiere.Libelle,
-                NomEnseignant = $"{a.Enseignant.Nom} {a.Enseignant.Prenom}",
-                EstJustifiee = a.EstJustifiee
-            })
-            .ToList();
+            ViewBag.AbsencesByMatiere = absencesByMatiere;
+            ViewBag.TopMatieres = absencesByMatiere;
 
-        return View();
+            var stats = _context.Absences
+                .Include(a => a.Etudiant)
+                .Where(a => a.Etudiant != null)
+                .GroupBy(a => a.Etudiant)
+                .Select(g => new
+                {
+                    Etudiant = g.Key,
+                    TotalAbsences = g.Count()
+                })
+                .ToList();
+
+            return View(stats);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Une erreur s'est produite");
+            // Initialiser des valeurs par défaut
+            ViewBag.TotalAbsences = 0;
+            ViewBag.AbsencesJustifiees = 0;
+            ViewBag.AbsencesNonJustifiees = 0;
+            ViewBag.NombreEtudiants = 0;
+            ViewBag.NombreEnseignants = 0;
+            ViewBag.NombreClasses = 0;
+            ViewBag.NombreDepartements = 0;
+            ViewBag.NombreFilieres = 0;
+            ViewBag.NombreMatieres = 0;
+            ViewBag.AbsencesByMatiere = new List<object>();
+            ViewBag.TopMatieres = new List<object>();
+
+            return View();
+        }
     }
 
     public IActionResult Privacy()

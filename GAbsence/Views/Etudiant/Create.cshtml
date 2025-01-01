@@ -1,151 +1,100 @@
 @model GAbsence.Models.Etudiant
 
-<div class="container py-4">
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h1 class="h3 mb-0">
-                <i class="fas fa-user-graduate me-2"></i>
-                Nouvel Étudiant
-            </h1>
-        </div>
+@{
+    ViewData["Title"] = "Nouvel Étudiant";
+}
 
-        <div class="card-body">
-            <form asp-action="Create" method="post" class="needs-validation" novalidate>
-                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0"><i class="fas fa-user-plus me-2"></i>Ajouter un nouvel étudiant</h5>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label asp-for="CodeEtudiant" class="form-label">Code Étudiant</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-id-card"></i>
-                            </span>
-                            <input asp-for="CodeEtudiant" class="form-control" placeholder="Ex: ETU001" />
-                        </div>
-                        <span asp-validation-for="CodeEtudiant" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="Nom" class="form-label">Nom</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-user"></i>
-                            </span>
-                            <input asp-for="Nom" class="form-control" placeholder="Nom de l'étudiant" />
-                        </div>
-                        <span asp-validation-for="Nom" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="Prenom" class="form-label">Prénom</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-user"></i>
-                            </span>
-                            <input asp-for="Prenom" class="form-control" placeholder="Prénom de l'étudiant" />
-                        </div>
-                        <span asp-validation-for="Prenom" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="DateNaissance" class="form-label">Date de Naissance</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-calendar"></i>
-                            </span>
-                            <input asp-for="DateNaissance" class="form-control" type="date" />
-                        </div>
-                        <span asp-validation-for="DateNaissance" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="Adresse" class="form-label">Adresse</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </span>
-                            <input asp-for="Adresse" class="form-control" placeholder="Adresse de l'étudiant" />
-                        </div>
-                        <span asp-validation-for="Adresse" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="Mail" class="form-label">Email</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-envelope"></i>
-                            </span>
-                            <input asp-for="Mail" class="form-control" type="email" placeholder="email@exemple.com" />
-                        </div>
-                        <span asp-validation-for="Mail" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="Tel" class="form-label">Téléphone</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-phone"></i>
-                            </span>
-                            <input asp-for="Tel" class="form-control" placeholder="+212 6XX XXXXXX" />
-                        </div>
-                        <span asp-validation-for="Tel" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="CodeClasse" class="form-label">Classe</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-graduation-cap"></i>
-                            </span>
-                            <select asp-for="CodeClasse" class="form-select" asp-items="ViewBag.Classes">
-                                <option value="">-- Sélectionner une classe --</option>
-                            </select>
-                        </div>
-                        <span asp-validation-for="CodeClasse" class="text-danger"></span>
-                    </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CodeEtudiant" class="form-label"></label>
+                    <input asp-for="CodeEtudiant" class="form-control" />
+                    <span asp-validation-for="CodeEtudiant" class="text-danger"></span>
                 </div>
 
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-2"></i>Enregistrer
-                    </button>
-                    <a asp-action="Index" class="btn btn-secondary">
-                        <i class="fas fa-times me-2"></i>Annuler
-                    </a>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CodeClasse" class="form-label">Classe</label>
+                    <select asp-for="CodeClasse" class="form-select" asp-items="ViewBag.Classes">
+                        <option value="">-- Sélectionner une classe --</option>
+                    </select>
+                    <span asp-validation-for="CodeClasse" class="text-danger"></span>
                 </div>
-            </form>
-        </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Nom" class="form-label"></label>
+                    <input asp-for="Nom" class="form-control" />
+                    <span asp-validation-for="Nom" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Prenom" class="form-label"></label>
+                    <input asp-for="Prenom" class="form-control" />
+                    <span asp-validation-for="Prenom" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="DateNaissance" class="form-label"></label>
+                    <input asp-for="DateNaissance" class="form-control" type="date" />
+                    <span asp-validation-for="DateNaissance" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Mail" class="form-label"></label>
+                    <input asp-for="Mail" class="form-control" type="email" />
+                    <span asp-validation-for="Mail" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Tel" class="form-label">Téléphone</label>
+                    <input asp-for="Tel" class="form-control" type="tel" 
+                           pattern="[0-9]{8}" 
+                           maxlength="8"
+                           placeholder="12345678"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);" />
+                    <span asp-validation-for="Tel" class="text-danger"></span>
+                    <small class="form-text text-muted">Format: 8 chiffres sans espaces</small>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Adresse" class="form-label"></label>
+                    <textarea asp-for="Adresse" class="form-control" rows="1"></textarea>
+                    <span asp-validation-for="Adresse" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Enregistrer
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+                </a>
+            </div>
+        </form>
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    
     <script>
-        $(document).ready(function () {
-            // Format téléphone
-            $('#Tel').on('input', function() {
-                let value = $(this).val().replace(/\D/g, '');
-                if (value.length > 0) {
-                    value = '+212 ' + value.substring(0, 9);
-                }
-                $(this).val(value);
-            });
-
-            // Majuscules pour le code
-            $('#CodeEtudiant').on('input', function() {
-                $(this).val($(this).val().toUpperCase());
-            });
-
-            // Limite d'âge pour la date de naissance
-            var today = new Date();
-            var minDate = new Date();
-            minDate.setFullYear(today.getFullYear() - 50);
-            var maxDate = new Date();
-            maxDate.setFullYear(today.getFullYear() - 15);
-
-            $('#DateNaissance').attr('min', minDate.toISOString().split('T')[0]);
-            $('#DateNaissance').attr('max', maxDate.toISOString().split('T')[0]);
+        // Empêcher la saisie de caractères non numériques dans le champ téléphone
+        document.querySelector('input[type="tel"]').addEventListener('keypress', function(e) {
+            if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+            }
         });
     </script>
 } 

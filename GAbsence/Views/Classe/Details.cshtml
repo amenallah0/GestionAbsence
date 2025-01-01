@@ -1,82 +1,99 @@
 @model GAbsence.Models.Classe
 
-<div class="container">
-    <h1>Détails de la classe</h1>
+@{
+    ViewData["Title"] = "Détails de la Classe";
+}
 
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title">Informations générales</h5>
-            <dl class="row">
-                <dt class="col-sm-3">Code</dt>
-                <dd class="col-sm-9">@Model.CodeClasse</dd>
-
-                <dt class="col-sm-3">Nom de la classe</dt>
-                <dd class="col-sm-9">@Model.NomClasse</dd>
-
-                <dt class="col-sm-3">Nombre d'étudiants</dt>
-                <dd class="col-sm-9">@Model.Etudiants?.Count</dd>
-
-                <dt class="col-sm-3">Total des absences</dt>
-                <dd class="col-sm-9">@ViewBag.TotalAbsencesClasse</dd>
-            </dl>
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">
+                <i class="fas fa-graduation-cap me-2"></i>@Model.CodeClasse
+            </h4>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.CodeClasse" class="btn btn-light btn-sm">
+                    <i class="fas fa-edit me-1"></i>Modifier
+                </a>
+                <a asp-action="Index" class="btn btn-light btn-sm ms-2">
+                    <i class="fas fa-arrow-left me-1"></i>Retour
+                </a>
+            </div>
         </div>
-    </div>
 
-    <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Liste des étudiants et leurs absences</h5>
-            
-            @if (Model.Etudiants != null && Model.Etudiants.Any())
-            {
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Code</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Total absences</th>
-                            <th>Justifiées</th>
-                            <th>Non justifiées</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var etudiant in Model.Etudiants)
-                        {
-                            var absences = ((IEnumerable<dynamic>)ViewBag.AbsencesParEtudiant)
-                                .FirstOrDefault(a => ((dynamic)a).Etudiant.CodeEtudiant == etudiant.CodeEtudiant);
-                            
-                            <tr>
-                                <td>@etudiant.CodeEtudiant</td>
-                                <td>@etudiant.Nom</td>
-                                <td>@etudiant.Prenom</td>
-                                <td>@(absences?.TotalAbsences ?? 0)</td>
-                                <td>@(absences?.AbsencesJustifiees ?? 0)</td>
-                                <td>@(absences?.AbsencesNonJustifiees ?? 0)</td>
-                                <td>
-                                    <a asp-controller="Etudiant" 
-                                       asp-action="Details" 
-                                       asp-route-id="@etudiant.CodeEtudiant" 
-                                       class="btn btn-info btn-sm">
-                                        Détails
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <div class="alert alert-info">
-                    Aucun étudiant n'est inscrit dans cette classe.
+            <div class="row g-4">
+                <!-- Informations générales -->
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">
+                                <i class="fas fa-info-circle me-2"></i>Informations générales
+                            </h5>
+                            <dl class="row mb-0">
+                                <dt class="col-sm-4">Filière</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge bg-info">
+                                        @(Model.Filiere?.NomFiliere ?? "Non définie")
+                                    </span>
+                                </dd>
+
+                                <dt class="col-sm-4">Niveau</dt>
+                                <dd class="col-sm-8">@Model.Niveau</dd>
+
+
+                                <dt class="col-sm-4">Nombre d'étudiants</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge bg-primary">
+                                        @(Model.Etudiants?.Count ?? 0) étudiants
+                                    </span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
                 </div>
-            }
-        </div>
-    </div>
 
-    <div class="mt-3">
-        <a asp-action="Edit" asp-route-id="@Model.CodeClasse" class="btn btn-primary">Modifier</a>
-        <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+                <!-- Liste des étudiants -->
+                <div class="col-md-6">
+                    <div class="card h-100 border-0">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">
+                                <i class="fas fa-users me-2"></i>Liste des étudiants
+                            </h5>
+                            @if (Model.Etudiants != null && Model.Etudiants.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Nom</th>
+                                                <th>Prénom</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var etudiant in Model.Etudiants.OrderBy(e => e.Nom))
+                                            {
+                                                <tr>
+                                                    <td>@etudiant.CodeEtudiant</td>
+                                                    <td>@etudiant.Nom</td>
+                                                    <td>@etudiant.Prenom</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Aucun étudiant inscrit dans cette classe.
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div> 

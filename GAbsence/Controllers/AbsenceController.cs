@@ -64,7 +64,7 @@ namespace GAbsence.Controllers
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     ModelState.AddModelError("", "Une erreur s'est produite lors de l'enregistrement.");
                 }
@@ -78,13 +78,11 @@ namespace GAbsence.Controllers
         // GET: Absence
         public async Task<IActionResult> Index()
         {
-            var absences = await _context.Absences
+            return View(await _context.Absences
                 .Include(a => a.Etudiant)
                 .Include(a => a.Matiere)
                 .Include(a => a.Enseignant)
-                .ToListAsync();
-
-            return View(absences);
+                .ToListAsync());
         }
 
         // GET: Absence/Rapport
@@ -195,24 +193,25 @@ namespace GAbsence.Controllers
                 return NotFound();
             }
 
-            var absence = await _context.Absences.FindAsync(id);
+            var absence = await _context.Absences
+                .Include(a => a.Etudiant)
+                .Include(a => a.Matiere)
+                .Include(a => a.Enseignant)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (absence == null)
             {
                 return NotFound();
             }
 
-            ViewBag.Etudiants = new SelectList(_context.Etudiants, "CodeEtudiant", "NomComplet");
-            ViewBag.Enseignants = new SelectList(_context.Enseignants, "CodeEnseignant", "NomComplet");
-            ViewBag.Matieres = new SelectList(_context.Matieres, "CodeMatiere", "Libelle");
-            ViewBag.Creneaux = new List<string> { "8h-10h", "10h-12h", "14h-16h", "16h-18h" };
-
+            PopulateDropDownLists(absence);
             return View(absence);
         }
 
         // POST: Absence/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,CreneauHoraire,CodeEtudiant,CodeEnseignant,CodeMatiere,EstJustifiee,Justification")] Absence absence)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CodeEtudiant,Date,CreneauHoraire,CodeMatiere,CodeEnseignant,EstJustifiee,Justification")] Absence absence)
         {
             if (id != absence.Id)
             {
@@ -239,11 +238,28 @@ namespace GAbsence.Controllers
                     }
                 }
             }
+            PopulateDropDownLists(absence);
+            return View(absence);
+        }
 
-            ViewBag.Etudiants = new SelectList(_context.Etudiants, "CodeEtudiant", "NomComplet");
-            ViewBag.Enseignants = new SelectList(_context.Enseignants, "CodeEnseignant", "NomComplet");
-            ViewBag.Matieres = new SelectList(_context.Matieres, "CodeMatiere", "Libelle");
-            ViewBag.Creneaux = new List<string> { "8h-10h", "10h-12h", "14h-16h", "16h-18h" };
+        // GET: Absence/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var absence = await _context.Absences
+                .Include(a => a.Etudiant)
+                .Include(a => a.Matiere)
+                .Include(a => a.Enseignant)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (absence == null)
+            {
+                return NotFound();
+            }
 
             return View(absence);
         }
@@ -265,6 +281,36 @@ namespace GAbsence.Controllers
         private bool AbsenceExists(int id)
         {
             return _context.Absences.Any(e => e.Id == id);
+        }
+
+        private void PopulateDropDownLists(Absence absence = null)
+        {
+            // Récupération des listes
+            var etudiants = _context.Etudiants.OrderBy(e => e.Nom).ToList();
+            var matieres = _context.Matieres.OrderBy(m => m.Libelle).ToList();
+            var enseignants = _context.Enseignants.OrderBy(e => e.Nom).ToList();
+
+            // Création des SelectList pour les dropdowns avec des expressions de formatage correctes
+            ViewBag.Etudiants = new SelectList(etudiants, "CodeEtudiant", 
+                "NomComplet",
+                absence?.CodeEtudiant);
+            
+            ViewBag.Matieres = new SelectList(matieres, "CodeMatiere", "Libelle", 
+                absence?.CodeMatiere);
+            
+            ViewBag.Enseignants = new SelectList(enseignants, "CodeEnseignant", 
+                "NomComplet",
+                absence?.CodeEnseignant);
+
+            // Créneaux horaires
+            ViewBag.CreneauxHoraires = new SelectList(new[]
+            {
+                "08:30 - 10:00",
+                "10:15 - 11:45",
+                "12:00 - 13:30",
+                "14:00 - 15:30",
+                "15:45 - 17:15"
+            }, absence?.CreneauHoraire);
         }
     }
 } 

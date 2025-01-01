@@ -1,31 +1,160 @@
 @model GAbsence.Models.Classe
 
 @{
-    ViewData["Title"] = "Modifier la classe";
+    ViewData["Title"] = "Modifier la Classe";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-edit me-2"></i>Modifier la classe @Model.CodeClasse
+            </h4>
+        </div>
 
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CodeClasse" />
-            
-            <div class="form-group mb-3">
-                <label asp-for="NomClasse" class="control-label">Nom de la classe</label>
-                <input asp-for="NomClasse" class="form-control" />
-                <span asp-validation-for="NomClasse" class="text-danger"></span>
-            </div>
+        <div class="card-body">
+            <form asp-action="Edit" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <input type="hidden" asp-for="CodeClasse" />
 
-            <div class="form-group">
-                <input type="submit" value="Enregistrer" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
-            </div>
-        </form>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">
+                                    <i class="fas fa-info-circle me-2"></i>Informations de base
+                                </h5>
+
+                                <div class="mb-3">
+                                    <label asp-for="Niveau" class="form-label required">Niveau</label>
+                                    <input asp-for="Niveau" class="form-control" required />
+                                    <span asp-validation-for="Niveau" class="text-danger"></span>
+                                    <div class="invalid-feedback">
+                                        Le niveau est requis
+                                    </div>
+                                </div>
+
+                                
+
+                                <div class="mb-3">
+                                    <label asp-for="CodeFiliere" class="form-label required">Filière</label>
+                                    <select asp-for="CodeFiliere" class="form-select" required
+                                            asp-items="@(new SelectList(ViewBag.Filieres, "CodeFiliere", "NomComplet"))">
+                                        <option value="">-- Sélectionner une filière --</option>
+                                    </select>
+                                    <span asp-validation-for="CodeFiliere" class="text-danger"></span>
+                                    <div class="invalid-feedback">
+                                        La filière est requise
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">
+                                    <i class="fas fa-users me-2"></i>Étudiants inscrits
+                                </h5>
+                                @if (Model.Etudiants != null && Model.Etudiants.Any())
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Code</th>
+                                                    <th>Nom complet</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var etudiant in Model.Etudiants.OrderBy(e => e.Nom))
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <span class="badge bg-secondary">@etudiant.CodeEtudiant</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="avatar-sm bg-primary text-white rounded-circle me-2">
+                                                                    @etudiant.Nom.Substring(0,1)@etudiant.Prenom.Substring(0,1)
+                                                                </div>
+                                                                @etudiant.Nom @etudiant.Prenom
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Aucun étudiant inscrit dans cette classe.
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-transparent text-end mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>Enregistrer
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">
+                        <i class="fas fa-times me-1"></i>Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Validation côté client personnalisée
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+}
+
+@section Styles {
+    <style>
+        .required:after {
+            content: " *";
+            color: red;
+        }
+        .avatar-sm {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .card {
+            border-radius: 10px;
+        }
+        .card-header {
+            border-radius: 10px 10px 0 0;
+        }
+        .form-control, .form-select {
+            border-radius: 5px;
+        }
+    </style>
 } 

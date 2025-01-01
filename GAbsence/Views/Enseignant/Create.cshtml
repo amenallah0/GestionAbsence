@@ -1,107 +1,104 @@
 @model GAbsence.Models.Enseignant
 
-<div class="container py-4">
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h1 class="h3 mb-0">
-                <i class="fas fa-chalkboard-teacher me-2"></i>
-                Nouvel Enseignant
-            </h1>
-        </div>
+@{
+    ViewData["Title"] = "Créer un enseignant";
+}
 
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-user-plus me-2"></i>Créer un nouvel enseignant
+            </h4>
+        </div>
         <div class="card-body">
             <form asp-action="Create" method="post">
                 <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
-
+                
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <label asp-for="CodeEnseignant" class="form-label">Code Enseignant</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-id-card"></i>
-                            </span>
-                            <input asp-for="CodeEnseignant" class="form-control" placeholder="Ex: ENS001" />
+                        <div class="form-group">
+                            <label asp-for="CodeEnseignant" class="control-label required"></label>
+                            <input asp-for="CodeEnseignant" class="form-control" required />
+                            <span asp-validation-for="CodeEnseignant" class="text-danger"></span>
                         </div>
-                        <span asp-validation-for="CodeEnseignant" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
-                        <label asp-for="Nom" class="form-label">Nom</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-user"></i>
-                            </span>
-                            <input asp-for="Nom" class="form-control" placeholder="Nom de l'enseignant" />
+                        <div class="form-group">
+                            <label asp-for="Nom" class="control-label required"></label>
+                            <input asp-for="Nom" class="form-control" required />
+                            <span asp-validation-for="Nom" class="text-danger"></span>
                         </div>
-                        <span asp-validation-for="Nom" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
-                        <label asp-for="Prenom" class="form-label">Prénom</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-user"></i>
-                            </span>
-                            <input asp-for="Prenom" class="form-control" placeholder="Prénom de l'enseignant" />
+                        <div class="form-group">
+                            <label asp-for="Prenom" class="control-label required"></label>
+                            <input asp-for="Prenom" class="form-control" required />
+                            <span asp-validation-for="Prenom" class="text-danger"></span>
                         </div>
-                        <span asp-validation-for="Prenom" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
-                        <label asp-for="Mail" class="form-label">Email</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-envelope"></i>
-                            </span>
-                            <input asp-for="Mail" class="form-control" type="email" placeholder="email@exemple.com" />
+                        <div class="form-group">
+                            <label asp-for="DateRecrutement" class="control-label required"></label>
+                            <input asp-for="DateRecrutement" class="form-control" type="date" required />
+                            <span asp-validation-for="DateRecrutement" class="text-danger"></span>
                         </div>
-                        <span asp-validation-for="Mail" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
-                        <label asp-for="Tel" class="form-label">Téléphone</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-phone"></i>
-                            </span>
-                            <input asp-for="Tel" class="form-control" placeholder="+212 6XX XXXXXX" />
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label required"></label>
+                            <input asp-for="Email" class="form-control" type="email" required />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
-                        <span asp-validation-for="Tel" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
-                        <label asp-for="CodeDepartement" class="form-label">Département</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-building"></i>
-                            </span>
-                            <select asp-for="CodeDepartement" class="form-select" asp-items="ViewBag.Departements">
+                        <div class="form-group">
+                            <label asp-for="Tel" class="control-label required"></label>
+                            <input asp-for="Tel" class="form-control" required />
+                            <span asp-validation-for="Tel" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label asp-for="Adresse" class="control-label required"></label>
+                            <input asp-for="Adresse" class="form-control" required />
+                            <span asp-validation-for="Adresse" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="CodeDepartement" class="control-label required"></label>
+                            <select asp-for="CodeDepartement" class="form-select" asp-items="ViewBag.Departements" required>
                                 <option value="">-- Sélectionner un département --</option>
                             </select>
+                            <span asp-validation-for="CodeDepartement" class="text-danger"></span>
                         </div>
-                        <span asp-validation-for="CodeDepartement" class="text-danger"></span>
                     </div>
 
                     <div class="col-md-6">
-                        <label asp-for="CodeGrade" class="form-label">Grade</label>
-                        <div class="input-group">
-                            <span class="input-group-text">
-                                <i class="fas fa-graduation-cap"></i>
-                            </span>
-                            <select asp-for="CodeGrade" class="form-select" asp-items="ViewBag.Grades">
+                        <div class="form-group">
+                            <label asp-for="CodeGrade" class="control-label required"></label>
+                            <select asp-for="CodeGrade" class="form-select" asp-items="ViewBag.Grades" required>
                                 <option value="">-- Sélectionner un grade --</option>
                             </select>
+                            <span asp-validation-for="CodeGrade" class="text-danger"></span>
                         </div>
-                        <span asp-validation-for="CodeGrade" class="text-danger"></span>
                     </div>
                 </div>
 
-                <div class="mt-4">
+                <div class="card-footer bg-transparent text-end mt-4">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-2"></i>Enregistrer
+                        <i class="fas fa-save me-1"></i>Enregistrer
                     </button>
-                    <a asp-action="Index" class="btn btn-secondary">
-                        <i class="fas fa-times me-2"></i>Annuler
+                    <a asp-action="Index" class="btn btn-secondary ms-2">
+                        <i class="fas fa-times me-1"></i>Annuler
                     </a>
                 </div>
             </form>
@@ -111,13 +108,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    
-    <script>
-        $(document).ready(function () {
-            // Majuscules pour le code enseignant
-            $('#CodeEnseignant').on('input', function() {
-                $(this).val($(this).val().toUpperCase());
-            });
-        });
-    </script>
 }

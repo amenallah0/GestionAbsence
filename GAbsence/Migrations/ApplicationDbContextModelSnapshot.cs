@@ -125,6 +125,9 @@ namespace GAbsence.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("EnseignantCodeEnseignant")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("EstJustifiee")
                         .HasColumnType("bit");
 
@@ -141,6 +144,8 @@ namespace GAbsence.Migrations
                     b.HasIndex("CodeEtudiant");
 
                     b.HasIndex("CodeMatiere");
+
+                    b.HasIndex("EnseignantCodeEnseignant");
 
                     b.HasIndex("MatiereCodeMatiere");
 
@@ -239,6 +244,7 @@ namespace GAbsence.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Adresse")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CodeDepartement")
@@ -252,7 +258,7 @@ namespace GAbsence.Migrations
                     b.Property<DateTime>("DateRecrutement")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Mail")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -469,21 +475,29 @@ namespace GAbsence.Migrations
 
             modelBuilder.Entity("GAbsence.Models.LigneFicheAbsence", b =>
                 {
-                    b.Property<string>("CodeFicheAbsence")
+                    b.Property<string>("CodeFiche")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CodeEtudiant")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("EtudiantCodeEtudiant")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<bool>("EstAbsent")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("FicheAbsenceId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("FicheAbsenceSeanceId")
                         .HasColumnType("int");
 
-                    b.HasKey("CodeFicheAbsence", "CodeEtudiant");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
-                    b.HasIndex("EtudiantCodeEtudiant");
+                    b.HasKey("CodeFiche", "CodeEtudiant");
+
+                    b.HasIndex("CodeEtudiant");
+
+                    b.HasIndex("FicheAbsenceId");
 
                     b.HasIndex("FicheAbsenceSeanceId");
 
@@ -533,6 +547,21 @@ namespace GAbsence.Migrations
                     b.HasIndex("MatiereCodeMatiere");
 
                     b.ToTable("Seances");
+                });
+
+            modelBuilder.Entity("MatiereEnseignants", b =>
+                {
+                    b.Property<string>("CodeEnseignant")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CodeMatiere")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CodeEnseignant", "CodeMatiere");
+
+                    b.HasIndex("CodeMatiere");
+
+                    b.ToTable("MatiereEnseignants", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -615,10 +644,12 @@ namespace GAbsence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -655,10 +686,12 @@ namespace GAbsence.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -687,6 +720,10 @@ namespace GAbsence.Migrations
                         .HasForeignKey("CodeMatiere")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("GAbsence.Models.Enseignant", null)
+                        .WithMany("Absences")
+                        .HasForeignKey("EnseignantCodeEnseignant");
 
                     b.HasOne("GAbsence.Models.Matiere", null)
                         .WithMany("Absences")
@@ -799,15 +836,21 @@ namespace GAbsence.Migrations
                 {
                     b.HasOne("GAbsence.Models.Etudiant", "Etudiant")
                         .WithMany()
-                        .HasForeignKey("EtudiantCodeEtudiant");
+                        .HasForeignKey("CodeEtudiant")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("GAbsence.Models.FicheAbsenceSeance", "FicheAbsenceSeance")
+                    b.HasOne("GAbsence.Models.FicheAbsence", "FicheAbsence")
+                        .WithMany()
+                        .HasForeignKey("FicheAbsenceId");
+
+                    b.HasOne("GAbsence.Models.FicheAbsenceSeance", null)
                         .WithMany("LignesFicheAbsence")
                         .HasForeignKey("FicheAbsenceSeanceId");
 
                     b.Navigation("Etudiant");
 
-                    b.Navigation("FicheAbsenceSeance");
+                    b.Navigation("FicheAbsence");
                 });
 
             modelBuilder.Entity("GAbsence.Models.Seance", b =>
@@ -817,6 +860,21 @@ namespace GAbsence.Migrations
                         .HasForeignKey("MatiereCodeMatiere");
 
                     b.Navigation("Matiere");
+                });
+
+            modelBuilder.Entity("MatiereEnseignants", b =>
+                {
+                    b.HasOne("GAbsence.Models.Enseignant", null)
+                        .WithMany()
+                        .HasForeignKey("CodeEnseignant")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GAbsence.Models.Matiere", null)
+                        .WithMany()
+                        .HasForeignKey("CodeMatiere")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -880,6 +938,11 @@ namespace GAbsence.Migrations
                     b.Navigation("Classes");
 
                     b.Navigation("Enseignants");
+                });
+
+            modelBuilder.Entity("GAbsence.Models.Enseignant", b =>
+                {
+                    b.Navigation("Absences");
                 });
 
             modelBuilder.Entity("GAbsence.Models.FicheAbsenceSeance", b =>

@@ -1,31 +1,126 @@
 @model GAbsence.Models.Departement
 
 @{
-    ViewData["Title"] = "Modifier le département";
+    ViewData["Title"] = "Modifier le Département";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-edit me-2"></i>Modifier le département
+            </h4>
+        </div>
 
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CodeDepartement" />
-            
-            <div class="form-group mb-3">
-                <label asp-for="NomDepartement" class="control-label">Nom du département</label>
-                <input asp-for="NomDepartement" class="form-control" />
-                <span asp-validation-for="NomDepartement" class="text-danger"></span>
-            </div>
+        <div class="card-body">
+            <form asp-action="Edit" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <input type="hidden" asp-for="CodeDepartement" />
 
-            <div class="form-group">
-                <input type="submit" value="Enregistrer" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
-            </div>
-        </form>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">
+                                    <i class="fas fa-info-circle me-2"></i>Informations de base
+                                </h5>
+
+                                <div class="mb-3">
+                                    <label asp-for="NomDepartement" class="form-label">Nom du département</label>
+                                    <input asp-for="NomDepartement" class="form-control" />
+                                    <span asp-validation-for="NomDepartement" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">
+                                    <i class="fas fa-chalkboard-teacher me-2"></i>Enseignants actuels
+                                </h5>
+                                @if (Model.Enseignants != null && Model.Enseignants.Any())
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Nom</th>
+                                                    <th>Grade</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var enseignant in Model.Enseignants.OrderBy(e => e.Nom))
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="avatar-sm bg-secondary text-white rounded-circle me-2">
+                                                                    @enseignant.Nom.Substring(0,1)@enseignant.Prenom.Substring(0,1)
+                                                                </div>
+                                                                @enseignant.Nom @enseignant.Prenom
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge bg-secondary">
+                                                                @(enseignant.Grade?.Libelle ?? "Non défini")
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Aucun enseignant affecté à ce département.
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-transparent text-end mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>Enregistrer
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">
+                        <i class="fas fa-times me-1"></i>Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@section Styles {
+    <style>
+        .avatar-sm {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .card {
+            border-radius: 10px;
+        }
+        .card-header {
+            border-radius: 10px 10px 0 0;
+        }
+        .form-control, .form-select {
+            border-radius: 5px;
+        }
+    </style>
 } 

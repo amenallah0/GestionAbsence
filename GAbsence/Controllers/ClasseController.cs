@@ -68,7 +68,7 @@ namespace GAbsence.Controllers
             }
         }
 
-        // GET: Classe/Edit/5
+        // GET: Classe/Edit/GL2024
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -76,44 +76,75 @@ namespace GAbsence.Controllers
                 return NotFound();
             }
 
-            var classe = await _context.Classes.FindAsync(id);
+            var classe = await _context.Classes
+                .Include(c => c.Filiere)
+                .Include(c => c.Etudiants)
+                .FirstOrDefaultAsync(c => c.CodeClasse == id);
+
             if (classe == null)
             {
                 return NotFound();
             }
+
+            // Charger la liste des filières pour le dropdown
+            ViewBag.Filieres = await _context.Filieres
+                .OrderBy(f => f.NomFiliere)
+                .Select(f => new
+                {
+                    CodeFiliere = f.CodeFiliere,
+                    NomComplet = $"{f.CodeFiliere} - {f.NomFiliere}"
+                })
+                .ToListAsync();
+
             return View(classe);
         }
 
-        // POST: Classe/Edit/5
+        // POST: Classe/Edit/GL2024
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CodeClasse,NomClasse")] Classe classe)
+        public async Task<IActionResult> Edit(string id, Classe classe)
         {
             if (id != classe.CodeClasse)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var existingClasse = await _context.Classes
+                    .Include(c => c.Etudiants)
+                    .FirstOrDefaultAsync(c => c.CodeClasse == id);
+
+                if (existingClasse == null)
                 {
-                    _context.Update(classe);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClasseExists(classe.CodeClasse))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                // Mettre à jour les propriétés
+                existingClasse.Niveau = classe.Niveau;
+                existingClasse.CodeFiliere = classe.CodeFiliere;
+
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Classe {id} mise à jour avec succès");
+                TempData["Success"] = "La classe a été modifiée avec succès.";
                 return RedirectToAction(nameof(Index));
             }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Erreur lors de la modification de la classe {id}: {ex.Message}");
+                ModelState.AddModelError("", "Une erreur est survenue lors de la modification de la classe.");
+            }
+
+            // Recharger les données en cas d'erreur
+            ViewBag.Filieres = await _context.Filieres
+                .OrderBy(f => f.NomFiliere)
+                .Select(f => new
+                {
+                    CodeFiliere = f.CodeFiliere,
+                    NomComplet = $"{f.CodeFiliere} - {f.NomFiliere}"
+                })
+                .ToListAsync();
+
             return View(classe);
         }
 
@@ -125,24 +156,22 @@ namespace GAbsence.Controllers
         // GET: Classe/Details/DSI31
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var classe = await _context.Classes
                 .Include(c => c.Etudiants)
                 .FirstOrDefaultAsync(c => c.CodeClasse == id);
 
-            if (classe == null)
+            if (classe?.Etudiants == null)
             {
                 return NotFound();
             }
 
-            // Récupérer les statistiques d'absences pour la classe
             var absencesParEtudiant = await _context.Absences
-                .Where(a => a.Etudiant.CodeClasse == id)
-                .GroupBy(a => new { a.CodeEtudiant, a.Etudiant.Nom, a.Etudiant.Prenom })
+                .Where(a => a.Etudiant != null && a.Etudiant.CodeClasse == id)
+                .GroupBy(a => new { 
+                    a.CodeEtudiant, 
+                    Nom = a.Etudiant.Nom, 
+                    Prenom = a.Etudiant.Prenom 
+                })
                 .Select(g => new
                 {
                     Etudiant = g.Key,
@@ -153,8 +182,6 @@ namespace GAbsence.Controllers
                 .ToListAsync();
 
             ViewBag.AbsencesParEtudiant = absencesParEtudiant;
-            ViewBag.TotalAbsencesClasse = absencesParEtudiant.Sum(a => a.TotalAbsences);
-
             return View(classe);
         }
     }

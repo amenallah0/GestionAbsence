@@ -1,31 +1,130 @@
 @model GAbsence.Models.Matiere
 
 @{
-    ViewData["Title"] = "Supprimer la matière";
+    ViewData["Title"] = "Supprimer la Matière";
 }
 
-<div class="container">
-    <h1>@ViewData["Title"]</h1>
+<div class="container py-4">
+    <div class="card shadow-sm border-danger">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0">
+                <i class="fas fa-exclamation-triangle me-2"></i>Confirmer la suppression
+            </h4>
+        </div>
 
-    <h3>Êtes-vous sûr de vouloir supprimer cette matière ?</h3>
-    
-    <dl class="row">
-        <dt class="col-sm-2">Code</dt>
-        <dd class="col-sm-10">@Model.CodeMatiere</dd>
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                Êtes-vous sûr de vouloir supprimer cette matière ? Cette action est irréversible.
+            </div>
 
-        <dt class="col-sm-2">Libellé</dt>
-        <dd class="col-sm-10">@Model.Libelle</dd>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card border-0 bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">
+                                <i class="fas fa-info-circle me-2"></i>Informations de la matière
+                            </h5>
+                            <dl class="row mb-0">
+                                <dt class="col-sm-4">Code</dt>
+                                <dd class="col-sm-8">@Model.CodeMatiere</dd>
 
-        <dt class="col-sm-2">Nombre d'heures</dt>
-        <dd class="col-sm-10">@Model.NbreHeures</dd>
+                                <dt class="col-sm-4">Libellé</dt>
+                                <dd class="col-sm-8">@Model.Libelle</dd>
 
-        <dt class="col-sm-2">Coefficient</dt>
-        <dd class="col-sm-10">@Model.Coefficient</dd>
-    </dl>
+                                <dt class="col-sm-4">Coefficient</dt>
+                                <dd class="col-sm-8">@Model.Coefficient</dd>
 
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="CodeMatiere" />
-        <input type="submit" value="Supprimer" class="btn btn-danger" />
-        <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
-    </form>
-</div> 
+                                <dt class="col-sm-4">Nombre d'heures</dt>
+                                <dd class="col-sm-8">@Model.NbreHeures heures</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4 text-danger">
+                                <i class="fas fa-exclamation-circle me-2"></i>Impact de la suppression
+                            </h5>
+                            @if (Model.Enseignants != null && Model.Enseignants.Any())
+                            {
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    Cette matière est enseignée par <strong>@Model.Enseignants.Count enseignant(s)</strong>.
+                                    La suppression affectera leurs emplois du temps.
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Enseignant</th>
+                                                <th>Département</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var enseignant in Model.Enseignants.OrderBy(e => e.Nom))
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar-sm bg-danger text-white rounded-circle me-2">
+                                                                @enseignant.Nom.Substring(0,1)@enseignant.Prenom.Substring(0,1)
+                                                            </div>
+                                                            @enseignant.Nom @enseignant.Prenom
+                                                        </div>
+                                                    </td>
+                                                    <td>@(enseignant.Departement?.NomDepartement ?? "Non assigné")</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Cette matière n'est assignée à aucun enseignant.
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-action="Delete" class="text-end mt-4">
+                <input type="hidden" asp-for="CodeMatiere" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash me-1"></i>Supprimer
+                </button>
+                <a asp-action="Index" class="btn btn-secondary ms-2">
+                    <i class="fas fa-times me-1"></i>Annuler
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .avatar-sm {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .card {
+            border-radius: 10px;
+        }
+        .card-header {
+            border-radius: 10px 10px 0 0;
+        }
+        .table td {
+            vertical-align: middle;
+        }
+    </style>
+} 

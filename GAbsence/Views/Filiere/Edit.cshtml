@@ -1,0 +1,47 @@
+@model GAbsence.Models.Filiere
+
+@{
+    ViewData["Title"] = "Modifier Filière";
+}
+
+<div class="card">
+    <div class="card-header bg-warning">
+        <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Modifier la filière</h5>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CodeFiliere" />
+            
+            <div class="mb-3">
+                <label asp-for="CodeFiliere" class="form-label"></label>
+                <input asp-for="CodeFiliere" class="form-control" readonly />
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="NomFiliere" class="form-label"></label>
+                <input asp-for="NomFiliere" class="form-control" />
+                <span asp-validation-for="NomFiliere" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-warning">
+                    <i class="fas fa-save me-1"></i> Enregistrer
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

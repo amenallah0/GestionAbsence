@@ -1,213 +1,415 @@
 ﻿@{
-    ViewData["Title"] = "Tableau de bord";
+    ViewData["Title"] = "Tableau de Bord";
 }
 
-<div class="container py-4">
-    <!-- En-tête du dashboard -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card bg-primary text-white">
-                <div class="card-body">
-                    <h1 class="display-6">
-                        <i class="fas fa-tachometer-alt me-2"></i>
-                        Tableau de bord
-                    </h1>
-                    <p class="lead mb-0">Aperçu général des absences et statistiques</p>
+<!-- Statistiques Rapides -->
+<div class="row g-3 mb-4">
+    <div class="col-12">
+        <h5 class="text-muted fw-light">
+            <i class="fas fa-tachometer-alt me-2"></i>Vue d'ensemble
+        </h5>
+    </div>
+
+    <!-- Cartes des statistiques principales -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm hover-card">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h6 class="text-muted mb-2">Total Absences</h6>
+                        <h4 class="mb-0 fw-bold">
+                            <span class="counter" data-target="@ViewBag.TotalAbsences">0</span>
+                        </h4>
+                    </div>
+                    <div class="icon-shape bg-primary text-white rounded-3">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                </div>
+                <div class="mt-3 mb-0 text-muted text-sm">
+                    <span class="text-nowrap">Période en cours</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Cartes de statistiques -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card bg-info text-white h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="card-title mb-0">Total Étudiants</h6>
-                            <h2 class="my-2">@ViewBag.TotalEtudiants</h2>
-                        </div>
-                        <div class="rounded-circle bg-white p-3">
-                            <i class="fas fa-user-graduate text-info fa-2x"></i>
-                        </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm hover-card">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h6 class="text-muted mb-2">Absences Justifiées</h6>
+                        <h4 class="mb-0 fw-bold text-success">
+                            <span class="counter" data-target="@ViewBag.AbsencesJustifiees">0</span>
+                        </h4>
+                    </div>
+                    <div class="icon-shape bg-success text-white rounded-3">
+                        <i class="fas fa-check-circle"></i>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-success text-white h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="card-title mb-0">Total Enseignants</h6>
-                            <h2 class="my-2">@ViewBag.TotalEnseignants</h2>
-                        </div>
-                        <div class="rounded-circle bg-white p-3">
-                            <i class="fas fa-chalkboard-teacher text-success fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-warning text-dark h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="card-title mb-0">Absences du Mois</h6>
-                            <h2 class="my-2">@ViewBag.AbsencesMois</h2>
-                        </div>
-                        <div class="rounded-circle bg-white p-3">
-                            <i class="fas fa-calendar-times text-warning fa-2x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-danger text-white h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h6 class="card-title mb-0">Non Justifiées</h6>
-                            <h2 class="my-2">@ViewBag.AbsencesNonJustifiees</h2>
-                        </div>
-                        <div class="rounded-circle bg-white p-3">
-                            <i class="fas fa-exclamation-circle text-danger fa-2x"></i>
-                        </div>
-                    </div>
+                <div class="progress progress-xs mt-3 mb-0" style="height: 3px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: @(ViewBag.TotalAbsences > 0 ? (ViewBag.AbsencesJustifiees * 100 / ViewBag.TotalAbsences) : 0)%"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Graphiques -->
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-chart-bar me-2"></i>
-                        Absences par Département
-                    </h5>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm hover-card">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h6 class="text-muted mb-2">Non Justifiées</h6>
+                        <h4 class="mb-0 fw-bold text-danger">
+                            <span class="counter" data-target="@ViewBag.AbsencesNonJustifiees">0</span>
+                        </h4>
+                    </div>
+                    <div class="icon-shape bg-danger text-white rounded-3">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <canvas id="departementChart"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-chart-pie me-2"></i>
-                        Répartition des Absences
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <canvas id="absencesPieChart"></canvas>
+                <div class="progress progress-xs mt-3 mb-0" style="height: 3px;">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: @(ViewBag.TotalAbsences > 0 ? (ViewBag.AbsencesNonJustifiees * 100 / ViewBag.TotalAbsences) : 0)%"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Dernières absences -->
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title mb-0">
-                <i class="fas fa-history me-2"></i>
-                Dernières Absences Enregistrées
-            </h5>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Étudiant</th>
-                            <th>Date</th>
-                            <th>Matière</th>
-                            <th>Enseignant</th>
-                            <th>État</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var absence in ViewBag.DernieresAbsences ?? new List<dynamic>())
-                        {
-                            <tr>
-                                <td>@absence.NomEtudiant</td>
-                                <td>@absence.Date.ToString("dd/MM/yyyy")</td>
-                                <td>@absence.Matiere</td>
-                                <td>@absence.NomEnseignant</td>
-                                <td>
-                                    @if (absence.EstJustifiee)
-                                    {
-                                        <span class="badge bg-success">Justifiée</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-danger">Non justifiée</span>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm hover-card">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h6 class="text-muted mb-2">Taux de Justification</h6>
+                        <h4 class="mb-0 fw-bold text-warning">
+                            @{
+                                var tauxJustification = ViewBag.TotalAbsences > 0 
+                                    ? Math.Round((double)ViewBag.AbsencesJustifiees / ViewBag.TotalAbsences * 100, 1)
+                                    : 0;
+                            }
+                            <span class="counter" data-target="@tauxJustification">0</span>%
+                        </h4>
+                    </div>
+                    <div class="icon-shape bg-warning text-white rounded-3">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                </div>
+                <div class="progress progress-xs mt-3 mb-0" style="height: 3px;">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: @tauxJustification%"></div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Statistiques Détaillées -->
+<div class="row g-3 mb-4">
+    <div class="col-12">
+        <h5 class="text-muted fw-light">
+            <i class="fas fa-chart-line me-2"></i>Statistiques Détaillées
+        </h5>
+    </div>
+
+    <div class="col-sm-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm hover-card bg-gradient-light">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-center">
+                    <div class="icon-shape bg-info text-white rounded-3 me-3">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted mb-1">Étudiants</h6>
+                        <h5 class="mb-0">
+                            <span class="counter" data-target="@ViewBag.NombreEtudiants">0</span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm hover-card bg-gradient-light">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-center">
+                    <div class="icon-shape bg-secondary text-white rounded-3 me-3">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted mb-1">Enseignants</h6>
+                        <h5 class="mb-0">
+                            <span class="counter" data-target="@ViewBag.NombreEnseignants">0</span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm hover-card bg-gradient-light">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-center">
+                    <div class="icon-shape bg-primary text-white rounded-3 me-3">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted mb-1">Classes</h6>
+                        <h5 class="mb-0">
+                            <span class="counter" data-target="@ViewBag.NombreClasses">0</span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm hover-card bg-gradient-light">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-center">
+                    <div class="icon-shape bg-success text-white rounded-3 me-3">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted mb-1">Départements</h6>
+                        <h5 class="mb-0">
+                            <span class="counter" data-target="@ViewBag.NombreDepartements">0</span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm hover-card bg-gradient-light">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-center">
+                    <div class="icon-shape bg-warning text-white rounded-3 me-3">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted mb-1">Filières</h6>
+                        <h5 class="mb-0">
+                            <span class="counter" data-target="@ViewBag.NombreFilieres">0</span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4 col-xl-2">
+        <div class="card border-0 shadow-sm hover-card bg-gradient-light">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-center">
+                    <div class="icon-shape bg-danger text-white rounded-3 me-3">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted mb-1">Matières</h6>
+                        <h5 class="mb-0">
+                            <span class="counter" data-target="@ViewBag.NombreMatieres">0</span>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Graphiques -->
+<div class="row g-3">
+    <div class="col-12">
+        <h5 class="text-muted fw-light">
+            <i class="fas fa-chart-pie me-2"></i>Analyse des Absences
+        </h5>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 fw-bold">Répartition par Matière</h6>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="toggleChartType('pie')">
+                        <i class="fas fa-chart-pie"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="toggleChartType('bar')">
+                        <i class="fas fa-chart-bar"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="absencesByMatiere" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-transparent border-0">
+                <h6 class="mb-0 fw-bold">Top 5 Matières</h6>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="border-0">Matière</th>
+                                <th class="border-0 text-center">Total</th>
+                                <th class="border-0 text-end">%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.TopMatieres)
+                            {
+                                var pourcentage = ViewBag.TotalAbsences > 0 
+                                    ? Math.Round((double)item.total / ViewBag.TotalAbsences * 100, 1)
+                                    : 0;
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar avatar-sm bg-light rounded p-1 me-2">
+                                                <i class="fas fa-book text-primary"></i>
+                                            </div>
+                                            <span>@item.matiere</span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">@item.total</td>
+                                    <td class="text-end">
+                                        <div class="d-flex align-items-center justify-content-end">
+                                            <div class="progress flex-grow-1 me-2" style="height: 4px; width: 50px;">
+                                                <div class="progress-bar bg-primary" style="width: @pourcentage%"></div>
+                                            </div>
+                                            <span class="text-sm">@pourcentage%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .hover-card {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .icon-shape {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .progress-xs {
+            height: 4px;
+            border-radius: 2px;
+        }
+        
+        .bg-gradient-light {
+            background: linear-gradient(87deg, #f8f9fa 0, #fff 100%) !important;
+        }
+        
+        .text-sm {
+            font-size: 0.875rem;
+        }
+        
+        .avatar {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .rounded-3 {
+            border-radius: 0.5rem !important;
+        }
+    </style>
+}
+
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Graphique des absences par département
-        const depCtx = document.getElementById('departementChart').getContext('2d');
-        new Chart(depCtx, {
-            type: 'bar',
-            data: {
-                labels: @Html.Raw(Json.Serialize(ViewBag.DepartementLabels)),
-                datasets: [{
-                    label: 'Nombre d\'absences',
-                    data: @Html.Raw(Json.Serialize(ViewBag.DepartementData)),
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+        // Animation des compteurs
+        document.querySelectorAll('.counter').forEach(counter => {
+            const target = parseFloat(counter.getAttribute('data-target'));
+            let current = 0;
+            const increment = target / 50;
+            const updateCounter = () => {
+                if (current < target) {
+                    current += increment;
+                    counter.textContent = Math.round(current);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    counter.textContent = target;
                 }
-            }
+            };
+            updateCounter();
         });
 
-        // Graphique circulaire des absences
-        const pieCtx = document.getElementById('absencesPieChart').getContext('2d');
-        new Chart(pieCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Justifiées', 'Non Justifiées'],
-                datasets: [{
-                    data: [@ViewBag.AbsencesJustifiees, @ViewBag.AbsencesNonJustifiees],
-                    backgroundColor: [
-                        'rgba(75, 192, 192, 0.5)',
-                        'rgba(255, 99, 132, 0.5)'
-                    ],
-                    borderColor: [
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(255, 99, 132, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true
+        // Configuration du graphique
+        let chartInstance = null;
+        const matiereData = @Html.Raw(Json.Serialize(ViewBag.AbsencesByMatiere));
+        
+        function createChart(type) {
+            const ctx = document.getElementById('absencesByMatiere').getContext('2d');
+            if (chartInstance) {
+                chartInstance.destroy();
             }
-        });
+            
+            chartInstance = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: matiereData.map(d => d.matiere),
+                    datasets: [{
+                        data: matiereData.map(d => d.total),
+                        backgroundColor: [
+                            'rgba(78, 115, 223, 0.8)',
+                            'rgba(28, 200, 138, 0.8)',
+                            'rgba(54, 185, 204, 0.8)',
+                            'rgba(246, 194, 62, 0.8)',
+                            'rgba(231, 74, 59, 0.8)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: type === 'pie' ? 'right' : 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        function toggleChartType(type) {
+            createChart(type);
+        }
+
+        // Initialiser le graphique
+        createChart('pie');
     </script>
 }

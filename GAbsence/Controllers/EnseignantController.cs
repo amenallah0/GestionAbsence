@@ -1,16 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace GAbsence.Controllers
 {
     public class EnseignantController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<EnseignantController> _logger;
 
-        public EnseignantController(ApplicationDbContext context)
+        public EnseignantController(ApplicationDbContext context, ILogger<EnseignantController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Enseignant
@@ -26,27 +29,100 @@ namespace GAbsence.Controllers
         // GET: Enseignant/Create
         public IActionResult Create()
         {
-            // Charger la liste des départements pour le dropdown
-            ViewBag.Departements = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement");
-            // Charger la liste des grades si nécessaire
-            ViewBag.Grades = new SelectList(_context.Grades, "CodeGrade", "Libelle");
+            ViewBag.Departements = new SelectList(
+                _context.Departements.OrderBy(d => d.NomDepartement),
+                "CodeDepartement",
+                "NomDepartement"
+            );
+
+            ViewBag.Grades = new SelectList(
+                _context.Grades.OrderBy(g => g.Libelle),
+                "CodeGrade",
+                "Libelle"
+            );
+
             return View();
         }
 
         // POST: Enseignant/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CodeEnseignant,Nom,Prenom,DateRecrutement,Adresse,Mail,Tel,CodeDepartement,CodeGrade")] Enseignant enseignant)
+        public async Task<IActionResult> Create([Bind("CodeEnseignant,Nom,Prenom,DateRecrutement,Adresse,Email,Tel,CodeDepartement,CodeGrade")] Enseignant enseignant)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(enseignant);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Vérifier si le code enseignant existe déjà
+                if (await _context.Enseignants.AnyAsync(e => e.CodeEnseignant == enseignant.CodeEnseignant))
+                {
+                    ModelState.AddModelError("CodeEnseignant", "Ce code enseignant existe déjà.");
+                }
+
+                // Vérifier si l'email existe déjà
+                if (await _context.Enseignants.AnyAsync(e => e.Email == enseignant.Email))
+                {
+                    ModelState.AddModelError("Email", "Cet email est déjà utilisé.");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    // Initialiser les collections si elles sont null
+                    enseignant.Absences = new List<Absence>();
+                    enseignant.Matieres = new List<Matiere>();
+
+                    // Vérifier et récupérer le département et le grade
+                    var departement = await _context.Departements.FindAsync(enseignant.CodeDepartement);
+                    var grade = await _context.Grades.FindAsync(enseignant.CodeGrade);
+
+                    if (departement == null)
+                    {
+                        ModelState.AddModelError("CodeDepartement", "Le département sélectionné n'existe pas.");
+                        throw new Exception("Département invalide");
+                    }
+
+                    if (grade == null)
+                    {
+                        ModelState.AddModelError("CodeGrade", "Le grade sélectionné n'existe pas.");
+                        throw new Exception("Grade invalide");
+                    }
+
+                    _context.Add(enseignant);
+                    await _context.SaveChangesAsync();
+
+                    _logger.LogInformation($"Enseignant créé avec succès: {enseignant.CodeEnseignant}");
+                    TempData["Success"] = "L'enseignant a été créé avec succès.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        _logger.LogError($"Erreur de validation: {error.ErrorMessage}");
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Erreur lors de la création de l'enseignant: {ex.Message}");
+                ModelState.AddModelError("", "Une erreur est survenue lors de la création de l'enseignant.");
+            }
+
             // Recharger les listes en cas d'erreur
-            ViewBag.Departements = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement", enseignant.CodeDepartement);
-            ViewBag.Grades = new SelectList(_context.Grades, "CodeGrade", "Libelle", enseignant.CodeGrade);
+            ViewBag.Departements = new SelectList(
+                _context.Departements.OrderBy(d => d.NomDepartement),
+                "CodeDepartement",
+                "NomDepartement",
+                enseignant.CodeDepartement
+            );
+
+            ViewBag.Grades = new SelectList(
+                _context.Grades.OrderBy(g => g.Libelle),
+                "CodeGrade",
+                "Libelle",
+                enseignant.CodeGrade
+            );
+
+            // Retourner la vue avec le modèle et les erreurs
             return View(enseignant);
         }
 
@@ -58,21 +134,27 @@ namespace GAbsence.Controllers
                 return NotFound();
             }
 
-            var enseignant = await _context.Enseignants.FindAsync(id);
+            var enseignant = await _context.Enseignants
+                .Include(e => e.Grade)
+                .Include(e => e.Departement)
+                .FirstOrDefaultAsync(m => m.CodeEnseignant == id);
+
             if (enseignant == null)
             {
                 return NotFound();
             }
 
-            ViewData["CodeDepartement"] = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement", enseignant.CodeDepartement);
-            ViewData["CodeGrade"] = new SelectList(_context.Grades, "CodeGrade", "Libelle", enseignant.CodeGrade);
+            // Charger les listes pour les dropdowns
+            ViewBag.Grades = new SelectList(_context.Grades, "CodeGrade", "Libelle", enseignant.CodeGrade);
+            ViewBag.Departements = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement", enseignant.CodeDepartement);
+
             return View(enseignant);
         }
 
         // POST: Enseignant/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CodeEnseignant,Nom,Prenom,Mail,Tel,CodeDepartement,CodeGrade")] Enseignant enseignant)
+        public async Task<IActionResult> Edit(string id, [Bind("CodeEnseignant,Nom,Prenom,DateRecrutement,Adresse,Mail,Tel,CodeDepartement,CodeGrade")] Enseignant enseignant)
         {
             if (id != enseignant.CodeEnseignant)
             {
@@ -100,9 +182,47 @@ namespace GAbsence.Controllers
                 }
             }
 
-            ViewData["CodeDepartement"] = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement", enseignant.CodeDepartement);
-            ViewData["CodeGrade"] = new SelectList(_context.Grades, "CodeGrade", "Libelle", enseignant.CodeGrade);
+            // Recharger les listes en cas d'erreur
+            ViewBag.Grades = new SelectList(_context.Grades, "CodeGrade", "Libelle", enseignant.CodeGrade);
+            ViewBag.Departements = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement", enseignant.CodeDepartement);
+
             return View(enseignant);
+        }
+
+        // GET: Enseignant/Delete/5
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var enseignant = await _context.Enseignants
+                .Include(e => e.Grade)
+                .Include(e => e.Departement)
+                .FirstOrDefaultAsync(m => m.CodeEnseignant == id);
+
+            if (enseignant == null)
+            {
+                return NotFound();
+            }
+
+            return View(enseignant);
+        }
+
+        // POST: Enseignant/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var enseignant = await _context.Enseignants.FindAsync(id);
+            if (enseignant != null)
+            {
+                _context.Enseignants.Remove(enseignant);
+                await _context.SaveChangesAsync();
+            }
+            
+            return RedirectToAction(nameof(Index));
         }
 
         private bool EnseignantExists(string id)

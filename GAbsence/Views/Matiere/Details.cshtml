@@ -1,28 +1,132 @@
 @model GAbsence.Models.Matiere
 
 @{
-    ViewData["Title"] = "Détails de la matière";
+    ViewData["Title"] = "Détails de la Matière";
 }
 
-<div class="container">
-    <h1>@ViewData["Title"]</h1>
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">
+                <i class="fas fa-book me-2"></i>@Model.Libelle
+            </h4>
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.CodeMatiere" class="btn btn-light btn-sm">
+                    <i class="fas fa-edit me-1"></i>Modifier
+                </a>
+                <a asp-action="Delete" asp-route-id="@Model.CodeMatiere" class="btn btn-danger btn-sm ms-2">
+                    <i class="fas fa-trash me-1"></i>Supprimer
+                </a>
+                <a asp-action="Index" class="btn btn-light btn-sm ms-2">
+                    <i class="fas fa-arrow-left me-1"></i>Retour
+                </a>
+            </div>
+        </div>
 
-    <dl class="row">
-        <dt class="col-sm-2">Code</dt>
-        <dd class="col-sm-10">@Model.CodeMatiere</dd>
+        <div class="card-body">
+            <div class="row g-4">
+                <!-- Informations de la matière -->
+                <div class="col-md-6">
+                    <div class="card h-100 border-0 bg-light">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">
+                                <i class="fas fa-info-circle me-2"></i>Informations générales
+                            </h5>
+                            <dl class="row mb-0">
+                                <dt class="col-sm-4">Code</dt>
+                                <dd class="col-sm-8">@Model.CodeMatiere</dd>
 
-        <dt class="col-sm-2">Libellé</dt>
-        <dd class="col-sm-10">@Model.Libelle</dd>
+                                <dt class="col-sm-4">Libellé</dt>
+                                <dd class="col-sm-8">@Model.Libelle</dd>
 
-        <dt class="col-sm-2">Nombre d'heures</dt>
-        <dd class="col-sm-10">@Model.NbreHeures</dd>
+                                <dt class="col-sm-4">Coefficient</dt>
+                                <dd class="col-sm-8">@Model.Coefficient</dd>
 
-        <dt class="col-sm-2">Coefficient</dt>
-        <dd class="col-sm-10">@Model.Coefficient</dd>
-    </dl>
+                                <dt class="col-sm-4">Volume Horaire</dt>
+                                <dd class="col-sm-8">@Model.NbreHeures heures</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
 
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.CodeMatiere" class="btn btn-primary">Modifier</a>
-        <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+                <!-- Liste des enseignants -->
+                <div class="col-md-6">
+                    <div class="card h-100 border-0">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">
+                                <i class="fas fa-chalkboard-teacher me-2"></i>Enseignants
+                            </h5>
+                            @if (Model.Enseignants != null && Model.Enseignants.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Nom</th>
+                                                <th>Grade</th>
+                                                <th>Département</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var enseignant in Model.Enseignants.OrderBy(e => e.Nom))
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar-sm bg-primary text-white rounded-circle me-2">
+                                                                @enseignant.Nom.Substring(0,1)@enseignant.Prenom.Substring(0,1)
+                                                            </div>
+                                                            @enseignant.Nom @enseignant.Prenom
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-secondary">
+                                                            @(enseignant.Grade?.Libelle ?? "Non défini")
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        @(enseignant.Departement?.NomDepartement ?? "Non assigné")
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Aucun enseignant assigné à cette matière.
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div> 
+</div>
+
+@section Styles {
+    <style>
+        .avatar-sm {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .card {
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .table td {
+            vertical-align: middle;
+        }
+    </style>
+} 

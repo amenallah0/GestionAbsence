@@ -83,19 +83,31 @@ namespace GAbsence.Controllers
                 return NotFound();
             }
 
-            var etudiant = await _context.Etudiants.FindAsync(id);
+            var etudiant = await _context.Etudiants
+                .Include(e => e.Classe)
+                .FirstOrDefaultAsync(e => e.CodeEtudiant == id);
+
             if (etudiant == null)
             {
                 return NotFound();
             }
-            ViewData["CodeClasse"] = new SelectList(_context.Classes, "CodeClasse", "NomClasse", etudiant.CodeClasse);
+
+            ViewBag.Classes = await _context.Classes
+                .OrderBy(c => c.CodeClasse)
+                .Select(c => new
+                {
+                    CodeClasse = c.CodeClasse,
+                    DisplayText = $"{c.CodeClasse} - {c.Niveau} "
+                })
+                .ToListAsync();
+
             return View(etudiant);
         }
 
         // POST: Etudiant/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CodeEtudiant,Nom,Prenom,DateNaissance,CodeClasse,Adresse,Mail,Tel")] Etudiant etudiant)
+        public async Task<IActionResult> Edit(string id, [Bind("CodeEtudiant,Nom,Prenom,DateNaissance,Adresse,Mail,Tel,CodeClasse")] Etudiant etudiant)
         {
             if (id != etudiant.CodeEtudiant)
             {
@@ -106,10 +118,26 @@ namespace GAbsence.Controllers
             {
                 try
                 {
-                    _context.Update(etudiant);
+                    var existingEtudiant = await _context.Etudiants.FindAsync(id);
+                    if (existingEtudiant == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Mettre à jour uniquement les propriétés modifiables
+                    existingEtudiant.Nom = etudiant.Nom;
+                    existingEtudiant.Prenom = etudiant.Prenom;
+                    existingEtudiant.DateNaissance = etudiant.DateNaissance;
+                    existingEtudiant.Adresse = etudiant.Adresse;
+                    existingEtudiant.Mail = etudiant.Mail;
+                    existingEtudiant.Tel = etudiant.Tel;
+                    existingEtudiant.CodeClasse = etudiant.CodeClasse;
+
                     await _context.SaveChangesAsync();
+                    _logger.LogInformation($"Étudiant modifié avec succès: {etudiant.CodeEtudiant}");
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
                     if (!EtudiantExists(etudiant.CodeEtudiant))
                     {
@@ -117,12 +145,29 @@ namespace GAbsence.Controllers
                     }
                     else
                     {
+                        _logger.LogError($"Erreur lors de la modification de l'étudiant: {ex.Message}");
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["CodeClasse"] = new SelectList(_context.Classes, "CodeClasse", "NomClasse", etudiant.CodeClasse);
+            else
+            {
+                // Log des erreurs de validation
+                foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    _logger.LogWarning($"Erreur de validation: {modelError.ErrorMessage}");
+                }
+            }
+
+            ViewBag.Classes = await _context.Classes
+                .OrderBy(c => c.CodeClasse)
+                .Select(c => new
+                {
+                    CodeClasse = c.CodeClasse,
+                    DisplayText = $"{c.CodeClasse} - {c.Niveau} "
+                })
+                .ToListAsync();
+
             return View(etudiant);
         }
 

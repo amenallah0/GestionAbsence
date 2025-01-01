@@ -1,64 +1,29 @@
 @model GAbsence.Models.Grade
 
-<div class="container">
-    <h1>Détails du grade</h1>
+@{
+    ViewData["Title"] = "Détails Grade";
+}
 
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title">Informations générales</h5>
-            <dl class="row">
-                <dt class="col-sm-3">Code</dt>
-                <dd class="col-sm-9">@Model.CodeGrade</dd>
-
-                <dt class="col-sm-3">Intitulé du grade</dt>
-                <dd class="col-sm-9">@Model.Libelle</dd>
-
-                <dt class="col-sm-3">Nombre d'enseignants</dt>
-                <dd class="col-sm-9">@ViewBag.NombreEnseignants</dd>
-            </dl>
-        </div>
+<div class="card">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Détails du grade</h5>
     </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CodeGrade)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.CodeGrade)</dd>
 
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Liste des enseignants</h5>
-            @if (Model.Enseignants != null && Model.Enseignants.Any())
-            {
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Code</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Département</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var enseignant in Model.Enseignants)
-                        {
-                            <tr>
-                                <td>@enseignant.CodeEnseignant</td>
-                                <td>@enseignant.Nom</td>
-                                <td>@enseignant.Prenom</td>
-                                <td>@enseignant.Departement</td>
-                                <td>@enseignant.Mail</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <div class="alert alert-info">
-                    Aucun enseignant n'a ce grade.
-                </div>
-            }
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Libelle)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Libelle)</dd>
+        </dl>
+
+        <div class="mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.CodeGrade" class="btn btn-warning">
+                <i class="fas fa-edit me-1"></i> Modifier
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+            </a>
         </div>
-    </div>
-
-    <div class="mt-3">
-        <a asp-action="Edit" asp-route-id="@Model.CodeGrade" class="btn btn-primary">Modifier</a>
-        <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
     </div>
 </div> 

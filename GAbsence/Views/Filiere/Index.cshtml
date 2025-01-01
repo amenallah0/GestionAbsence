@@ -1,16 +1,16 @@
-@model IEnumerable<GAbsence.Models.Grade>
+@model IEnumerable<GAbsence.Models.Filiere>
 
 @{
-    ViewData["Title"] = "Grades";
+    ViewData["Title"] = "Filières";
 }
 
 <div class="card">
     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0">
-            <i class="fas fa-graduation-cap me-2"></i>Liste des Grades
+            <i class="fas fa-graduation-cap me-2"></i>Liste des Filières
         </h5>
         <a asp-action="Create" class="btn btn-light">
-            <i class="fas fa-plus me-1"></i>Nouveau Grade
+            <i class="fas fa-plus me-1"></i>Nouvelle Filière
         </a>
     </div>
     <div class="card-body">
@@ -18,8 +18,10 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>@Html.DisplayNameFor(model => model.CodeGrade)</th>
-                        <th>@Html.DisplayNameFor(model => model.Libelle)</th>
+                        <th>@Html.DisplayNameFor(model => model.CodeFiliere)</th>
+                        <th>@Html.DisplayNameFor(model => model.NomFiliere)</th>
+                        <th>@Html.DisplayNameFor(model => model.Description)</th>
+                        <th>Classes</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -27,19 +29,25 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@Html.DisplayFor(modelItem => item.CodeGrade)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Libelle)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CodeFiliere)</td>
+                            <td>@Html.DisplayFor(modelItem => item.NomFiliere)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                            <td>
+                                <span class="badge bg-info">
+                                    @item.Classes.Count classes
+                                </span>
+                            </td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a asp-action="Edit" asp-route-id="@item.CodeGrade" 
+                                    <a asp-action="Edit" asp-route-id="@item.CodeFiliere" 
                                        class="btn btn-sm btn-warning" title="Modifier">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a asp-action="Details" asp-route-id="@item.CodeGrade" 
+                                    <a asp-action="Details" asp-route-id="@item.CodeFiliere" 
                                        class="btn btn-sm btn-info" title="Détails">
                                         <i class="fas fa-info-circle"></i>
                                     </a>
-                                    <a asp-action="Delete" asp-route-id="@item.CodeGrade" 
+                                    <a asp-action="Delete" asp-route-id="@item.CodeFiliere" 
                                        class="btn btn-sm btn-danger" title="Supprimer">
                                         <i class="fas fa-trash"></i>
                                     </a>
@@ -56,11 +64,8 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $('table').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/French.json"
-                }
-            });
+            // Animation pour les messages de succès/erreur
+            $('.alert').fadeIn('slow').delay(4000).fadeOut('slow');
         });
     </script>
-} 
+}

@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Gestion des Absences</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    @await RenderSectionAsync("Styles", required: false)
     @await RenderSectionAsync("CSS", required: false)
     <style>
         .navbar {
@@ -86,6 +87,11 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Grade" asp-action="Index">
                             <i class="fas fa-building me-1"></i> Grades
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Matiere" asp-action="Index">
+                            <i class="fas fa-building me-1"></i> Matieres
                         </a>
                     </li>
                 </ul>

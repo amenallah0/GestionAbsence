@@ -64,28 +64,29 @@ namespace GAbsence.Controllers
         }
 
         // GET: Rapport/ParPeriode
-        public async Task<IActionResult> ParPeriode(DateTime? dateDebut, DateTime? dateFin)
+        public async Task<IActionResult> ParPeriode()
         {
-            if (!dateDebut.HasValue)
-                dateDebut = DateTime.Today.AddMonths(-1);
-            if (!dateFin.HasValue)
-                dateFin = DateTime.Today;
-
             var absences = await _context.Absences
                 .Include(a => a.Etudiant)
-                    .ThenInclude(e => e.Classe)
-                .Include(a => a.Enseignant)
-                .Where(a => a.Date >= dateDebut && a.Date <= dateFin)
-                .OrderByDescending(a => a.Date)
-                .ThenBy(a => a.Etudiant.Nom)
+                .Include(a => a.Matiere)
                 .ToListAsync();
 
-            ViewBag.DateDebut = dateDebut.Value;
-            ViewBag.DateFin = dateFin.Value;
-            ViewBag.TotalAbsences = absences.Count;
-            ViewBag.AbsencesJustifiees = absences.Count(a => a.EstJustifiee);
+            // Ajouter des vérifications null
+            var absencesParEtudiant = absences
+                .Where(a => a.Etudiant != null) // Vérification null
+                .GroupBy(a => new { 
+                    a.CodeEtudiant, 
+                    Nom = a.Etudiant?.Nom ?? "Inconnu", 
+                    Prenom = a.Etudiant?.Prenom ?? "Inconnu" 
+                })
+                .Select(g => new
+                {
+                    Etudiant = g.Key,
+                    TotalAbsences = g.Count()
+                })
+                .ToList();
 
-            return View(absences);
+            return View(absencesParEtudiant);
         }
 
         public async Task<IActionResult> RapportParEtudiant(string etudiantId)
@@ -127,30 +128,36 @@ namespace GAbsence.Controllers
             
             foreach (var absence in absences)
             {
-                combinedAbsences.Add(new
+                if (absence?.Etudiant != null)
                 {
-                    Date = absence.Date,
-                    CreneauHoraire = absence.CreneauHoraire,
-                    Matiere = absence.Matiere?.Libelle,
-                    Enseignant = $"{absence.Enseignant?.Nom} {absence.Enseignant?.Prenom}",
-                    EstJustifiee = absence.EstJustifiee,
-                    Justification = absence.Justification,
-                    Source = "Absence"
-                });
+                    combinedAbsences.Add(new
+                    {
+                        Date = absence.Date,
+                        CreneauHoraire = absence.CreneauHoraire,
+                        Matiere = absence.Matiere?.Libelle,
+                        Enseignant = $"{absence.Enseignant?.Nom} {absence.Enseignant?.Prenom}",
+                        EstJustifiee = absence.EstJustifiee,
+                        Justification = absence.Justification,
+                        Source = "Absence"
+                    });
+                }
             }
 
             foreach (var fiche in ficheAbsences)
             {
-                combinedAbsences.Add(new
+                if (fiche?.Etudiant != null)
                 {
-                    Date = fiche.Date,
-                    CreneauHoraire = fiche.CreneauHoraire,
-                    Matiere = fiche.Matiere,
-                    Enseignant = $"{fiche.Enseignant?.Nom} {fiche.Enseignant?.Prenom}",
-                    EstJustifiee = fiche.EstJustifiee,
-                    Justification = fiche.Justification,
-                    Source = "FicheAbsence"
-                });
+                    combinedAbsences.Add(new
+                    {
+                        Date = fiche.Date,
+                        CreneauHoraire = fiche.CreneauHoraire,
+                        Matiere = fiche.Matiere,
+                        Enseignant = $"{fiche.Enseignant?.Nom} {fiche.Enseignant?.Prenom}",
+                        EstJustifiee = fiche.EstJustifiee,
+                        Justification = fiche.Justification,
+                        Source = "FicheAbsence"
+                    });
+                }
             }
 
             return View(combinedAbsences.OrderByDescending(a => a.Date).ToList());

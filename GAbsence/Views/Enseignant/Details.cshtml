@@ -65,8 +65,8 @@
                         <div class="col-12">
                             <div class="small text-muted">Email</div>
                             <div class="fw-bold">
-                                <a href="mailto:@Model.Mail" class="text-decoration-none">
-                                    <i class="fas fa-envelope me-2"></i>@Model.Mail
+                                <a href="mailto:@Model.Email" class="text-decoration-none">
+                                    <i class="fas fa-envelope me-2"></i>@Model.Email
                                 </a>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                                     @foreach (var stat in ViewBag.Statistiques)
                                     {
                                         <tr>
-                                            <td>@stat.Matiere.NomMatiere</td>
+                                            <td>@stat.Matiere.Libelle</td>
                                             <td class="text-center">@stat.TotalAbsences</td>
                                             <td class="text-center text-success">@stat.AbsencesJustifiees</td>
                                             <td class="text-center text-danger">@stat.AbsencesNonJustifiees</td>
