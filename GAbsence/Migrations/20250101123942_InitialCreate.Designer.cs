@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAbsence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241228224107_InitialCreate")]
+    [Migration("20250101123942_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -216,6 +216,18 @@ namespace GAbsence.Migrations
                             CodeDepartement = "INFO",
                             DateCreation = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NomDepartement = "Informatique"
+                        },
+                        new
+                        {
+                            CodeDepartement = "MATH",
+                            DateCreation = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NomDepartement = "Mathématiques"
+                        },
+                        new
+                        {
+                            CodeDepartement = "PHY",
+                            DateCreation = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NomDepartement = "Physique"
                         },
                         new
                         {

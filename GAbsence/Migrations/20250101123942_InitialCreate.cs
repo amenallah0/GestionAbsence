@@ -469,6 +469,8 @@ namespace GAbsence.Migrations
                 values: new object[,]
                 {
                     { "INFO", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Informatique" },
+                    { "MATH", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mathématiques" },
+                    { "PHY", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Physique" },
                     { "qcscsq", null, "Département Test" }
                 });
 

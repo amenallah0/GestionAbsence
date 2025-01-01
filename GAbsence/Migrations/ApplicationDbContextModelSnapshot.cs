@@ -216,6 +216,18 @@ namespace GAbsence.Migrations
                         },
                         new
                         {
+                            CodeDepartement = "MATH",
+                            DateCreation = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NomDepartement = "Mathématiques"
+                        },
+                        new
+                        {
+                            CodeDepartement = "PHY",
+                            DateCreation = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NomDepartement = "Physique"
+                        },
+                        new
+                        {
                             CodeDepartement = "qcscsq",
                             NomDepartement = "Département Test"
                         });
