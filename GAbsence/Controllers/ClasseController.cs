@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GAbsence.Controllers
 {
@@ -25,47 +26,45 @@ namespace GAbsence.Controllers
         // GET: Classe/Create
         public IActionResult Create()
         {
+            // Charger la liste des filières pour le dropdown
+            ViewBag.Filieres = new SelectList(_context.Filieres, "CodeFiliere", "NomFiliere");
             return View();
         }
 
         // POST: Classe/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CodeClasse,NomClasse")] Classe classe)
+        public async Task<IActionResult> Create([Bind("CodeClasse,NomClasse,CodeFiliere,Niveau")] Classe classe)
         {
-            _logger.LogInformation("Tentative de création d'une classe");
-
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _logger.LogWarning("ModelState invalide");
-                foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
+                try
                 {
-                    _logger.LogWarning($"Erreur: {modelError.ErrorMessage}");
+                    _context.Add(classe);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                return View(classe);
-            }
-
-            try
-            {
-                // Vérifier si le code classe existe déjà
-                if (await _context.Classes.AnyAsync(c => c.CodeClasse == classe.CodeClasse))
+                catch (Exception ex)
                 {
-                    _logger.LogWarning($"Le code classe {classe.CodeClasse} existe déjà");
-                    ModelState.AddModelError("CodeClasse", "Ce code de classe existe déjà");
-                    return View(classe);
+                    _logger.LogError($"Erreur lors de la création de la classe: {ex.Message}");
+                    ModelState.AddModelError("", "Une erreur est survenue lors de la création de la classe.");
                 }
-
-                _context.Add(classe);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation($"Classe créée avec succès: {classe.CodeClasse}");
-                return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            else
             {
-                _logger.LogError($"Erreur lors de la création de la classe: {ex.Message}");
-                ModelState.AddModelError("", "Une erreur s'est produite lors de la création de la classe");
-                return View(classe);
+                // Log les erreurs de validation pour le débogage
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        _logger.LogError($"Erreur de validation: {error.ErrorMessage}");
+                    }
+                }
             }
+            
+            // En cas d'erreur, recharger la liste des filières
+            ViewBag.Filieres = new SelectList(_context.Filieres, "CodeFiliere", "NomFiliere", classe.CodeFiliere);
+            return View(classe);
         }
 
         // GET: Classe/Edit/GL2024

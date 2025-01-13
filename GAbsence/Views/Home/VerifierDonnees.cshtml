@@ -1,0 +1,179 @@
+@{
+    ViewData["Title"] = "Données de la base";
+}
+
+<style>
+    .data-section {
+        margin-bottom: 30px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .data-section h3 {
+        color: #2962ff;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e0e0e0;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+        background-color: transparent;
+    }
+
+    .table th {
+        background-color: #f8f9fa;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td {
+        padding: 12px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .table tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .count-badge {
+        background-color: #2962ff;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.9em;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+</style>
+
+<div class="container">
+    <h2 class="mb-4">@ViewData["Title"]</h2>
+
+    <div class="data-section">
+        <h3>Filières <span class="count-badge">@ViewBag.Filieres?.Count </span></h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Nom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.Filieres != null)
+                    {
+                        @foreach (var filiere in ViewBag.Filieres)
+                        {
+                            <tr>
+                                <td>@filiere.CodeFiliere</td>
+                                <td>@filiere.NomFiliere</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="data-section">
+        <h3>Classes <span class="count-badge">@ViewBag.Classes?.Count </span></h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Nom</th>
+                        <th>Niveau</th>
+                        <th>Filière</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.Classes != null)
+                    {
+                        @foreach (var classe in ViewBag.Classes)
+                        {
+                            <tr>
+                                <td>@classe.CodeClasse</td>
+                                <td>@classe.NomClasse</td>
+                                <td>@classe.Niveau</td>
+                                <td>@classe.CodeFiliere</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="data-section">
+        <h3>Étudiants <span class="count-badge">@ViewBag.Etudiants?.Count</span></h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Classe</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.Etudiants != null)
+                    {
+                        @foreach (var etudiant in ViewBag.Etudiants)
+                        {
+                            <tr>
+                                <td>@etudiant.CodeEtudiant</td>
+                                <td>@etudiant.Nom</td>
+                                <td>@etudiant.Prenom</td>
+                                <td>@etudiant.CodeClasse</td>
+                                <td>@etudiant.Mail</td>
+                                <td>@etudiant.Tel</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="data-section">
+        <h3>Matières <span class="count-badge">@ViewBag.Matieres?.Count </span></h3>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Nom</th>
+                        <th>Coefficient</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.Matieres != null)
+                    {
+                        @foreach (var matiere in ViewBag.Matieres)
+                        {
+                            <tr>
+                                <td>@matiere.CodeMatiere</td>
+                                <td>@matiere.Libelle</td>
+                                <td>@matiere.Coefficient</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

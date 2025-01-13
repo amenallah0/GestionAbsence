@@ -119,4 +119,29 @@ public class HomeController : Controller
     {
         return View();
     }
+    public IActionResult VerifierDonnees()
+{
+    try
+    {
+        // Récupérer toutes les données
+        var filieres = _context.Filieres.ToList();
+        var classes = _context.Classes.ToList();
+        var etudiants = _context.Etudiants.ToList();
+        var enseignants = _context.Enseignants.ToList();
+        var matieres = _context.Matieres.ToList();
+
+        // Afficher les données dans la vue
+        ViewBag.Filieres = filieres;
+        ViewBag.Classes = classes;
+        ViewBag.Etudiants = etudiants;
+        ViewBag.Enseignants = enseignants;
+        ViewBag.Matieres = matieres;
+
+        return View();
+    }
+    catch (Exception ex)
+    {
+            return Content($"Erreur : {ex.Message}");
+        }
+    }
 }
