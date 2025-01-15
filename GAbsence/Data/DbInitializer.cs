@@ -29,6 +29,16 @@ public static class DbInitializer
                 await roleManager.CreateAsync(new IdentityRole(role));
             }
         }
+
+        if (!await roleManager.RoleExistsAsync("Enseignant"))
+        {
+            await roleManager.CreateAsync(new IdentityRole("Enseignant"));
+        }
+
+        if (!await roleManager.RoleExistsAsync("Etudiant"))
+        {
+            await roleManager.CreateAsync(new IdentityRole("Etudiant"));
+        }
     }
 
     public static async Task InitializeAdmin(UserManager<ApplicationUser> userManager)

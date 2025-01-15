@@ -29,21 +29,38 @@ namespace GAbsence.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string password, string returnUrl = null)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(email, password, isPersistent: false, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: true);
+                
                 if (result.Succeeded)
                 {
-                    return RedirectToLocal(returnUrl);
+                    var user = await _userManager.FindByEmailAsync(model.Email);
+                    var roles = await _userManager.GetRolesAsync(user);
+                    
+                    _logger.LogInformation($"L'utilisateur {model.Email} s'est connecté avec succès");
+                    
+                    if (roles.Contains("Admin"))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else if (roles.Contains("Enseignant"))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else if (roles.Contains("Etudiant"))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
+                
                 ModelState.AddModelError(string.Empty, "Tentative de connexion invalide.");
             }
 
-            return View();
+            return View(model);
         }
 
         [HttpGet]

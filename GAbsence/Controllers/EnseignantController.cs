@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
 
 namespace GAbsence.Controllers
 {
@@ -9,11 +10,16 @@ namespace GAbsence.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<EnseignantController> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public EnseignantController(ApplicationDbContext context, ILogger<EnseignantController> logger)
+        public EnseignantController(
+            ApplicationDbContext context, 
+            ILogger<EnseignantController> logger,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _logger = logger;
+            _userManager = userManager;
         }
 
         // GET: Enseignant
@@ -47,82 +53,52 @@ namespace GAbsence.Controllers
         // POST: Enseignant/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CodeEnseignant,Nom,Prenom,DateRecrutement,Adresse,Email,Tel,CodeDepartement,CodeGrade")] Enseignant enseignant)
+        public async Task<IActionResult> Create([Bind("CodeEnseignant,Nom,Prenom,Email,Tel,DateRecrutement,Adresse,CodeDepartement,CodeGrade")] Enseignant enseignant)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // Vérifier si le code enseignant existe déjà
-                if (await _context.Enseignants.AnyAsync(e => e.CodeEnseignant == enseignant.CodeEnseignant))
+                try
                 {
-                    ModelState.AddModelError("CodeEnseignant", "Ce code enseignant existe déjà.");
-                }
-
-                // Vérifier si l'email existe déjà
-                if (await _context.Enseignants.AnyAsync(e => e.Email == enseignant.Email))
-                {
-                    ModelState.AddModelError("Email", "Cet email est déjà utilisé.");
-                }
-
-                if (ModelState.IsValid)
-                {
-                    // Initialiser les collections si elles sont null
-                    enseignant.Absences = new List<Absence>();
-                    enseignant.Matieres = new List<Matiere>();
-
-                    // Vérifier et récupérer le département et le grade
-                    var departement = await _context.Departements.FindAsync(enseignant.CodeDepartement);
-                    var grade = await _context.Grades.FindAsync(enseignant.CodeGrade);
-
-                    if (departement == null)
+                    // Créer le compte utilisateur
+                    var user = new ApplicationUser
                     {
-                        ModelState.AddModelError("CodeDepartement", "Le département sélectionné n'existe pas.");
-                        throw new Exception("Département invalide");
-                    }
+                        UserName = enseignant.Email,
+                        Email = enseignant.Email,
+                        Nom = enseignant.Nom,
+                        Prenom = enseignant.Prenom,
+                        GroupeUtilisateur = 3 // 3 pour Enseignant
+                    };
 
-                    if (grade == null)
+                    var password = "Ens" + enseignant.CodeEnseignant + "!";
+                    var result = await _userManager.CreateAsync(user, password);
+
+                    if (result.Succeeded)
                     {
-                        ModelState.AddModelError("CodeGrade", "Le grade sélectionné n'existe pas.");
-                        throw new Exception("Grade invalide");
+                        await _userManager.AddToRoleAsync(user, "Enseignant");
+                        
+                        // Créer l'enseignant
+                        _context.Add(enseignant);
+                        await _context.SaveChangesAsync();
+                        
+                        TempData["Success"] = "Enseignant créé avec succès";
+                        return RedirectToAction(nameof(Index));
                     }
-
-                    _context.Add(enseignant);
-                    await _context.SaveChangesAsync();
-
-                    _logger.LogInformation($"Enseignant créé avec succès: {enseignant.CodeEnseignant}");
-                    TempData["Success"] = "L'enseignant a été créé avec succès.";
-                    return RedirectToAction(nameof(Index));
+                    
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
-
-                foreach (var modelState in ModelState.Values)
+                catch (Exception ex)
                 {
-                    foreach (var error in modelState.Errors)
-                    {
-                        _logger.LogError($"Erreur de validation: {error.ErrorMessage}");
-                    }
+                    _logger.LogError($"Erreur lors de la création de l'enseignant: {ex.Message}");
+                    ModelState.AddModelError(string.Empty, "Une erreur s'est produite lors de la création de l'enseignant.");
                 }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Erreur lors de la création de l'enseignant: {ex.Message}");
-                ModelState.AddModelError("", "Une erreur est survenue lors de la création de l'enseignant.");
-            }
 
-            // Recharger les listes en cas d'erreur
-            ViewBag.Departements = new SelectList(
-                _context.Departements.OrderBy(d => d.NomDepartement),
-                "CodeDepartement",
-                "NomDepartement",
-                enseignant.CodeDepartement
-            );
-
-            ViewBag.Grades = new SelectList(
-                _context.Grades.OrderBy(g => g.Libelle),
-                "CodeGrade",
-                "Libelle",
-                enseignant.CodeGrade
-            );
-
-            // Retourner la vue avec le modèle et les erreurs
+            // En cas d'erreur, préparer les listes déroulantes
+            ViewData["CodeDepartement"] = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement");
+            ViewData["CodeGrade"] = new SelectList(_context.Grades, "CodeGrade", "NomGrade");
             return View(enseignant);
         }
 
