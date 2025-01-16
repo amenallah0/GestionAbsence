@@ -122,8 +122,8 @@ namespace GAbsence.Controllers
             }
 
             var enseignant = await _context.Enseignants
-                .Include(e => e.Grade)
                 .Include(e => e.Departement)
+                .Include(e => e.Grade)
                 .FirstOrDefaultAsync(m => m.CodeEnseignant == id);
 
             if (enseignant == null)
@@ -132,8 +132,8 @@ namespace GAbsence.Controllers
             }
 
             // Charger les listes pour les dropdowns
-            ViewBag.Grades = new SelectList(_context.Grades, "CodeGrade", "Libelle", enseignant.CodeGrade);
-            ViewBag.Departements = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement", enseignant.CodeDepartement);
+            ViewData["CodeDepartement"] = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement", enseignant.CodeDepartement);
+            ViewData["CodeGrade"] = new SelectList(_context.Grades, "CodeGrade", "Libelle", enseignant.CodeGrade);
 
             return View(enseignant);
         }
@@ -141,38 +141,92 @@ namespace GAbsence.Controllers
         // POST: Enseignant/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CodeEnseignant,Nom,Prenom,DateRecrutement,Adresse,Mail,Tel,CodeDepartement,CodeGrade")] Enseignant enseignant)
+        public async Task<IActionResult> Edit(string id, Enseignant enseignant)
         {
             if (id != enseignant.CodeEnseignant)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            // Validation manuelle des champs obligatoires
+            if (string.IsNullOrEmpty(enseignant.Nom))
+                ModelState.AddModelError("Nom", "Le nom est requis");
+            if (string.IsNullOrEmpty(enseignant.Prenom))
+                ModelState.AddModelError("Prenom", "Le prénom est requis");
+            if (string.IsNullOrEmpty(enseignant.Email))
+                ModelState.AddModelError("Email", "L'email est requis");
+            if (string.IsNullOrEmpty(enseignant.Tel))
+                ModelState.AddModelError("Tel", "Le téléphone est requis");
+            if (string.IsNullOrEmpty(enseignant.CodeDepartement))
+                ModelState.AddModelError("CodeDepartement", "Le département est requis");
+            if (string.IsNullOrEmpty(enseignant.CodeGrade))
+                ModelState.AddModelError("CodeGrade", "Le grade est requis");
+            if (string.IsNullOrEmpty(enseignant.Adresse))
+                ModelState.AddModelError("Adresse", "L'adresse est requise");
+
+            if (!ModelState.IsValid)
             {
-                try
+                ViewData["CodeDepartement"] = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement", enseignant.CodeDepartement);
+                ViewData["CodeGrade"] = new SelectList(_context.Grades, "CodeGrade", "Libelle", enseignant.CodeGrade);
+                return View(enseignant);
+            }
+
+            try
+            {
+                var existingEnseignant = await _context.Enseignants
+                    .Include(e => e.User)
+                    .FirstOrDefaultAsync(e => e.CodeEnseignant == id);
+
+                if (existingEnseignant == null)
                 {
-                    _context.Update(enseignant);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                // Mise à jour des propriétés
+                existingEnseignant.Nom = enseignant.Nom.Trim();
+                existingEnseignant.Prenom = enseignant.Prenom.Trim();
+                existingEnseignant.Email = enseignant.Email.Trim();
+                existingEnseignant.Tel = enseignant.Tel.Trim();
+                existingEnseignant.DateRecrutement = enseignant.DateRecrutement;
+                existingEnseignant.Adresse = enseignant.Adresse.Trim();
+                existingEnseignant.CodeDepartement = enseignant.CodeDepartement;
+                existingEnseignant.CodeGrade = enseignant.CodeGrade;
+
+                _context.Update(existingEnseignant);
+                await _context.SaveChangesAsync();
+
+                // Mise à jour de l'utilisateur si l'email a changé
+                if (existingEnseignant.User != null && existingEnseignant.Email != enseignant.Email)
                 {
-                    if (!EnseignantExists(enseignant.CodeEnseignant))
+                    var user = await _userManager.FindByIdAsync(existingEnseignant.UserId);
+                    if (user != null)
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        user.Email = enseignant.Email.Trim();
+                        user.UserName = enseignant.Email.Trim();
+                        user.NormalizedEmail = enseignant.Email.Trim().ToUpper();
+                        user.NormalizedUserName = enseignant.Email.Trim().ToUpper();
+                        
+                        var result = await _userManager.UpdateAsync(user);
+                        if (!result.Succeeded)
+                        {
+                            ModelState.AddModelError("", "Erreur lors de la mise à jour de l'email utilisateur.");
+                            throw new Exception("Erreur lors de la mise à jour de l'utilisateur");
+                        }
                     }
                 }
+
+                TempData["Success"] = "Les modifications ont été enregistrées avec succès.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Une erreur s'est produite : {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Erreur détaillée : {ex.ToString()}");
             }
 
             // Recharger les listes en cas d'erreur
-            ViewBag.Grades = new SelectList(_context.Grades, "CodeGrade", "Libelle", enseignant.CodeGrade);
-            ViewBag.Departements = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement", enseignant.CodeDepartement);
-
+            ViewData["CodeDepartement"] = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement", enseignant.CodeDepartement);
+            ViewData["CodeGrade"] = new SelectList(_context.Grades, "CodeGrade", "Libelle", enseignant.CodeGrade);
             return View(enseignant);
         }
 
