@@ -1,0 +1,170 @@
+@model GAbsence.Models.Etudiant
+
+@{
+    ViewData["Title"] = "Dashboard Étudiant";
+    var absencesJustifiees = ((IEnumerable<GAbsence.Models.Absence>)ViewBag.Absences)?.Count(a => a.EstJustifiee) ?? 0;
+    var totalAbsences = ((IEnumerable<GAbsence.Models.Absence>)ViewBag.Absences)?.Count() ?? 0;
+    var absencesNonJustifiees = totalAbsences - absencesJustifiees;
+}
+
+<div class="container-fluid py-4">
+    <!-- En-tête avec informations principales -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h2 class="card-title">Bienvenue, @Model.NomComplet</h2>
+                    <p class="card-text">Classe : @Model.Classe?.NomClasse</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cartes statistiques -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Absences</h5>
+                    <h2 class="card-text">@totalAbsences</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Absences Justifiées</h5>
+                    <h2 class="card-text">@absencesJustifiees</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Absences Non Justifiées</h5>
+                    <h2 class="card-text">@absencesNonJustifiees</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Informations personnelles et liste des absences -->
+    <div class="row">
+        <!-- Informations personnelles -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Informations Personnelles</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong><i class="fas fa-id-card"></i> Code:</strong> @Model.CodeEtudiant
+                        </li>
+                        <li class="list-group-item">
+                            <strong><i class="fas fa-envelope"></i> Email:</strong> @Model.Mail
+                        </li>
+                        <li class="list-group-item">
+                            <strong><i class="fas fa-phone"></i> Téléphone:</strong> @Model.Tel
+                        </li>
+                        <li class="list-group-item">
+                            <strong><i class="fas fa-map-marker-alt"></i> Adresse:</strong> @Model.Adresse
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liste des absences -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Historique des Absences</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Matière</th>
+                                    <th>Enseignant</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Absences != null && ViewBag.Absences.Count > 0)
+                                {
+                                    @foreach (var absence in ViewBag.Absences)
+                                    {
+                                        <tr>
+                                            <td>@absence.Date.ToString("dd/MM/yyyy")</td>
+                                            <td>@absence.Matiere?.NomMatiere</td>
+                                            <td>@absence.Enseignant?.NomComplet</td>
+                                            <td>
+                                                @if (absence.EstJustifiee)
+                                                {
+                                                    <span class="badge bg-success">Justifiée</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">Non Justifiée</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center">Aucune absence enregistrée</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border: none;
+            margin-bottom: 1rem;
+        }
+
+        .card-header {
+            border-bottom: none;
+        }
+
+        .table > :not(caption) > * > * {
+            padding: 0.75rem;
+        }
+
+        .badge {
+            font-size: 0.875rem;
+            padding: 0.5em 0.75em;
+        }
+
+        .list-group-item {
+            border-left: none;
+            border-right: none;
+        }
+
+        .list-group-item:first-child {
+            border-top: none;
+        }
+
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
+} 

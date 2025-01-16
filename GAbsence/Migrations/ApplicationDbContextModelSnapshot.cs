@@ -22,7 +22,61 @@ namespace GAbsence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ApplicationUser", b =>
+            modelBuilder.Entity("GAbsence.Models.Absence", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CodeEnseignant")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CodeEtudiant")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CodeMatiere")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CreneauHoraire")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EnseignantCodeEnseignant")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("EstJustifiee")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Justification")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MatiereCodeMatiere")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodeEnseignant");
+
+                    b.HasIndex("CodeEtudiant");
+
+                    b.HasIndex("CodeMatiere");
+
+                    b.HasIndex("EnseignantCodeEnseignant");
+
+                    b.HasIndex("MatiereCodeMatiere");
+
+                    b.ToTable("Absences");
+                });
+
+            modelBuilder.Entity("GAbsence.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -96,60 +150,6 @@ namespace GAbsence.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("GAbsence.Models.Absence", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CodeEnseignant")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CodeEtudiant")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CodeMatiere")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreneauHoraire")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EnseignantCodeEnseignant")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("EstJustifiee")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Justification")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MatiereCodeMatiere")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CodeEnseignant");
-
-                    b.HasIndex("CodeEtudiant");
-
-                    b.HasIndex("CodeMatiere");
-
-                    b.HasIndex("EnseignantCodeEnseignant");
-
-                    b.HasIndex("MatiereCodeMatiere");
-
-                    b.ToTable("Absences");
                 });
 
             modelBuilder.Entity("GAbsence.Models.Classe", b =>
@@ -274,11 +274,18 @@ namespace GAbsence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("CodeEnseignant");
 
                     b.HasIndex("CodeDepartement");
 
                     b.HasIndex("CodeGrade");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Enseignants", (string)null);
                 });
@@ -315,9 +322,16 @@ namespace GAbsence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("CodeEtudiant");
 
                     b.HasIndex("CodeClasse");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Etudiants");
                 });
@@ -765,9 +779,15 @@ namespace GAbsence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("GAbsence.Models.ApplicationUser", "User")
+                        .WithOne("Enseignant")
+                        .HasForeignKey("GAbsence.Models.Enseignant", "UserId");
+
                     b.Navigation("Departement");
 
                     b.Navigation("Grade");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GAbsence.Models.Etudiant", b =>
@@ -778,7 +798,13 @@ namespace GAbsence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("GAbsence.Models.ApplicationUser", "User")
+                        .WithOne("Etudiant")
+                        .HasForeignKey("GAbsence.Models.Etudiant", "UserId");
+
                     b.Navigation("Classe");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GAbsence.Models.FicheAbsence", b =>
@@ -888,7 +914,7 @@ namespace GAbsence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ApplicationUser", null)
+                    b.HasOne("GAbsence.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -897,7 +923,7 @@ namespace GAbsence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ApplicationUser", null)
+                    b.HasOne("GAbsence.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -912,7 +938,7 @@ namespace GAbsence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ApplicationUser", null)
+                    b.HasOne("GAbsence.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -921,11 +947,18 @@ namespace GAbsence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("ApplicationUser", null)
+                    b.HasOne("GAbsence.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GAbsence.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Enseignant");
+
+                    b.Navigation("Etudiant");
                 });
 
             modelBuilder.Entity("GAbsence.Models.Classe", b =>

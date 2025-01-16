@@ -6,6 +6,7 @@ namespace GAbsence.Models
 {
     public class Absence
 {
+    [Key]
     public int Id { get; set; }
     
     [Required(ErrorMessage = "L'étudiant est obligatoire")]
@@ -17,7 +18,9 @@ namespace GAbsence.Models
     [Required(ErrorMessage = "L'enseignant est obligatoire")]
     public string CodeEnseignant { get; set; }
     
-    [Required(ErrorMessage = "La date est obligatoire")]
+    [Required]
+    [Display(Name = "Date")]
+    [DataType(DataType.Date)]
     public DateTime Date { get; set; }
     
     [Required(ErrorMessage = "Le créneau horaire est obligatoire")]

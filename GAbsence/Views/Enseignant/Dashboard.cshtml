@@ -1,0 +1,181 @@
+@model GAbsence.Models.Enseignant
+
+<h2>Tableau de bord - @Model.NomComplet</h2>
+
+    <div class="row">
+        <!-- Informations personnelles -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0"><i class="fas fa-user-circle me-2"></i>Informations Personnelles</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fas fa-id-card me-2"></i>
+                            <strong>Code:</strong> @Model.CodeEnseignant
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-envelope me-2"></i>
+                            <strong>Email:</strong> @Model.Email
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-phone me-2"></i>
+                            <strong>Téléphone:</strong> @Model.Tel
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-calendar me-2"></i>
+                            <strong>Date de recrutement:</strong> @Model.DateRecrutement.ToShortDateString()
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <strong>Adresse:</strong> @Model.Adresse
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Actions rapides -->
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0"><i class="fas fa-bolt me-2"></i>Actions Rapides</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="@Url.Action("Create", "Absence")" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-2"></i>Nouvelle Absence
+                        </a>
+                        <a href="@Url.Action("Index", "Rapport")" class="btn btn-info">
+                            <i class="fas fa-chart-bar me-2"></i>Voir les Rapports
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Liste des absences récentes -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0"><i class="fas fa-history me-2"></i>Absences Récentes</h5>
+                    <a href="@Url.Action("Index", "Absence")" class="btn btn-light btn-sm">
+                        Voir tout <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th><i class="fas fa-calendar me-2"></i>Date</th>
+                                    <th><i class="fas fa-user me-2"></i>Étudiant</th>
+                                    <th><i class="fas fa-book me-2"></i>Matière</th>
+                                    <th><i class="fas fa-check-circle me-2"></i>Statut</th>
+                                    <th><i class="fas fa-cog me-2"></i>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Absences != null && ViewBag.Absences.Count > 0)
+                                {
+                                    @foreach (var absence in ViewBag.Absences)
+                                    {
+                                        <tr>
+                                            <td>@absence.Date.ToString("dd/MM/yyyy")</td>
+                                            <td>@absence.Etudiant?.NomComplet</td>
+                                            <td>@absence.Matiere?.Libelle</td>
+                                            <td>
+                                                @if (absence.EstJustifiee)
+                                                {
+                                                    <span class="badge bg-success">
+                                                        <i class="fas fa-check me-1"></i>Justifiée
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">
+                                                        <i class="fas fa-times me-1"></i>Non Justifiée
+                                                    </span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="@Url.Action("Edit", "Absence", new { id = absence.Id })" 
+                                                       class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a href="@Url.Action("Details", "Absence", new { id = absence.Id })" 
+                                                       class="btn btn-sm btn-outline-info">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            <i class="fas fa-info-circle me-2"></i>Aucune absence enregistrée
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border: none;
+            margin-bottom: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            border-bottom: none;
+        }
+
+        .table > :not(caption) > * > * {
+            padding: 1rem;
+        }
+
+        .badge {
+            font-size: 0.875rem;
+            padding: 0.5em 0.75em;
+        }
+
+        .list-group-item {
+            border-left: none;
+            border-right: none;
+            padding: 1rem;
+        }
+
+        .btn-group .btn {
+            margin: 0 2px;
+        }
+
+        .table-responsive {
+            border-radius: 0.25rem;
+        }
+
+        .fas {
+            width: 1.25em;
+            text-align: center;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
+} 

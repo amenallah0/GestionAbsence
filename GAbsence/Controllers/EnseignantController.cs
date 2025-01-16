@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
+using GAbsence.Models;
 
 namespace GAbsence.Controllers
 {
@@ -66,21 +67,31 @@ namespace GAbsence.Controllers
                         Email = enseignant.Email,
                         Nom = enseignant.Nom,
                         Prenom = enseignant.Prenom,
-                        GroupeUtilisateur = 3 // 3 pour Enseignant
+                        GroupeUtilisateur = UserGroups.Enseignant,
+                        EmailConfirmed = true // Pour permettre la connexion immédiate
                     };
 
-                    var password = "Ens" + enseignant.CodeEnseignant + "!";
+                    // Générer le mot de passe selon le format : Ens + CodeEnseignant + !
+                    var password = $"Ens{enseignant.CodeEnseignant}!";
+                    
+                    // Créer l'utilisateur avec le mot de passe
                     var result = await _userManager.CreateAsync(user, password);
 
                     if (result.Succeeded)
                     {
+                        // Ajouter le rôle Enseignant
                         await _userManager.AddToRoleAsync(user, "Enseignant");
+                        
+                        // Lier l'enseignant au compte utilisateur
+                        enseignant.UserId = user.Id;
                         
                         // Créer l'enseignant
                         _context.Add(enseignant);
                         await _context.SaveChangesAsync();
+
+                        // Afficher les informations de connexion
+                        TempData["Success"] = $"Enseignant créé avec succès. \nIdentifiants de connexion :\nEmail : {enseignant.Email}\nMot de passe : {password}";
                         
-                        TempData["Success"] = "Enseignant créé avec succès";
                         return RedirectToAction(nameof(Index));
                     }
                     
@@ -97,8 +108,8 @@ namespace GAbsence.Controllers
             }
 
             // En cas d'erreur, préparer les listes déroulantes
-            ViewData["CodeDepartement"] = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement");
-            ViewData["CodeGrade"] = new SelectList(_context.Grades, "CodeGrade", "NomGrade");
+            ViewBag.Departements = new SelectList(_context.Departements, "CodeDepartement", "NomDepartement");
+            ViewBag.Grades = new SelectList(_context.Grades, "CodeGrade", "Libelle");
             return View(enseignant);
         }
 
@@ -260,6 +271,39 @@ namespace GAbsence.Controllers
             ViewBag.Statistiques = statistiques;
             ViewBag.TotalAbsences = statistiques.Sum(s => s.TotalAbsences);
 
+            return View(enseignant);
+        }
+
+        public async Task<IActionResult> Dashboard()
+        {
+            // Récupérer l'utilisateur connecté
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Récupérer l'enseignant associé à l'utilisateur
+            var enseignant = await _context.Enseignants
+                .Include(e => e.Departement)
+                .Include(e => e.Grade)
+                .FirstOrDefaultAsync(e => e.UserId == user.Id);
+
+            if (enseignant == null)
+            {
+                return NotFound();
+            }
+
+            // Récupérer les absences enregistrées par l'enseignant
+            var absences = await _context.Absences
+                .Include(a => a.Etudiant)
+                .Include(a => a.Matiere)
+                .Where(a => a.CodeEnseignant == enseignant.CodeEnseignant)
+                .OrderByDescending(a => a.Date)
+                .Take(10)
+                .ToListAsync();
+
+            ViewBag.Absences = absences;
             return View(enseignant);
         }
     }

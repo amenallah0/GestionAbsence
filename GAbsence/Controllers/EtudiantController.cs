@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+using GAbsence.Models;
 
 namespace GAbsence.Controllers
 {
@@ -9,11 +11,13 @@ namespace GAbsence.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<EtudiantController> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public EtudiantController(ApplicationDbContext context, ILogger<EtudiantController> logger)
+        public EtudiantController(ApplicationDbContext context, ILogger<EtudiantController> logger,UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _logger = logger;
+            _userManager = userManager;
         }
 
         // GET: Etudiant
@@ -37,42 +41,66 @@ namespace GAbsence.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CodeEtudiant,Nom,Prenom,DateNaissance,Adresse,Mail,Tel,CodeClasse")] Etudiant etudiant)
         {
-            _logger.LogInformation("Tentative de création d'un étudiant");
-
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                _logger.LogWarning("ModelState invalide");
-                foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
+                try
                 {
-                    _logger.LogWarning($"Erreur: {modelError.ErrorMessage}");
-                }
-                ViewBag.Classes = new SelectList(_context.Classes, "CodeClasse", "NomClasse", etudiant.CodeClasse);
-                return View(etudiant);
-            }
+                    // Créer le compte utilisateur
+                    var user = new ApplicationUser
+                    {
+                        UserName = etudiant.Mail,
+                        Email = etudiant.Mail,
+                        Nom = etudiant.Nom,
+                        Prenom = etudiant.Prenom,
+                        GroupeUtilisateur = UserGroups.Etudiant,
+                        EmailConfirmed = true // Pour permettre la connexion immédiate
+                    };
 
-            try
-            {
-                // Vérifier si le code étudiant existe déjà
-                if (await _context.Etudiants.AnyAsync(e => e.CodeEtudiant == etudiant.CodeEtudiant))
+                    // Générer le mot de passe selon le format : Etud + CodeEtudiant + !
+                    var password = $"Etud{etudiant.CodeEtudiant}!";
+                    
+                    // Créer l'utilisateur avec le mot de passe
+                    var result = await _userManager.CreateAsync(user, password);
+
+                    if (result.Succeeded)
+                    {
+                        // Ajouter le rôle Etudiant
+                        await _userManager.AddToRoleAsync(user, "Etudiant");
+                        
+                        // Lier l'étudiant au compte utilisateur
+                        etudiant.UserId = user.Id;
+                        
+                        // Créer l'étudiant
+                        _context.Add(etudiant);
+                        await _context.SaveChangesAsync();
+
+                        // Afficher les informations de connexion
+                        TempData["Success"] = $"Étudiant créé avec succès. \nIdentifiants de connexion :\nEmail : {etudiant.Mail}\nMot de passe : {password}";
+                        
+                        return RedirectToAction(nameof(Index));
+                    }
+                    
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+                catch (Exception ex)
                 {
-                    _logger.LogWarning($"Le code étudiant {etudiant.CodeEtudiant} existe déjà");
-                    ModelState.AddModelError("CodeEtudiant", "Ce code étudiant existe déjà");
-                    ViewBag.Classes = new SelectList(_context.Classes, "CodeClasse", "NomClasse", etudiant.CodeClasse);
-                    return View(etudiant);
+                    _logger.LogError($"Erreur lors de la création de l'étudiant: {ex.Message}");
+                    ModelState.AddModelError(string.Empty, "Une erreur s'est produite lors de la création de l'étudiant.");
                 }
+            }
 
-                _context.Add(etudiant);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation($"Étudiant créé avec succès: {etudiant.CodeEtudiant}");
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Erreur lors de la création de l'étudiant: {ex.Message}");
-                ModelState.AddModelError("", "Une erreur s'est produite lors de la création de l'étudiant");
-                ViewBag.Classes = new SelectList(_context.Classes, "CodeClasse", "NomClasse", etudiant.CodeClasse);
-                return View(etudiant);
-            }
+            ViewBag.Classes = new SelectList(_context.Classes, "CodeClasse", "NomClasse");
+            return View(etudiant);
+        }
+
+        private async Task SendLoginCredentials(string email, string password)
+        {
+            // Implémenter l'envoi d'email ici
+            // Cette méthode devrait envoyer un email à l'étudiant avec ses identifiants
+            _logger.LogInformation($"Credentials should be sent to {email}");
         }
 
         // GET: Etudiant/Edit/5
@@ -226,6 +254,34 @@ namespace GAbsence.Controllers
         private bool EtudiantExists(string id)
         {
             return _context.Etudiants.Any(e => e.CodeEtudiant == id);
+        }
+
+        public async Task<IActionResult> Dashboard()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var etudiant = await _context.Etudiants
+                .Include(e => e.Classe)
+                .FirstOrDefaultAsync(e => e.UserId == user.Id);
+
+            if (etudiant == null)
+            {
+                return NotFound();
+            }
+
+            var absences = await _context.Absences
+                .Include(a => a.Matiere)
+                .Include(a => a.Enseignant)
+                .Where(a => a.CodeEtudiant == etudiant.CodeEtudiant)
+                .OrderByDescending(a => a.Date)
+                .ToListAsync();
+
+            ViewBag.Absences = absences;
+            return View(etudiant);
         }
     }
 } 

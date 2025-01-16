@@ -1,82 +1,48 @@
-@model GAbsence.Models.LoginViewModel
-
-@{
-    ViewData["Title"] = "Connexion";
-}
+@model GAbsence.ViewModels.LoginViewModel
 
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card shadow-sm">
+            <div class="card shadow">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">
-                        <i class="fas fa-sign-in-alt me-2"></i>Connexion
-                    </h4>
+                    <h4 class="mb-0"><i class="fas fa-sign-in-alt me-2"></i>Connexion</h4>
                 </div>
                 <div class="card-body p-4">
-                    <form asp-controller="Account" asp-action="Login" method="post">
-                        <input type="hidden" name="ReturnUrl" value="@ViewData["ReturnUrl"]" />
-                        
+                    <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
                         <div class="mb-3">
-                            <label class="form-label required">Email</label>
+                            <label asp-for="Email" class="form-label"></label>
                             <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fas fa-envelope"></i>
-                                </span>
-                                <input type="email" name="email" class="form-control" required 
-                                       placeholder="exemple@email.com" />
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input asp-for="Email" class="form-control" placeholder="exemple@email.com" />
                             </div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label required">Mot de passe</label>
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label"></label>
                             <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="fas fa-lock"></i>
-                                </span>
-                                <input type="password" name="password" class="form-control" required 
-                                       placeholder="Votre mot de passe" />
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input asp-for="Password" class="form-control" />
                             </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-sign-in-alt me-2"></i>Se connecter
-                            </button>
+                        <div class="mb-3 form-check">
+                            <input asp-for="RememberMe" class="form-check-input" />
+                            <label asp-for="RememberMe" class="form-check-label"></label>
                         </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-sign-in-alt me-2"></i>Se connecter
+                        </button>
                     </form>
-                </div>
-                <div class="card-footer bg-light text-center py-3">
-                    <div>Compte administrateur par défaut :</div>
-                    <div class="text-muted">
-                        <small>Email : admin@example.com</small><br/>
-                        <small>Mot de passe : Admin123!</small>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-@section Styles {
-    <style>
-        .required:after {
-            content: " *";
-            color: red;
-        }
-        .card {
-            border-radius: 10px;
-        }
-        .card-header {
-            border-radius: 10px 10px 0 0;
-        }
-        .card-footer {
-            border-radius: 0 0 10px 10px;
-        }
-    </style>
-}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

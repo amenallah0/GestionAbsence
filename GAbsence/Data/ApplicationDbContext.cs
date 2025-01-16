@@ -226,6 +226,22 @@ namespace GAbsence.Data
                         j.ToTable("MatiereEnseignants");
                     }
                 );
+
+            modelBuilder.Entity<Etudiant>(entity =>
+            {
+                entity.HasKey(e => e.CodeEtudiant);
+                entity.HasOne(e => e.User)
+                      .WithOne(u => u.Etudiant)
+                      .HasForeignKey<Etudiant>(e => e.UserId);
+            });
+
+            modelBuilder.Entity<Enseignant>(entity =>
+            {
+                entity.HasKey(e => e.CodeEnseignant);
+                entity.HasOne(e => e.User)
+                      .WithOne(u => u.Enseignant)
+                      .HasForeignKey<Enseignant>(e => e.UserId);
+            });
         }
     }
 } 

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GAbsence.Models
 {
@@ -39,7 +40,13 @@ namespace GAbsence.Models
         [Display(Name = "Classe")]
         public string CodeClasse { get; set; }
 
-        // Navigation property
+        // Une seule définition de la relation avec ApplicationUser
+        public string? UserId { get; set; }
+        
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser? User { get; set; }
+
+        // Relation avec Classe
         public virtual Classe? Classe { get; set; }
 
         public string NomComplet => $"{Nom} {Prenom}";

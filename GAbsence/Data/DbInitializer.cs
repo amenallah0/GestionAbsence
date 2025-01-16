@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using GAbsence.Data;
-
+using Microsoft.EntityFrameworkCore;
+using GAbsence.Models;
 public static class DbInitializer
 {
     public static async Task InitializeAsync(IServiceProvider serviceProvider)
@@ -16,6 +17,46 @@ public static class DbInitializer
         
         // Initialiser l'admin
         await InitializeAdmin(userManager);
+
+        // Créer des utilisateurs de test si nécessaire
+        if (!await userManager.Users.AnyAsync())
+        {
+            // Admin
+            var adminUser = new ApplicationUser
+            {
+                UserName = "admin@example.com",
+                Email = "admin@example.com",
+                Nom = "Admin",
+                Prenom = "System",
+                EmailConfirmed = true,
+                GroupeUtilisateur = UserGroups.Admin
+            };
+            await CreateUser(userManager, adminUser, "Admin123!", "Admin");
+
+            // Enseignant
+            var enseignantUser = new ApplicationUser
+            {
+                UserName = "enseignant@example.com",
+                Email = "enseignant@example.com",
+                Nom = "Dupont",
+                Prenom = "Jean",
+                EmailConfirmed = true,
+                GroupeUtilisateur = UserGroups.Enseignant
+            };
+            await CreateUser(userManager, enseignantUser, "Enseignant123!", "Enseignant");
+
+            // Étudiant
+            var etudiantUser = new ApplicationUser
+            {
+                UserName = "etudiant@example.com",
+                Email = "etudiant@example.com",
+                Nom = "Martin",
+                Prenom = "Sophie",
+                EmailConfirmed = true,
+                GroupeUtilisateur = UserGroups.Etudiant
+            };
+            await CreateUser(userManager, etudiantUser, "Etudiant123!", "Etudiant");
+        }
     }
 
     public static async Task InitializeRoles(RoleManager<IdentityRole> roleManager)
@@ -28,16 +69,6 @@ public static class DbInitializer
             {
                 await roleManager.CreateAsync(new IdentityRole(role));
             }
-        }
-
-        if (!await roleManager.RoleExistsAsync("Enseignant"))
-        {
-            await roleManager.CreateAsync(new IdentityRole("Enseignant"));
-        }
-
-        if (!await roleManager.RoleExistsAsync("Etudiant"))
-        {
-            await roleManager.CreateAsync(new IdentityRole("Etudiant"));
         }
     }
 
@@ -62,6 +93,15 @@ public static class DbInitializer
             {
                 await userManager.AddToRoleAsync(adminUser, "Admin");
             }
+        }
+    }
+
+    private static async Task CreateUser(UserManager<ApplicationUser> userManager, ApplicationUser user, string password, string role)
+    {
+        var result = await userManager.CreateAsync(user, password);
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(user, role);
         }
     }
 } 

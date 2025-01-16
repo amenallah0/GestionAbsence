@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GAbsence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class AddUserIdToTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,9 +32,9 @@ namespace GAbsence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    GroupeUtilisateur = table.Column<int>(type: "int", nullable: false),
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Prenom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GroupeUtilisateur = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -251,11 +251,17 @@ namespace GAbsence.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Tel = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CodeDepartement = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CodeGrade = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    CodeGrade = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Enseignants", x => x.CodeEnseignant);
+                    table.ForeignKey(
+                        name: "FK_Enseignants_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Enseignants_Departements_CodeDepartement",
                         column: x => x.CodeDepartement,
@@ -301,11 +307,17 @@ namespace GAbsence.Migrations
                     Adresse = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Mail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Tel = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CodeClasse = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    CodeClasse = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Etudiants", x => x.CodeEtudiant);
+                    table.ForeignKey(
+                        name: "FK_Etudiants_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Etudiants_Classes_CodeClasse",
                         column: x => x.CodeClasse,
@@ -624,9 +636,23 @@ namespace GAbsence.Migrations
                 column: "CodeGrade");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Enseignants_UserId",
+                table: "Enseignants",
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Etudiants_CodeClasse",
                 table: "Etudiants",
                 column: "CodeClasse");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Etudiants_UserId",
+                table: "Etudiants",
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FicheAbsences_CodeEnseignant",
@@ -718,9 +744,6 @@ namespace GAbsence.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "FicheAbsenceSeances");
 
             migrationBuilder.DropTable(
@@ -740,6 +763,9 @@ namespace GAbsence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Grades");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Classes");

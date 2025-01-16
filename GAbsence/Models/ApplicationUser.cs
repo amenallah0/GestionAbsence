@@ -1,8 +1,21 @@
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
-public class ApplicationUser : IdentityUser
+namespace GAbsence.Models
 {
-    public int GroupeUtilisateur { get; set; } // 1: Admin, 2: Responsable, 3: Enseignant
-    public required string Nom { get; set; }
-    public required string Prenom { get; set; }
-} 
+    public class ApplicationUser : IdentityUser
+    {
+        [Required]
+        public string Nom { get; set; } = string.Empty;
+
+        [Required]
+        public string Prenom { get; set; } = string.Empty;
+
+        [Required]
+        public int GroupeUtilisateur { get; set; }
+
+        // Navigation properties
+        public virtual Etudiant? Etudiant { get; set; }
+        public virtual Enseignant? Enseignant { get; set; }
+    }
+}
