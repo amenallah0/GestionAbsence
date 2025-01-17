@@ -11,8 +11,8 @@ Application web de gestion des absences développée avec ASP.NET Core MVC pour 
 
 ## 🔑 Connexion
 
-- **Email** : admin@gabsence.com
-- **Mot de passe** : Admin@123456
+- **Email** : admin@example.com
+- **Mot de passe** : Admin123!
 
 ## 🎯 Fonctionnalités
 
