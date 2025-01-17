@@ -1,179 +1,329 @@
-@{
-    ViewData["Title"] = "Données de la base";
-}
+@model Dictionary<string, int>
+@inject GAbsence.Data.ApplicationDbContext _context
 
-<style>
-    .data-section {
-        margin-bottom: 30px;
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .data-section h3 {
-        color: #2962ff;
-        margin-bottom: 15px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #e0e0e0;
-    }
-
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 1rem;
-        background-color: transparent;
-    }
-
-    .table th {
-        background-color: #f8f9fa;
-        padding: 12px;
-        text-align: left;
-        font-weight: 600;
-        border-bottom: 2px solid #dee2e6;
-    }
-
-    .table td {
-        padding: 12px;
-        border-bottom: 1px solid #dee2e6;
-    }
-
-    .table tr:hover {
-        background-color: #f5f5f5;
-    }
-
-    .count-badge {
-        background-color: #2962ff;
-        color: white;
-        padding: 4px 8px;
-        border-radius: 12px;
-        font-size: 0.9em;
-    }
-
-    .table-responsive {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-</style>
-
-<div class="container">
-    <h2 class="mb-4">@ViewData["Title"]</h2>
-
-    <div class="data-section">
-        <h3>Filières <span class="count-badge">@ViewBag.Filieres?.Count </span></h3>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Nom</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (ViewBag.Filieres != null)
-                    {
-                        @foreach (var filiere in ViewBag.Filieres)
-                        {
-                            <tr>
-                                <td>@filiere.CodeFiliere</td>
-                                <td>@filiere.NomFiliere</td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
+<div class="container-fluid">
+    <!-- En-tête -->
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="d-flex align-items-center">
+                <i class="fas fa-database me-2"></i>
+                Vérification des données
+            </h2>
         </div>
     </div>
 
-    <div class="data-section">
-        <h3>Classes <span class="count-badge">@ViewBag.Classes?.Count </span></h3>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Nom</th>
-                        <th>Niveau</th>
-                        <th>Filière</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (ViewBag.Classes != null)
-                    {
-                        @foreach (var classe in ViewBag.Classes)
-                        {
-                            <tr>
-                                <td>@classe.CodeClasse</td>
-                                <td>@classe.NomClasse</td>
-                                <td>@classe.Niveau</td>
-                                <td>@classe.CodeFiliere</td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
-        </div>
+    <!-- Cartes de statistiques -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm hover-card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-muted mb-3">@item.Key</h5>
+                        <p class="card-text display-4 mb-0">@item.Value</p>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 
-    <div class="data-section">
-        <h3>Étudiants <span class="count-badge">@ViewBag.Etudiants?.Count</span></h3>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Classe</th>
-                        <th>Email</th>
-                        <th>Téléphone</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (ViewBag.Etudiants != null)
-                    {
-                        @foreach (var etudiant in ViewBag.Etudiants)
-                        {
-                            <tr>
-                                <td>@etudiant.CodeEtudiant</td>
-                                <td>@etudiant.Nom</td>
-                                <td>@etudiant.Prenom</td>
-                                <td>@etudiant.CodeClasse</td>
-                                <td>@etudiant.Mail</td>
-                                <td>@etudiant.Tel</td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
+    <!-- Navigation par onglets -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#filieres">Filières</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#classes">Classes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#etudiants">Étudiants</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#enseignants">Enseignants</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#matieres">Matières</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#departements">Départements</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#grades">Grades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#absences">Absences</a>
+                </li>
+            </ul>
         </div>
-    </div>
 
-    <div class="data-section">
-        <h3>Matières <span class="count-badge">@ViewBag.Matieres?.Count </span></h3>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Nom</th>
-                        <th>Coefficient</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (ViewBag.Matieres != null)
-                    {
-                        @foreach (var matiere in ViewBag.Matieres)
-                        {
-                            <tr>
-                                <td>@matiere.CodeMatiere</td>
-                                <td>@matiere.Libelle</td>
-                                <td>@matiere.Coefficient</td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
+        <div class="card-body">
+            <div class="tab-content">
+                <!-- Filières -->
+                <div class="tab-pane fade show active" id="filieres">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Nom</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var filiere in _context.Filieres)
+                                {
+                                    <tr>
+                                        <td>@filiere.CodeFiliere</td>
+                                        <td>@filiere.NomFiliere</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Classes -->
+                <div class="tab-pane fade" id="classes">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Nom</th>
+                                    <th>Niveau</th>
+                                    <th>Filière</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var classe in _context.Classes)
+                                {
+                                    <tr>
+                                        <td>@classe.CodeClasse</td>
+                                        <td>@classe.NomClasse</td>
+                                        <td>@classe.Niveau</td>
+                                        <td>@classe.CodeFiliere</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Étudiants -->
+                <div class="tab-pane fade" id="etudiants">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Nom</th>
+                                    <th>Prénom</th>
+                                    <th>Classe</th>
+                                    <th>Email</th>
+                                    <th>Téléphone</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var etudiant in _context.Etudiants)
+                                {
+                                    <tr>
+                                        <td>@etudiant.CodeEtudiant</td>
+                                        <td>@etudiant.Nom</td>
+                                        <td>@etudiant.Prenom</td>
+                                        <td>@etudiant.CodeClasse</td>
+                                        <td>@etudiant.Mail</td>
+                                        <td>@etudiant.Tel</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Enseignants -->
+                <div class="tab-pane fade" id="enseignants">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Nom</th>
+                                    <th>Prénom</th>
+                                    <th>Email</th>
+                                    <th>Téléphone</th>
+                                    <th>Grade</th>
+                                    <th>Département</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var enseignant in _context.Enseignants.Include(e => e.Grade).Include(e => e.Departement))
+                                {
+                                    <tr>
+                                        <td>@enseignant.CodeEnseignant</td>
+                                        <td>@enseignant.Nom</td>
+                                        <td>@enseignant.Prenom</td>
+                                        <td>@enseignant.Email</td>
+                                        <td>@enseignant.Tel</td>
+                                        <td>@enseignant.Grade?.NomGrade</td>
+                                        <td>@enseignant.Departement?.NomDepartement</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Matières -->
+                <div class="tab-pane fade" id="matieres">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Libellé</th>
+                                    <th>Coefficient</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var matiere in _context.Matieres)
+                                {
+                                    <tr>
+                                        <td>@matiere.CodeMatiere</td>
+                                        <td>@matiere.Libelle</td>
+                                        <td>@matiere.Coefficient</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Départements -->
+                <div class="tab-pane fade" id="departements">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Nom</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var departement in _context.Departements)
+                                {
+                                    <tr>
+                                        <td>@departement.CodeDepartement</td>
+                                        <td>@departement.NomDepartement</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Grades -->
+                <div class="tab-pane fade" id="grades">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Nom</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var grade in _context.Grades)
+                                {
+                                    <tr>
+                                        <td>@grade.CodeGrade</td>
+                                        <td>@grade.NomGrade</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Absences -->
+                <div class="tab-pane fade" id="absences">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Étudiant</th>
+                                    <th>Matière</th>
+                                    <th>Justifiée</th>
+                                    <th>Motif</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var absence in _context.Absences.Include(a => a.Etudiant).Include(a => a.Matiere))
+                                {
+                                    <tr>
+                                        <td>@absence.Date.ToString("dd/MM/yyyy")</td>
+                                        <td>@absence.Etudiant?.Nom @absence.Etudiant?.Prenom</td>
+                                        <td>@absence.Matiere?.Libelle</td>
+                                        <td>@(absence.EstJustifiee ? "Oui" : "Non")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .hover-card {
+            transition: transform 0.2s ease-in-out;
+        }
+        .hover-card:hover {
+            transform: translateY(-5px);
+        }
+        .nav-tabs .nav-link {
+            color: #495057;
+            border: none;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-tabs .nav-link.active {
+            color: #0d6efd;
+            border-bottom: 2px solid #0d6efd;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        .table th {
+            white-space: nowrap;
+            background-color: #f8f9fa;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.10.24/i18n/French.json'
+                },
+                dom: '<"d-flex justify-content-between align-items-center mb-3"Bf>rt<"d-flex justify-content-between align-items-center"lip>',
+                buttons: [
+                    {
+                        extend: 'collection',
+                        text: '<i class="fas fa-download me-1"></i>Exporter',
+                        buttons: ['csv', 'excel', 'pdf']
+                    }
+                ],
+                pageLength: 10,
+                responsive: true,
+                order: [[0, 'asc']]
+            });
+        });
+    </script>
+}

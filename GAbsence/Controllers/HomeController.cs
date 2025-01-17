@@ -119,29 +119,29 @@ public class HomeController : Controller
     {
         return View();
     }
+    
     public IActionResult VerifierDonnees()
-{
-    try
     {
-        // Récupérer toutes les données
-        var filieres = _context.Filieres.ToList();
-        var classes = _context.Classes.ToList();
-        var etudiants = _context.Etudiants.ToList();
-        var enseignants = _context.Enseignants.ToList();
-        var matieres = _context.Matieres.ToList();
+        try
+        {
+            var viewModel = new Dictionary<string, int>();
+            
+            // Récupérer les comptages
+            viewModel["Filieres"] = _context.Filieres.Count();
+            viewModel["Classes"] = _context.Classes.Count();
+            viewModel["Etudiants"] = _context.Etudiants.Count();
+            viewModel["Enseignants"] = _context.Enseignants.Count();
+            viewModel["Matieres"] = _context.Matieres.Count();
+            viewModel["Departements"] = _context.Departements.Count();
+            viewModel["Grades"] = _context.Grades.Count();
+            viewModel["Absences"] = _context.Absences.Count();
 
-        // Afficher les données dans la vue
-        ViewBag.Filieres = filieres;
-        ViewBag.Classes = classes;
-        ViewBag.Etudiants = etudiants;
-        ViewBag.Enseignants = enseignants;
-        ViewBag.Matieres = matieres;
-
-        return View();
-    }
-    catch (Exception ex)
-    {
-            return Content($"Erreur : {ex.Message}");
+            return View(viewModel);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Erreur lors de la récupération des données");
+            return View(new Dictionary<string, int>());
         }
     }
 }
